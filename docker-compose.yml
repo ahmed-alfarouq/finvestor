@@ -1,0 +1,50 @@
+services:
+  frontend:
+    build: ./frontend
+    container_name: finvestor-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:5000
+    develop:
+      watch:
+        - action: sync
+          path: ./frontend
+          target: /src/frontend
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: package.json
+    depends_on:
+      - backend
+
+  backend:
+    build: ./backend
+    container_name: finvestor-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb+srv://ahmedomaralfarouq:DrwSv5WHbwtFGpFq@finvestorcluter.wyr0s.mongodb.net/?retryWrites=true&w=majority&appName=finvestorCluter
+    develop:
+      watch:
+      - action: sync
+        path: ./backend
+        target: /src/backend
+        ignore:
+          - node_modules/
+      - action: rebuild
+        path: package.json
+    depends_on:
+      - db
+
+  db:
+    image: mongo
+    container_name: finvestor-db
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
