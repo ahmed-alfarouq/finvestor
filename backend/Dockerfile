@@ -1,8 +1,8 @@
-FROM node:18-alpine AS base
+FROM node:alpine
 
-WORKDIR /src
+WORKDIR /app
 
-COPY package.json package-lock.json ./
+COPY package*.json ./
 
 RUN npm install
 
@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 5000
 
-CMD [ "node", "src/index.js" ]
+CMD [ "npm", "run", "start" ]
