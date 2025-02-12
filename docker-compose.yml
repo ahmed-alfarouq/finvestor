@@ -1,16 +1,18 @@
 services:
   frontend:
-    build: ./frontend
+    build: 
+      context: ./frontend
     container_name: finvestor-frontend
     ports:
       - "3000:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:5000
+    command: npm run dev
     develop:
       watch:
         - action: sync
           path: ./frontend
-          target: /src/frontend
+          target: app
           ignore:
             - node_modules/
         - action: rebuild
@@ -18,22 +20,25 @@ services:
     depends_on:
       - backend
 
+
   backend:
-    build: ./backend
+    build:
+      context: ./backend
     container_name: finvestor-backend
     ports:
       - "5000:5000"
     environment:
       - MONGO_URI=mongodb+srv://ahmedomaralfarouq:DrwSv5WHbwtFGpFq@finvestorcluter.wyr0s.mongodb.net/?retryWrites=true&w=majority&appName=finvestorCluter
+    command: npm run start
     develop:
       watch:
-      - action: sync
-        path: ./backend
-        target: /src/backend
-        ignore:
-          - node_modules/
-      - action: rebuild
-        path: package.json
+        - action: sync
+          path: ./backend
+          target: app/src
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: package.json
     depends_on:
       - db
 

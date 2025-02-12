@@ -1,0 +1,18 @@
+{
+    "NotFound": {
+        "title": "Page Not Found",
+        "description": "Sorry, the page you are looking for doesn't exist or has been moved.",
+        "homeButton": "Return to Home"
+    },
+    "SideNavbar": {
+        "overview": "overview",
+        "balances": "balances",
+        "transactions": "transactions",
+        "bills": "bills",
+        "expenses": "expenses",
+        "goals": "goals",
+        "account": "account",
+        "notifications": "notifications",
+        "logout": "log out"
+    }
+}
