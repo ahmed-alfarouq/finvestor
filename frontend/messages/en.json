@@ -1,4 +1,7 @@
 {
+    "Loading": {
+        "loading": "loading"
+    },
     "NotFound": {
         "title": "Page Not Found",
         "description": "Sorry, the page you are looking for doesn't exist or has been moved.",
