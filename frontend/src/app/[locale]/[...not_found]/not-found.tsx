@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { AlertCircle } from "lucide-react";
 
-export default function NotFound() {
+const NotFound = () => {
   const t = useTranslations("NotFound");
 
   return (
@@ -31,4 +31,6 @@ export default function NotFound() {
       </div>
     </div>
   );
-}
+};
+
+export default NotFound;
