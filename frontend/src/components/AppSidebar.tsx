@@ -26,7 +26,7 @@ const data = {
   user: {
     name: "Ahmed Al-Farouq",
     email: "ahmed.omar.alfarouq@gmail.com",
-    avatar: "/logo.jpeg",
+    avatar: "/avatar.jpeg",
   },
 };
 
