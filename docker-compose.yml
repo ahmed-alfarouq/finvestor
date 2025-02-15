@@ -1,55 +1,21 @@
 services:
   frontend:
-    build: 
-      context: ./frontend
-    container_name: finvestor-frontend
+    build: ./
     ports:
       - "3000:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:5000
+      - AUTH_SECRET="aaZqtZiI6dmgWn6IgZO39I3vPXmf75nJWdFQni4p0Rs="
+      - AUTH_GOOGLE_ID=363106468911-tbvl5p2ugd89c6jrbr7266vfcptglb2p.apps.googleusercontent.com
+      - AUTH_GOOGLE_SECRET=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
+      - MONGO=mongodb+srv://ahmedomaralfarouq:JsRG27ZaIt1nppwf@finvestorcluter.wyr0s.mongodb.net/users?retryWrites=true&w=majority&appName=finvestorCluter
     command: npm run dev
     develop:
       watch:
         - action: sync
-          path: ./frontend
+          path: ./
           target: app
           ignore:
             - node_modules/
         - action: rebuild
           path: package.json
-    depends_on:
-      - backend
-
-
-  backend:
-    build:
-      context: ./backend
-    container_name: finvestor-backend
-    ports:
-      - "5000:5000"
-    environment:
-      - MONGO_URI=mongodb+srv://ahmedomaralfarouq:DrwSv5WHbwtFGpFq@finvestorcluter.wyr0s.mongodb.net/?retryWrites=true&w=majority&appName=finvestorCluter
-    command: npm run start
-    develop:
-      watch:
-        - action: sync
-          path: ./backend
-          target: app/src
-          ignore:
-            - node_modules/
-        - action: rebuild
-          path: package.json
-    depends_on:
-      - db
-
-  db:
-    image: mongo
-    container_name: finvestor-db
-    restart: always
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongodb_data:/data/db
-
-volumes:
-  mongodb_data:
