@@ -1,4 +1,5 @@
 "use client";
+import { cn } from "@/lib/utils";
 import React from "react";
 import {
   FieldError,
@@ -15,6 +16,7 @@ type props<T extends FieldValues> = {
   error?: FieldError;
   required?: boolean;
   register: UseFormRegister<T>;
+  className?: string;
 };
 
 const CustomInput = <T extends FieldValues>({
@@ -25,9 +27,10 @@ const CustomInput = <T extends FieldValues>({
   error,
   required = false,
   register,
+  className,
 }: props<T>) => {
   return (
-    <div className="flex flex-col space-y-2 w-full max-w-md">
+    <div className={cn("w-full flex flex-col space-y-2", className)}>
       {label && (
         <label
           htmlFor={name}
@@ -40,11 +43,16 @@ const CustomInput = <T extends FieldValues>({
         type={type}
         placeholder={placeholder}
         {...register(name)}
-        className={`w-full p-3 border rounded-md text-gray-1 dark:text-white bg-transparent border-[#D0D5DD]  focus:border-third-color focus:outline-none ${
-          error ? "border-red-500" : ""
-        }`}
+        className={cn(
+          "w-full p-2 border rounded-md text-gray-1 dark:text-white bg-transparent border-[#D0D5DD]  focus:border-third-color focus:outline-none",
+          error && "border-red-500"
+        )}
       />
-      {error && <p className="text-sm text-red-500">{error.message}</p>}
+      {error && (
+        <p role="alert" className="text-sm text-red-500">
+          {error.message}
+        </p>
+      )}
     </div>
   );
 };

@@ -1,0 +1,39 @@
+{
+    "Loading": {
+        "loading": "جاري التحميل"
+    },
+    "NotFound": {
+        "title": "الصفحة غير موجودة",
+        "description": "عذرا، الصفحة التي تبحث عنها غير موجودة أو تم نقلها.",
+        "homeButton": "الصفحة الرئيسية"
+    },
+    "Auth": {
+        "name": "الأسم",
+        "emailAddress": "البريد الالكتروني",
+        "password": "كلمة السر",
+        "confirmPassword": "تأكيد كلمة السر",
+        "forgotPassword": "نسيت كلمة السر؟",
+        "keepMe": "البقاء مُسجل الدخول",
+        "byContinue": "عند التسجيل انت توافق على",
+        "termsOfService": "شروط الخدمات.",
+        "login": "تسجيل الدخول",
+        "orSigninWith": "عمل حساب جديد بواسطة",
+        "continueWithGoogle": "أكمل بواسطة جوجل",
+        "createAnAccount": "حساب جديد",
+        "alreadyHave": "لديك حساب بالفعل؟",
+        "emailRequired": "البريد الالكتروني مطلوب!",
+        "emailInvalid": "البريد الالكتروني غير صالح!",
+        "passwordRequired": "كلمة السر مطلوبة!"
+    },
+    "SideNavbar": {
+        "overview": "نظرة عامة",
+        "balances": "الحسابات",
+        "transactions": "التحويلات",
+        "bills": "الفواتير",
+        "expenses": "المصروفات",
+        "goals": "الأهداف",
+        "account": "الحساب",
+        "notifications": "الاشعارات",
+        "logout": "تسجيل الخروج"
+    }
+}

@@ -19,7 +19,7 @@ export default {
 					foreground: 'hsl(var(--primary-foreground))'
 				},
 				secondary: {
-					DEFAULT: 'hsl(var(--secondary))',
+					DEFAULT: '#E4E7EB',
 					dark: ',',
 					foreground: 'hsl(var(--secondary-foreground))'
 				},
@@ -47,6 +47,9 @@ export default {
 				},
 				'gray-6': {
 					DEFAULT: '#F3F3F3'
+				},
+				'gray-7': {
+					DEFAULT: "#999DA3",
 				},
 				'primary-color': {
 					DEFAULT: '#191D23',
