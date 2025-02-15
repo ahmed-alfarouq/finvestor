@@ -44,8 +44,7 @@ yarn-error.log*
 next-env.d.ts
 
 #Docker
-docker-compose.override.yml
-docker-compose.prod.yml
+docker-compose*.yml
 .dockerignore
 *.dockerfile
 
