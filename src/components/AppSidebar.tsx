@@ -1,13 +1,11 @@
 "use client";
 
 import React from "react";
-import { ArrowLeftRight, Wallet } from "lucide-react";
-import { usePathname } from "@/i18n/routing";
-import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
-
-import { NavUser } from "@/components/nav-user";
 import NavLink from "./NavLink";
+import { ArrowLeftRight, Wallet } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -31,13 +29,11 @@ const data = {
 };
 
 const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
-  const t = useTranslations("SideNavbar");
   const { toggleSidebar, isMobile } = useSidebar();
   const pathname = usePathname();
-  const locale = useLocale();
 
   return (
-    <Sidebar side={locale === "ar" ? "right" : "left"} {...props}>
+    <Sidebar side="left" {...props}>
       <SidebarHeader className="bg-default-black px-5 py-5">
         <Image src="/logo.webp" alt="logo" width={150} height={50} />
       </SidebarHeader>
@@ -45,9 +41,9 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
         <SidebarMenu className="px-2 py-6 gap-4">
           <SidebarMenuItem>
             <NavLink
-              to="/"
-              active={pathname === "/"}
-              text={t("overview")}
+              to="/overview"
+              active={pathname === "/overview"}
+              text="Overview"
               beforeIcon={<AiOutlineWindows size={20} />}
               handleClick={isMobile ? toggleSidebar : () => {}}
             />
@@ -56,7 +52,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
             <NavLink
               to="/balances"
               active={pathname === "/balances"}
-              text={t("balances")}
+              text="Balances"
               beforeIcon={<Wallet size={20} />}
               handleClick={isMobile ? toggleSidebar : () => {}}
             />
@@ -65,7 +61,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
             <NavLink
               to="/transactions"
               active={pathname === "/transactions"}
-              text={t("transactions")}
+              text="Transactions"
               beforeIcon={<ArrowLeftRight size={20} />}
               handleClick={isMobile ? toggleSidebar : () => {}}
             />
@@ -74,7 +70,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
             <NavLink
               to="/bills"
               active={pathname === "/bills"}
-              text={t("bills")}
+              text="Bills"
               beforeIcon={<FaMoneyBills size={20} />}
               handleClick={isMobile ? toggleSidebar : () => {}}
             />
@@ -83,7 +79,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
             <NavLink
               to="/expenses"
               active={pathname === "/expenses"}
-              text={t("expenses")}
+              text="Expenses"
               beforeIcon={<BiMoneyWithdraw size={20} />}
               handleClick={isMobile ? toggleSidebar : () => {}}
             />
@@ -92,7 +88,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
             <NavLink
               to="/goals"
               active={pathname === "/goals"}
-              text={t("goals")}
+              text="Goals"
               beforeIcon={<BiTargetLock size={20} />}
               handleClick={isMobile ? toggleSidebar : () => {}}
             />

@@ -1,6 +1,6 @@
-import { Link } from "@/i18n/routing";
-import { cn } from "@/lib/utils";
 import React from "react";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 type props = {
   to: string;

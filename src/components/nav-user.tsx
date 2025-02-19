@@ -18,8 +18,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Link } from "@/i18n/routing";
-import { useTranslations } from "next-intl";
+import { Button } from "./ui/button";
+import { signOut } from "@/auth";
+import Link from "next/link";
 
 export function NavUser({
   user,
@@ -31,7 +32,9 @@ export function NavUser({
   };
 }) {
   const { toggleSidebar, isMobile } = useSidebar();
-  const t = useTranslations("SideNavbar");
+
+  const logout = async () =>
+    await signOut({ redirectTo: "/login", redirect: true });
 
   return (
     <SidebarMenu>
@@ -82,7 +85,7 @@ export function NavUser({
                   onClick={toggleSidebar}
                 >
                   <BadgeCheck />
-                  {t("account")}
+                  Account
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
@@ -92,20 +95,19 @@ export function NavUser({
                   onClick={toggleSidebar}
                 >
                   <Bell />
-                  {t("notifications")}
+                  Notifications
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link
-                href="/logout"
+              <Button
                 className="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:text-white focus:bg-primary hover:bg-primary focus:text-white"
-                onClick={toggleSidebar}
+                onClick={logout}
               >
                 <LogOut />
-                {t("logout")}
-              </Link>
+                Logout
+              </Button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
