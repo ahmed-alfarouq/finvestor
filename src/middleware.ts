@@ -1,8 +1,39 @@
-import createMiddleware from "next-intl/middleware";
-import { routing } from "./i18n/routing";
+import NextAuth from "next-auth";
+import { NextResponse } from "next/server";
+import authConfig from "@/auth.config";
+import { DEFAULT_LOGIN_REDIRECT, PUBLIC_ROUTES, AUTH_ROUTES, API_AUTH_PREFIX } from "@/routes";
 
-export default createMiddleware(routing);
+const { auth } = NextAuth(authConfig);
+
+
+export default auth((req) => {
+    const reponse = NextResponse.next();
+    const themePreference = req.cookies.get("theme");
+    const { pathname } = req.nextUrl;
+    const isLoggedin = !!req.auth;
+    const isApiRoute = pathname.startsWith(API_AUTH_PREFIX);
+    const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
+    const isAuthRoute = AUTH_ROUTES.includes(pathname);
+
+    if (!themePreference) {
+        req.cookies.set("theme", "light");
+    }
+
+    if (isApiRoute || isPublicRoute) {
+        return reponse;
+    }
+
+    if (isAuthRoute) {
+        if (isLoggedin) {
+            return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.nextUrl))
+        }
+        return reponse;
+    }
+
+    return reponse;
+});
+
 
 export const config = {
-    matcher: ["/", "/(en|ar)/:path*"],
+    matcher: ["/((?!_next|static|api|.*\\..*).*)"],
 }
