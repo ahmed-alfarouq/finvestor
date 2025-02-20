@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import NavLink from "./NavLink";
+import NavLink from "./nav-link";
 import { ArrowLeftRight, Wallet } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { NavUser } from "@/components/nav-user";
