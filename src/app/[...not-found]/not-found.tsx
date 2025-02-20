@@ -2,29 +2,19 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { AlertCircle } from "lucide-react";
 
 const NotFound = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center max-w-md w-full space-y-6">
-        <div className="flex justify-center mb-4">
-          <AlertCircle
-            className="text-destructive"
-            size={64}
-            strokeWidth={1.5}
-          />
-        </div>
-
-        <h1 className="text-3xl font-bold text-foreground">
-          something went wrong!
-        </h1>
-
-        <p className="text-muted-foreground">Go to home page.</p>
-
+      <div className="text-center max-w-md w-full">
+        <span className="border-4 border-destructive rounded-full px-4 py-10 text-6xl font-black text-destructive">
+          404
+        </span>
+        <h1 className="text-3xl font-bold text-foregroun mt-14 mb-4">Not Found!</h1>
+        <p className="text-muted-foreground mb-4">Please, go back to home page.</p>
         <Link href="/" className="block">
           <Button variant="default" size="lg" className="w-full">
-            Home
+            Home Page
           </Button>
         </Link>
       </div>
