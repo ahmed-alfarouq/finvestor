@@ -24,7 +24,7 @@ const data = {
   user: {
     name: "Ahmed Al-Farouq",
     email: "ahmed.omar.alfarouq@gmail.com",
-    avatar: "/avatar.jpeg",
+    avatar: "/img/avatar.jpeg",
   },
 };
 
@@ -35,7 +35,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
   return (
     <Sidebar side="left" {...props}>
       <SidebarHeader className="bg-default-black px-5 py-5">
-        <Image src="/logo.webp" alt="logo" width={150} height={50} />
+        <Image src="/img/logo.webp" alt="logo" width={150} height={50} />
       </SidebarHeader>
       <SidebarContent className="bg-default-black">
         <SidebarMenu className="px-2 py-6 gap-4">
