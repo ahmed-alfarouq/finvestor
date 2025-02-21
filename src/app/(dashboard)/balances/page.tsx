@@ -1,6 +1,6 @@
 import React from "react";
 
-export const metaData = {
+export const metadata = {
   title: "balances",
 };
 
