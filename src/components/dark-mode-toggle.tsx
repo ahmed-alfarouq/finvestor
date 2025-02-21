@@ -1,11 +1,16 @@
 "use client";
 
-import { useTheme } from "next-themes";
 import React, { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 
 const DarkModeToggle = () => {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+
+  const updateTheme = (theme: string) => {
+    setTheme(theme);
+    document.cookie = `theme=${theme}`;
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -16,10 +21,10 @@ const DarkModeToggle = () => {
   return (
     <button
       type="button"
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="bg-white text-secondary-color dark:bg-primary dark:text-white shadow-md h-12 px-4 py-2 rounded transition"
+      onClick={() => updateTheme(theme === "dark" ? "light" : "dark")}
+      className="bg-default-black dark:bg-white shadow-md dark:shadow-cyan-500/50 py-1 px-2 rounded-full transition"
     >
-      {theme === "dark" ? "Light Mode 🌞" : "Dark Mode 🌙"}
+      {theme === "dark" ? "🌞" : "🌙"}
     </button>
   );
 };
