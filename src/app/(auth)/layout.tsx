@@ -1,6 +1,6 @@
 import React from "react";
 
-import DarkModeToggle from "@/components/DarkModeToggle";
+import DarkModeToggle from "@/components/dark-mode-toggle";
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (

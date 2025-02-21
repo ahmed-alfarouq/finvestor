@@ -6,9 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 
-import CustomInput from "@/components/CustomInput";
-import PasswordInput from "@/components/PasswordInput";
-import CheckBox from "@/components/CheckBox";
+import CustomInput from "@/components/custom-input";
+import PasswordInput from "@/components/password-input";
+import CheckBox from "@/components/check-box";
 import { Button } from "@/components/ui/button";
 
 import { FcGoogle } from "react-icons/fc";
