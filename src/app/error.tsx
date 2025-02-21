@@ -1,7 +1,23 @@
 "use client";
-import React from "react";
+import React, { startTransition } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
-const ErrorBoundary = ({ error }: { error: Error }) => {
+const ErrorBoundary = ({
+  error,
+  reset,
+}: {
+  error: Error;
+  reset: () => void;
+}) => {
+  const router = useRouter();
+  const reload = () => {
+    startTransition(() => {
+      router.refresh();
+      reset();
+    });
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <div className="text-destructive text-5xl font-bold mb-6">
@@ -13,6 +29,7 @@ const ErrorBoundary = ({ error }: { error: Error }) => {
         </span>
         <strong>Description:</strong> {error.message}
       </p>
+      <Button size="lg" className="mt-3" onClick={reload}>Try Again</Button>
     </div>
   );
 };
