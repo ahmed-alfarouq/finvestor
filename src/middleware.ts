@@ -8,16 +8,11 @@ const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
     const reponse = NextResponse.next();
-    const themePreference = req.cookies.get("theme");
     const { pathname } = req.nextUrl;
     const isLoggedin = !!req.auth;
     const isApiRoute = pathname.startsWith(API_AUTH_PREFIX);
     const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
     const isAuthRoute = AUTH_ROUTES.includes(pathname);
-
-    if (!themePreference) {
-        req.cookies.set("theme", "light");
-    }
 
     if (isApiRoute || isPublicRoute) {
         return reponse;
