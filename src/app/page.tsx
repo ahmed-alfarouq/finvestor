@@ -84,7 +84,7 @@ const HomePage = () => {
         />
         <Link
           href="/login"
-          className="self-end capitalize font-bold text-default-black text-lg border-b-2 border-transparent hover:border-default-black transition-all"
+          className="self-end capitalize font-bold text-default-black dark:text-white text-lg border-b-2 border-transparent hover:border-default-black dark:hover:border-white transition-all"
         >
           Log In
         </Link>
