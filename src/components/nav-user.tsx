@@ -101,10 +101,7 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Button
-                className="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:text-white focus:bg-primary hover:bg-primary focus:text-white"
-                onClick={logout}
-              >
+              <Button className="pl-[10px]" variant="link" onClick={logout}>
                 <LogOut />
                 Logout
               </Button>
