@@ -1,19 +1,19 @@
 import { prisma } from "@/prisma";
 
-const getUserFromDb = async ({
-  email,
-  pwHash,
-}: {
-  email: string;
-  pwHash: string;
-}) => {
-  const user = await prisma.user.findUnique({
-    where: { email },
-  });
-
-  if (!user || user.password != pwHash) return null;
-
-  return user;
+export const getUserByEmail = async (email: string) => {
+  try {
+    const user = await prisma.user.findUnique({ where: { email } });
+    return user;
+  } catch {
+    return null;
+  }
 };
 
-export default getUserFromDb;
+export const getUserById = async (id: string) => {
+  try {
+    const user = await prisma.user.findUnique({ where: { id } });
+    return user;
+  } catch {
+    return null;
+  }
+};

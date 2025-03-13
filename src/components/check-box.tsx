@@ -10,7 +10,7 @@ import {
 
 import { ImCheckboxChecked } from "react-icons/im";
 
-type checkBoxProps<T extends FieldValues> = {
+type checkboxProps<T extends FieldValues> = {
   name: Path<T>;
   label: string;
   register: UseFormRegister<T>;
@@ -18,13 +18,13 @@ type checkBoxProps<T extends FieldValues> = {
   className?: string;
 };
 
-const CheckBox = <T extends FieldValues>({
+const Checkbox = <T extends FieldValues>({
   register,
   label,
   name,
   error,
   className,
-}: checkBoxProps<T>) => {
+}: checkboxProps<T>) => {
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const toggleCheckbox = () => setIsChecked((prev) => !prev);
@@ -76,4 +76,4 @@ const CheckBox = <T extends FieldValues>({
   );
 };
 
-export default CheckBox;
+export default Checkbox;

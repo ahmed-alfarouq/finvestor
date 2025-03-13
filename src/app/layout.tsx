@@ -21,7 +21,7 @@ export default async function RootLayout({
   const theme = (await cookies()).get("theme")?.value || "light";
 
   return (
-    <html className={theme} suppressHydrationWarning>
+    <html lang="en" className={theme} suppressHydrationWarning>
       <Head>
         <link
           rel="icon"

@@ -1,6 +1,7 @@
 "use client";
 
-import { BadgeCheck, Bell, ChevronsUpDown, LogOut } from "lucide-react";
+import Link from "next/link";
+import { logout } from "@/actions/logout";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -19,8 +20,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Button } from "./ui/button";
-import { signOut } from "@/auth";
-import Link from "next/link";
+
+import { BadgeCheck, Bell, ChevronsUpDown, LogOut } from "lucide-react";
 
 export function NavUser({
   user,
@@ -32,9 +33,6 @@ export function NavUser({
   };
 }) {
   const { toggleSidebar, isMobile } = useSidebar();
-
-  const logout = async () =>
-    await signOut({ redirectTo: "/login", redirect: true });
 
   return (
     <SidebarMenu>
