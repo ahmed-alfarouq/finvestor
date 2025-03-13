@@ -37,7 +37,7 @@ export default async function RootLayout({
         />
       </Head>
       <body
-        className={`bg-white text-black dark:bg-gray-900 dark:text-white ${inter.className}`}
+        className={`bg-white text-black dark:bg-[#1e293b] dark:text-white ${inter.className}`}
       >
         <ThemeProvider
           attribute="class"
