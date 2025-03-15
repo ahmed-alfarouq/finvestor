@@ -8,7 +8,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       <header className="flex justify-end py-3 px-8">
         <DarkModeToggle />
       </header>
-      <main className="container mt-16 mx-auto flex flex-col items-center justify-center">
+      <main className="container mx-auto py-14 px-4 flex flex-col items-center justify-center">
         {children}
       </main>
     </>

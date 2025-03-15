@@ -72,7 +72,7 @@ const RegisterPage = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-[400px] mt-6 px-4 mx-auto flex flex-col justify-center gap-3"
+          className="w-full sm:w-[400px] mt-6 px-4 mx-auto flex flex-col justify-center gap-3"
         >
           <div className="space-y-3">
             <FormField
@@ -178,7 +178,7 @@ const RegisterPage = () => {
       <div className="w-fit mx-auto my-6 text-gray-7 dark:text-primary-color-dark text-sm text-center relative before:absolute before:bottom-[9px] before:-left-28 before:h-[1px] before:w-24 before:bg-third-color before:opacity-25 after:absolute after:bottom-[9px] after:-right-28 after:h-[1px] after:w-24 after:bg-third-color after:opacity-25">
         Or sign up with
       </div>
-      <form action={handleGoogleLogin} className="w-[400px] p-4 pt-0 mx-auto">
+      <form action={handleGoogleLogin} className="w-full sm:w-[400px] p-4 pt-0 mx-auto">
         <Button
           type="submit"
           variant="secondary"

@@ -58,7 +58,7 @@ const LoginPage = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-[400px] mt-6 px-4 mx-auto flex flex-col justify-center gap-3"
+          className="w-full sm:w-[400px] mt-6 px-4 mx-auto flex flex-col justify-center gap-3"
         >
           <div className="space-y-3">
             <FormField
@@ -122,7 +122,7 @@ const LoginPage = () => {
         Or signin with
       </div>
 
-      <form action={handleGoogleLogin} className="w-[400px] p-4 pt-0 mx-auto">
+      <form action={handleGoogleLogin} className="w-full sm:w-[400px] p-4 pt-0 mx-auto">
         <Button
           type="submit"
           variant="secondary"
