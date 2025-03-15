@@ -2,7 +2,7 @@
     * An array of routes that are accessible to the public
     * @type {string[]}
 */
-export const PUBLIC_ROUTES = ["/"];
+export const PUBLIC_ROUTES = ["/", "/terms-of-service"];
 
 /**
     * An array of routes that are used for authentication
