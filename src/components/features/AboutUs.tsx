@@ -21,27 +21,27 @@ const AboutUs = () => {
             expenses, manage investments, and achieve financial growth—all in
             one powerful tool.
           </p>
-          <ul className="list-none mt-4 space-y-2">
-            <li className="flex justify-center lg:justify-start items-center gap-3">
+          <ul className="list-none mt-4 space-y-2 text-left">
+            <li className="flex items-center gap-3">
               <CheckCircle
                 size={20}
                 className="text-primary dark:text-primary-dark"
               />
-              Gain real-time insights into your finances.
+              <p>Gain real-time insights into your finances.</p>
             </li>
-            <li className="flex justify-center lg:justify-start items-center gap-3">
+            <li className="flex items-center gap-3">
               <CheckCircle
                 size={20}
                 className="text-primary dark:text-primary-dark"
               />
-              Receive AI-powered investment recommendations.
+              <p>Receive AI-powered investment recommendations.</p>
             </li>
-            <li className="flex justify-center lg:justify-start items-center gap-3">
+            <li className="flex items-center gap-3">
               <CheckCircle
                 size={20}
                 className="text-primary dark:text-primary-dark"
               />
-              Enjoy a secure, user-friendly financial experience.
+              <p>Enjoy a secure, user-friendly financial experience.</p>
             </li>
           </ul>
           <Link
