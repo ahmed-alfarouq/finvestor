@@ -44,7 +44,7 @@ const successStories = [
 
 const SuccessStories = () => {
   return (
-    <section className="container mx-auto">
+    <section className="container mx-auto py-14 px-4">
       <header className="mb-6 w-fit mx-auto lg:w-full">
         <span className="block text-primary dark:text-primary-dark mb-2">
           Success Stories
