@@ -1,12 +1,11 @@
 "use server";
-
 import * as z from "zod";
 import bcrypt from "bcryptjs";
-import { RegisterSchema } from "@/schemas/auth";
 import { prisma } from "@/prisma";
+
+import { RegisterSchema } from "@/schemas/auth";
 import { getUserByEmail } from "@/lib/getUserFromDb";
-import { signIn } from "@/auth";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { generateVerificationToken, sendVerificationEmail } from "@/lib/tokens";
 
 export const register = async (data: z.infer<typeof RegisterSchema>) => {
   const validatedFields = RegisterSchema.safeParse(data);
@@ -28,12 +27,11 @@ export const register = async (data: z.infer<typeof RegisterSchema>) => {
     },
   });
 
-  await signIn("credentials", {
-    email,
-    password,
-    redirectTo: DEFAULT_LOGIN_REDIRECT,
-  });
+  const token = await generateVerificationToken({ email });
+  await sendVerificationEmail({ username: name, email, token });
 
-  // TODO: Send verification token email.
-  return { success: "New user created!" };
+  return {
+    success:
+      "New user created! Please verify your email to activate your account and log in.",
+  };
 };
