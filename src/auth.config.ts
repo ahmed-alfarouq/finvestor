@@ -7,6 +7,7 @@ import { LoginSchema } from "./schemas/auth";
 import { getUserByEmail, getUserById } from "./lib/getUserFromDb";
 
 import type { NextAuthConfig } from "next-auth";
+import { updateEmailVerification } from "./lib/updateUser";
 
 export default {
   providers: [
@@ -40,6 +41,16 @@ export default {
       },
     }),
   ],
+  pages: {
+    signIn: "/login",
+  },
+  events: {
+    async linkAccount({ user }) {
+      if (user.id) {
+        await updateEmailVerification(user.id);
+      }
+    },
+  },
   callbacks: {
     async session({ token, session }) {
       if (token.sub && session.user) {
