@@ -20,7 +20,7 @@ const ErrorBoundary = ({
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <div className="text-destructive text-5xl font-bold mb-6">
+      <div className="text-destructive dark:text-primary-dark text-5xl font-bold mb-6">
         Something went wrong!
       </div>
       <p className="text-center text-xl min-h-14">
