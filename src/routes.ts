@@ -9,7 +9,12 @@ export const PUBLIC_ROUTES = ["/", "/terms-of-service", "/verify-email"];
  * These routes will redirect logged in users to [locale]/dashboard
  * @type {string[]}
  */
-export const AUTH_ROUTES = ["/login", "/register"];
+export const AUTH_ROUTES = [
+  "/login",
+  "/register",
+  "/forgot-password",
+  "/new-password",
+];
 
 /**
  * The prefix for API authentication routes
