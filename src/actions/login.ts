@@ -15,11 +15,11 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
   const { email, password } = validatedFields.data;
 
   try {
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("password", password);
-
-    await signIn("credentials", formData);
+    await signIn("credentials", {
+      email,
+      password,
+      redirectTo: DEFAULT_LOGIN_REDIRECT,
+    });
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
