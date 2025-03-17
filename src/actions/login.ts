@@ -1,6 +1,7 @@
 "use server";
-
 import * as z from "zod";
+import bcrypt from "bcryptjs";
+
 import { LoginSchema } from "@/schemas/auth";
 import { signIn } from "@/auth";
 
@@ -12,12 +13,11 @@ import {
   generateTwoFactorToken,
   generateVerificationToken,
   getTwoFactorTokenByEmail,
-  sendTwoFactorTokenEmail,
-  sendVerificationEmail,
 } from "@/lib/tokens";
 import { prisma } from "@/prisma";
 import { getTwoFactorConfirmationByUserId } from "@/lib/twoFactorConfirmation";
-import bcrypt from "bcryptjs";
+
+import { sendTwoFactorTokenEmail, sendVerificationEmail } from "@/lib/mail";
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
   const validatedFields = LoginSchema.safeParse(values);

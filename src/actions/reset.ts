@@ -1,9 +1,7 @@
 "use server";
 import { getUserByEmail } from "@/lib/getUserFromDb";
-import {
-  generateResetToken,
-  sendResetEmail,
-} from "@/lib/tokens";
+import { sendResetEmail } from "@/lib/mail";
+import { generateResetToken } from "@/lib/tokens";
 
 export const reset = async (email: string) => {
   const token = await generateResetToken(email);
