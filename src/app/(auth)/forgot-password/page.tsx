@@ -1,12 +1,9 @@
 "use client";
 import React, { useState, useTransition } from "react";
-import Image from "next/image";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ResetSchema } from "@/schemas/auth";
-
-import { Button } from "@/components/ui/button";
 
 import {
   Form,
@@ -17,8 +14,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
+import CardWrapper from "@/components/auth/CardWrapper";
 
 type ResetFields = z.infer<typeof ResetSchema>;
 
@@ -48,53 +47,50 @@ const ForgotPassword = () => {
   };
 
   return (
-    <>
-      <Image
-        src="/img/logo.webp"
-        alt="logo"
-        aria-hidden="true"
-        width={300}
-        height={300}
-        className="mx-auto"
-      />
+    <CardWrapper
+      logo="/img/logo.webp"
+      headerLabel="Forgot Password?"
+      headerText="Enter your email address to get the password reset link."
+      backLinkText="Back to login"
+      backLinkHref="/login"
+    >
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full sm:w-[400px] mt-6 px-4 mx-auto flex flex-col justify-center gap-3"
+          className="flex flex-col justify-center gap-6"
         >
-          <div className="space-y-3">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="ahmed.omar.alfarouq@gmail.com"
-                      disabled={isPending}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email Address</FormLabel>
+                <FormControl>
+                  <Input
+                    type="email"
+                    placeholder="ahmed.omar.alfarouq@gmail.com"
+                    disabled={isPending}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormError message={formError} />
           <FormSuccess message={formSuccess} />
           <Button
             disabled={isPending}
             type="submit"
             size="lg"
-            className="w-full capitalize"
+            className="capitalize text-base"
           >
             reset password
           </Button>
         </form>
       </Form>
-    </>
+    </CardWrapper>
   );
 };
 
