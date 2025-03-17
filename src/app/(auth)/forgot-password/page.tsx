@@ -15,16 +15,19 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import Timer from "@/components/auth/Timer";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 import CardWrapper from "@/components/auth/CardWrapper";
+
+import { reset } from "@/actions/reset";
 
 type ResetFields = z.infer<typeof ResetSchema>;
 
 const ForgotPassword = () => {
   const [formError, setFormError] = useState<string | undefined>("");
   const [formSuccess, setFormSuccess] = useState<string | undefined>("");
-
+  const [canResend, setCanResend] = useState<boolean>(true);
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<ResetFields>({
@@ -38,11 +41,13 @@ const ForgotPassword = () => {
     setFormError("");
     setFormSuccess("");
     startTransition(() => {
-      console.log(data);
-      // reset(data).then((data) => {
-      //   setFormError(data?.error);
-      //   setFormSuccess(data?.success);
-      // });
+      reset(data.email).then((data) => {
+        setFormError(data?.error);
+        if (data.success) {
+          setFormSuccess(data.success);
+          setCanResend(false);
+        }
+      });
     });
   };
 
@@ -69,7 +74,7 @@ const ForgotPassword = () => {
                   <Input
                     type="email"
                     placeholder="ahmed.omar.alfarouq@gmail.com"
-                    disabled={isPending}
+                    disabled={isPending || !canResend}
                     {...field}
                   />
                 </FormControl>
@@ -77,11 +82,16 @@ const ForgotPassword = () => {
               </FormItem>
             )}
           />
-
           <FormError message={formError} />
           <FormSuccess message={formSuccess} />
+          {!canResend && (
+            <p className="text-primary dark:text-primary-dark">
+              You can request another reset email after{" "}
+              <Timer duration={30} onComplete={() => setCanResend(true)} />.
+            </p>
+          )}
           <Button
-            disabled={isPending}
+            disabled={isPending || !canResend}
             type="submit"
             size="lg"
             className="capitalize text-base"
