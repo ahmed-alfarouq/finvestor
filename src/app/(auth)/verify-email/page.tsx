@@ -49,7 +49,7 @@ const VerifyEmail = () => {
 
         await updateEmailVerification(user.id);
         await removeEmailVerificationToken(tokenExists.id);
-        console.log("deleted");
+
         setStatus("success");
       } catch {
         throwError("Something went wrong. Please try again later.");
