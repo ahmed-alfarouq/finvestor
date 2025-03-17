@@ -1,8 +1,10 @@
 "use server";
+import crypto from "crypto";
 import { prisma } from "@/prisma";
 import { v4 as uuid } from "uuid";
 import sendEmail from "@/actions/sendEmail";
 
+// Verification Email
 export const generateVerificationToken = async ({
   email,
 }: {
@@ -105,6 +107,7 @@ export const sendVerificationEmail = async ({
   });
 };
 
+// Reset Password
 export const generateResetToken = async (email: string) => {
   const token = uuid();
   const expires = new Date(Date.now() + 60 * 30 * 1000);
@@ -197,6 +200,95 @@ export const sendResetEmail = async ({
   await sendEmail({
     to: email,
     subject: `Reset Your Password – Action Required`,
+    html,
+  });
+};
+
+// Two Factor Confirmation
+export const generateTwoFactorToken = async (email: string) => {
+  const token = crypto.randomInt(100_000, 1_000_000).toString();
+  const expires = new Date(Date.now() + 60 * 30 * 1000);
+
+  const existingToken = await getTwoFactorTokenByEmail(email);
+  if (existingToken) {
+    await prisma.twoFactorToken.delete({ where: { id: existingToken.id } });
+  }
+
+  const twoFactorToken = await prisma.twoFactorToken.create({
+    data: {
+      email,
+      token,
+      expires,
+    },
+  });
+
+  return twoFactorToken.token;
+};
+
+export const getTwoFactorTokenByToken = async ({
+  token,
+}: {
+  token: string;
+}) => {
+  try {
+    const tokenExist = await prisma.twoFactorToken.findFirst({
+      where: { token },
+    });
+
+    return tokenExist;
+  } catch {
+    return null;
+  }
+};
+
+export const getTwoFactorTokenByEmail = async (email: string) => {
+  try {
+    const resetToken = await prisma.twoFactorToken.findFirst({
+      where: { email },
+    });
+    return resetToken;
+  } catch {
+    return null;
+  }
+};
+
+export const sendTwoFactorTokenEmail = async ({
+  username,
+  email,
+  token,
+}: {
+  username: string;
+  email: string;
+  token: string;
+}) => {
+  const html = `
+    <div style="max-width: 600px; margin: auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); text-align: center;">
+    <h1 style="color: #299D91; font-size: 24px; font-weight: bold;">Dear ${username},</h1>
+    <p style="color: #4b5563; font-size: 16px; margin-top: 16px;">
+        For added security, please use the following code to complete your login to Finvestor:
+    </p>
+    <h2>Your 2FA Code: ${token}</h2>
+    <p style="color: #4b5563; font-size: 14px; margin-top: 20px;">
+      This code is valid for 30 minutes. If you did not request this, please ignore this email or contact our support team immediately.
+    </p>
+    <p style="text-align:left; color: #4b5563; font-size: 14px; margin-top: 20px;">
+        For your security, never share this code with anyone.
+    </p>
+    <p style="text-align:left; color: #6b7280; font-size: 12px; margin-top: 20px;">
+        If you need any assistance, feel free to reach out to our support team.
+        <br />
+        Stay secure,
+        <br />
+        <strong>The Finvestor Team<strong>
+    </p>
+    <div style="text-align:left;">
+      🔗 <a href="${process.env.SITE_URL}" >Visit Finvestor</a>
+    </div>
+    </div>
+  `;
+  await sendEmail({
+    to: email,
+    subject: `Your Finvestor Two-Factor Authentication (2FA) Code`,
     html,
   });
 };

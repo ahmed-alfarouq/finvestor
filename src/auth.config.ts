@@ -8,6 +8,8 @@ import { getUserByEmail, getUserById } from "./lib/getUserFromDb";
 
 import type { NextAuthConfig } from "next-auth";
 import { updateEmailVerification } from "./lib/updateUser";
+import { getTwoFactorConfirmationByUserId } from "./lib/twoFactorConfirmation";
+import { prisma } from "./prisma";
 
 export default {
   providers: [
@@ -52,6 +54,22 @@ export default {
     },
   },
   callbacks: {
+    async signIn({ user }) {
+      if (user.id) {
+        const existingUser = await getUserById(user.id);
+
+        if (existingUser?.isTwoFactorEnabled) {
+          const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(
+            existingUser.id
+          );
+          if (!twoFactorConfirmation) return false;
+          await prisma.twoFactorConfirmation.delete({
+            where: { id: twoFactorConfirmation.id },
+          });
+        }
+      }
+      return true;
+    },
     async session({ token, session }) {
       if (token.sub && session.user) {
         session.user.id = token.sub;
