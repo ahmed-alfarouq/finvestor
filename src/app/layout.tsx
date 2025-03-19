@@ -3,8 +3,9 @@ import { inter } from "@/app/ui/fonts";
 
 import Head from "next/head";
 import { Metadata } from "next";
-import { ThemeProvider } from "next-themes";
 import { cookies } from "next/headers";
+import { ThemeProvider } from "next-themes";
+import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
   title: {
@@ -21,33 +22,35 @@ export default async function RootLayout({
   const theme = (await cookies()).get("theme")?.value || "light";
 
   return (
-    <html lang="en" className={theme} suppressHydrationWarning>
-      <Head>
-        <link
-          rel="icon"
-          href="/icon?<generated>"
-          type="image/<generated>"
-          sizes="<generated>"
-        />
-        <link
-          rel="apple-touch-icon"
-          href="/apple-icon?<generated>"
-          type="image/<generated>"
-          sizes="<generated>"
-        />
-      </Head>
-      <body
-        className={`bg-white text-black dark:bg-[#1e293b] dark:text-white ${inter.className} overflow-x-hidden`}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
+    <SessionProvider>
+      <html lang="en" className={theme} suppressHydrationWarning>
+        <Head>
+          <link
+            rel="icon"
+            href="/icon?<generated>"
+            type="image/<generated>"
+            sizes="<generated>"
+          />
+          <link
+            rel="apple-touch-icon"
+            href="/apple-icon?<generated>"
+            type="image/<generated>"
+            sizes="<generated>"
+          />
+        </Head>
+        <body
+          className={`bg-white text-black dark:bg-[#1e293b] dark:text-white ${inter.className} overflow-x-hidden`}
         >
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+        </body>
+      </html>
+    </SessionProvider>
   );
 }
