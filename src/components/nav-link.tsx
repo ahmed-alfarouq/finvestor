@@ -27,10 +27,10 @@ const NavLink = ({
       className={cn(
         "bg-transparent",
         style === "primary"
-          ? "hover:bg-primary text-white font-semibold"
+          ? "hover:bg-primary text-white"
           : "hover:bg-special-3 text-special-2",
         active && "bg-primary",
-        "transition px-4 py-3 rounded flex gap-2 items-center outline-none",
+        "transition px-4 py-3 rounded flex gap-2 items-center outline-none font-semibold",
         className
       )}
       onClick={handleClick}

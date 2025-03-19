@@ -21,21 +21,33 @@ import {
 } from "@/components/ui/sidebar";
 import { Button } from "./ui/button";
 
-import { BadgeCheck, Bell, ChevronsUpDown, LogOut } from "lucide-react";
+import { ShieldUser, EllipsisVertical, UserPen } from "lucide-react";
+import { CgLogOut } from "react-icons/cg";
+import getFirstLetters from "@/lib/getFirstLetters";
 
 export function NavUser({
-  user,
+  name,
+  email,
+  avatar,
 }: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
+  name?: string;
+  email?: string;
+  avatar?: string;
 }) {
   const { toggleSidebar, isMobile } = useSidebar();
 
   return (
     <SidebarMenu>
+      <SidebarMenuItem>
+        <Button
+          size="lg"
+          className="w-full justify-start gap-2 mb-20 bg-special-3 text-base font-semibold"
+          onClick={logout}
+        >
+          <CgLogOut size={22} className=" rotate-180" />
+          Logout
+        </Button>
+      </SidebarMenuItem>
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -44,20 +56,22 @@ export function NavUser({
               className="data-[state=open]:bg-primary hover:bg-primary hover:text-white data-[state=open]:text-white"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg bg-primary">
-                  AF
+                <AvatarImage src={avatar} alt={name} />
+                <AvatarFallback className="rounded-lg bg-primary uppercase">
+                  {getFirstLetters(name || "")}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-dark">
-                <span className="truncate font-semibold">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+                <span className="truncate font-semibold capitalize">
+                  {name}
+                </span>
+                <span className="truncate text-xs">{email}</span>
               </div>
-              <ChevronsUpDown className="ml-auto size-4" />
+              <EllipsisVertical className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-md bg-default-black text-white border-gray-3"
+            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-md bg-default-black text-white shadow-sm dark:shadow-white"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
@@ -65,12 +79,16 @@ export function NavUser({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">AF</AvatarFallback>
+                  <AvatarImage src={avatar} alt={name} />
+                  <AvatarFallback className="rounded-lg uppercase bg-primary">
+                    {getFirstLetters(name || "")}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-dark">
-                  <span className="truncate font-semibold">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
+                  <span className="truncate font-semibold capitalize">
+                    {name}
+                  </span>
+                  <span className="truncate text-xs">{email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
@@ -78,32 +96,25 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Link
-                  href="/account"
-                  className="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:text-white focus:bg-primary hover:bg-primary focus:text-white"
+                  href="/settings/security"
+                  className="flex w-full items-center gap-2 rounded-sm px-2 py-3 text-sm outline-none transition-colors hover:text-white focus:bg-primary hover:bg-primary focus:text-white"
                   onClick={toggleSidebar}
                 >
-                  <BadgeCheck />
+                  <UserPen />
                   Account
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Link
-                  href="/notifications"
-                  className="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:text-white focus:bg-primary hover:bg-primary focus:text-white"
+                  href="/settings"
+                  className="flex w-full items-center gap-2 rounded-sm px-2 py-3 text-sm outline-none transition-colors hover:text-white focus:bg-primary hover:bg-primary focus:text-white"
                   onClick={toggleSidebar}
                 >
-                  <Bell />
-                  Notifications
+                  <ShieldUser />
+                  Security
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Button className="pl-[10px]" variant="link" onClick={logout}>
-                <LogOut />
-                Logout
-              </Button>
-            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

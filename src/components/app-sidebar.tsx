@@ -1,10 +1,12 @@
 "use client";
 
 import React from "react";
+import useCurrentUser from "@/hooks/use-current-user";
+
 import Image from "next/image";
 import NavLink from "./nav-link";
-import { ArrowLeftRight, Wallet } from "lucide-react";
 import { usePathname } from "next/navigation";
+
 import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
@@ -16,19 +18,14 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
+import { ArrowLeftRight, Wallet } from "lucide-react";
 import { AiOutlineWindows } from "react-icons/ai";
 import { FaMoneyBills } from "react-icons/fa6";
 import { BiMoneyWithdraw, BiTargetLock } from "react-icons/bi";
-
-const data = {
-  user: {
-    name: "Ahmed Al-Farouq",
-    email: "ahmed.omar.alfarouq@gmail.com",
-    avatar: "/img/avatar.jpeg",
-  },
-};
+import { CiSettings } from "react-icons/ci";
 
 const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
+  const user = useCurrentUser();
   const { toggleSidebar, isMobile } = useSidebar();
   const pathname = usePathname();
 
@@ -44,7 +41,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
               to="/overview"
               active={pathname === "/overview"}
               text="Overview"
-              beforeIcon={<AiOutlineWindows size={20} />}
+              beforeIcon={<AiOutlineWindows size={24} />}
               handleClick={isMobile ? toggleSidebar : () => {}}
             />
           </SidebarMenuItem>
@@ -53,7 +50,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
               to="/balances"
               active={pathname === "/balances"}
               text="Balances"
-              beforeIcon={<Wallet size={20} />}
+              beforeIcon={<Wallet size={24} />}
               handleClick={isMobile ? toggleSidebar : () => {}}
             />
           </SidebarMenuItem>
@@ -62,7 +59,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
               to="/transactions"
               active={pathname === "/transactions"}
               text="Transactions"
-              beforeIcon={<ArrowLeftRight size={20} />}
+              beforeIcon={<ArrowLeftRight size={24} />}
               handleClick={isMobile ? toggleSidebar : () => {}}
             />
           </SidebarMenuItem>
@@ -71,7 +68,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
               to="/bills"
               active={pathname === "/bills"}
               text="Bills"
-              beforeIcon={<FaMoneyBills size={20} />}
+              beforeIcon={<FaMoneyBills size={24} />}
               handleClick={isMobile ? toggleSidebar : () => {}}
             />
           </SidebarMenuItem>
@@ -80,7 +77,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
               to="/expenses"
               active={pathname === "/expenses"}
               text="Expenses"
-              beforeIcon={<BiMoneyWithdraw size={20} />}
+              beforeIcon={<BiMoneyWithdraw size={24} />}
               handleClick={isMobile ? toggleSidebar : () => {}}
             />
           </SidebarMenuItem>
@@ -89,14 +86,27 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
               to="/goals"
               active={pathname === "/goals"}
               text="Goals"
-              beforeIcon={<BiTargetLock size={20} />}
+              beforeIcon={<BiTargetLock size={24} />}
+              handleClick={isMobile ? toggleSidebar : () => {}}
+            />
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <NavLink
+              to="/settings"
+              active={pathname === "/settings"}
+              text="Settings"
+              beforeIcon={<CiSettings size={24} />}
               handleClick={isMobile ? toggleSidebar : () => {}}
             />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter className="bg-default-black text-white">
-        <NavUser user={data.user} />
+        <NavUser
+          name={user?.name || ""}
+          email={user?.email || ""}
+          avatar={user?.image || ""}
+        />
       </SidebarFooter>
     </Sidebar>
   );
