@@ -39,7 +39,7 @@ export default async function RootLayout({
           />
         </Head>
         <body
-          className={`bg-white text-black dark:bg-[#1e293b] dark:text-white ${inter.className} overflow-x-hidden`}
+          className={`bg-special-1 text-black dark:bg-[#1e293b] dark:text-white ${inter.className} overflow-x-hidden`}
         >
           <ThemeProvider
             attribute="class"

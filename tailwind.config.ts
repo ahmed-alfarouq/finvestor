@@ -24,6 +24,9 @@ export default {
           foreground: "hsl(var(--secondary-foreground))",
         },
         "default-black": "#191919",
+        "special-1": {
+          DEFAULT: "#d2d2d240",
+        },
         "special-2": {
           DEFAULT: "#FFFFFF70",
         },
