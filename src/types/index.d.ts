@@ -19,15 +19,9 @@ declare type SignUpParams = {
   password: string;
 };
 
-declare type LoginUser = {
-  email: string;
-  password: string;
-};
-
 declare type User = {
-  $id: string;
+  id: string;
   email: string;
-  userId: string;
   dwollaCustomerUrl: string;
   dwollaCustomerId: string;
   firstName: string;
@@ -41,13 +35,13 @@ declare type User = {
 };
 
 declare type NewUserParams = {
-  userId: string;
+  id: string;
   email: string;
   name: string;
   password: string;
 };
 
-declare type Account = {
+declare type BankAccount = {
   id: string;
   availableBalance: number;
   currentBalance: number;
@@ -136,13 +130,13 @@ declare type NewDwollaCustomerParams = {
 };
 
 declare interface CreditCardProps {
-  account: Account;
+  account: BankAccount;
   userName: string;
   showBalance?: boolean;
 }
 
 declare interface BankInfoProps {
-  account: Account;
+  account: BankAccount;
   appwriteItemId?: string;
   type: "full" | "card";
 }
@@ -152,10 +146,6 @@ declare interface HeaderBoxProps {
   title: string;
   subtext: string;
   user?: string;
-}
-
-declare interface MobileNavProps {
-  user: User;
 }
 
 declare interface PageHeaderProps {
@@ -182,18 +172,18 @@ declare interface AuthFormProps {
 }
 
 declare interface BankDropdownProps {
-  accounts: Account[];
+  accounts: BankAccount[];
   setValue?: UseFormSetValue<any>;
   otherStyles?: string;
 }
 
 declare interface BankTabItemProps {
-  account: Account;
+  account: BankAccount;
   appwriteItemId?: string;
 }
 
 declare interface TotlaBalanceBoxProps {
-  accounts: Account[];
+  accounts: BankAccount[];
   totalBanks: number;
   totalCurrentBalance: number;
 }
@@ -205,15 +195,11 @@ declare interface FooterProps {
 declare interface RightSidebarProps {
   user: User;
   transactions: Transaction[];
-  banks: Bank[] & Account[];
-}
-
-declare interface SiderbarProps {
-  user: User;
+  banks: Bank[] & BankAccount[];
 }
 
 declare interface RecentTransactionsProps {
-  accounts: Account[];
+  accounts: BankAccount[];
   transactions: Transaction[];
   appwriteItemId: string;
   page: number;
@@ -237,11 +223,11 @@ declare interface CategoryProps {
 }
 
 declare interface DoughnutChartProps {
-  accounts: Account[];
+  accounts: BankAccount[];
 }
 
 declare interface PaymentTransferFormProps {
-  accounts: Account[];
+  accounts: BankAccount[];
 }
 
 // Actions
