@@ -141,4 +141,20 @@
   .flex-center {
     @apply flex items-center justify-center;
   }
+
+  .total-balance {
+    @apply flex w-full items-center gap-4 rounded-xl border bg-white dark:bg-default-black shadow-sm dark:shadow-white p-4 sm:gap-6 sm:p-6;
+  }
+
+  .total-balance-chart {
+    @apply flex size-full max-w-[100px] items-center sm:max-w-[120px];
+  }
+
+  .total-balance-label {
+    @apply text-sm font-medium text-gray-1 dark:text-gray-5;
+  }
+
+  .total-balance-amount {
+    @apply text-2xl lg:text-3xl flex-1 font-semibold text-gray-900 dark:text-gray-4;
+  }
 }
