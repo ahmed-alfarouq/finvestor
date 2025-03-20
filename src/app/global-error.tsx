@@ -2,12 +2,20 @@
 import "@/app/ui/globals.css";
 import { inter } from "@/app/ui/fonts";
 
-import React from "react";
+import React, { useEffect }  from "react";
+import * as Sentry from "@sentry/nextjs";
+
 import Head from "next/head";
+import Error from "next/error";
+
 import { Button } from "@/components/ui/button";
 
-const GlobalError = () => {
+export default function GlobalError({ error }: { error: Error }) {
   const reload = () => window.location.reload();
+  useEffect(() => {
+    Sentry.captureException(error);
+  }, [error]);
+
   return (
     <html>
       <Head>
@@ -36,6 +44,4 @@ const GlobalError = () => {
       </body>
     </html>
   );
-};
-
-export default GlobalError;
+}
