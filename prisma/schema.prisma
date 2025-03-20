@@ -22,10 +22,20 @@ enum UserRole {
 model User {
   id                    String                 @id @default(auto()) @map("_id") @db.ObjectId
   name                  String?
+  firstName             String?
+  lastName              String?
+  address1              String?
+  city                  String?
+  state                 String?
+  postalCode            String?
+  dateOfBirth           DateTime?
+  ssn                   String?
   email                 String                 @unique
   emailVerified         DateTime?
   image                 String?
   password              String?
+  dwollaCustomerUrl     String
+  dwollaCustomerId      String
   accounts              Account[]
   role                  UserRole               @default(USER)
   isTwoFactorEnabled    Boolean                @default(false)
