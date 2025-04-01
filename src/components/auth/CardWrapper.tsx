@@ -29,7 +29,7 @@ const CardWrapper = ({
   showSocial,
 }: CardWrapperProps) => {
   return (
-    <Card className="shadow-none w-full sm:w-[400] border-none">
+    <Card className="shadow-none w-full sm:w-[400px] border-none">
       <CardHeader className="gap-2">
         <Image
           src={logo}
