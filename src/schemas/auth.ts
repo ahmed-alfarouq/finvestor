@@ -25,8 +25,20 @@ export const LoginSchema = z.object({
 
 export const RegisterSchema = z
   .object({
-    name: z.string().min(1, "Name is required!"),
+    firstName: z.string().min(1, "First name is required!"),
+    lastName: z.string().min(1, "lasst name is required!"),
     email: z.string().email("Email is required!"),
+    address: z.string().min(1, "Address is required!"),
+    city: z.string().min(1, "City is required!"),
+    state: z
+      .string()
+      .min(1, "State is required!")
+      .regex(/^[A-Z]{2}$/, "State must be a capital 2-letter abbreviation 'EX: NY'."),
+    postalCode: z.string().min(1, "Code is required!"),
+    dateOfBirth: z.date().refine((date) => !isNaN(date.getTime()), {
+      message: "Date is required!",
+    }),
+    ssn: z.string().min(1, "SSN is required!").max(4, "SSN is not valid!"),
     password: z
       .string()
       .min(1, "Password is required!")

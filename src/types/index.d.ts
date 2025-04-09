@@ -1,3 +1,5 @@
+import { FieldError } from "react-hook-form";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare type SearchParamProps = {
   params: { [key: string]: string };
@@ -24,6 +26,7 @@ declare type User = {
   email: string;
   dwollaCustomerUrl: string;
   dwollaCustomerId: string;
+  name: string;
   firstName: string;
   lastName: string;
   address1: string;
@@ -129,6 +132,43 @@ declare type NewDwollaCustomerParams = {
   ssn: string;
 };
 
+declare interface FormInputProps {
+  name: string;
+  label: string;
+  placeholder: string;
+  type?: string;
+  control: any;
+  disabled?: boolean;
+}
+
+declare interface DateInputProps {
+  name: string;
+  label: string;
+  control: any;
+  error?: FieldError;
+  disabled?: boolean;
+  endMonth?: Date;
+  dateFormat?: string;
+}
+
+declare interface DatePickerProps {
+  selectedDate: Date;
+  onDateChange: (date: Date | undefined) => void;
+  disabled: boolean;
+  endMonth?: Date;
+  dateFormat?: string;
+}
+
+declare interface FormCardWrapperProps {
+  children: React.ReactNode;
+  logo: string;
+  headerLabel?: string;
+  headerText?: string;
+  backLinkText: string;
+  backLinkHref: string;
+  showSocial?: boolean;
+}
+
 declare interface CreditCardProps {
   account: BankAccount;
   userName: string;
@@ -163,7 +203,13 @@ declare interface PaginationProps {
 
 declare interface PlaidLinkProps {
   user: User;
-  variant?: "primary" | "ghost";
+  variant?:
+    | "ghost"
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "link";
   dwollaCustomerId?: string;
 }
 

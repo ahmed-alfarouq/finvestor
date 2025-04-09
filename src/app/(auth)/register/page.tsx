@@ -1,29 +1,20 @@
 "use client";
 import React, { useState, useTransition } from "react";
-import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { RegisterSchema } from "@/schemas/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { RegisterSchema } from "@/schemas/auth";
+import { z } from "zod";
 
 import Link from "next/link";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import FormSuccess from "@/components/form-success";
-import FormError from "@/components/form-error";
 import CardWrapper from "@/components/auth/CardWrapper";
-
+import FormSuccess from "@/components/form-success";
+import DateInput from "@/components/auth/DateInput";
+import FormInput from "@/components/auth/FormInput";
+import FormError from "@/components/form-error";
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
 
 import { register } from "@/actions/register";
-
 
 type RegisterFields = z.infer<typeof RegisterSchema>;
 
@@ -35,10 +26,17 @@ const RegisterPage = () => {
   const form = useForm<RegisterFields>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
-      name: "",
       email: "",
       password: "",
       confirmPassword: "",
+      firstName: "",
+      lastName: "",
+      address: "",
+      city: "",
+      state: "",
+      postalCode: "",
+      dateOfBirth: undefined,
+      ssn: "",
     },
   });
 
@@ -66,80 +64,93 @@ const RegisterPage = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col justify-center gap-6"
         >
-          <FormField
+          <div className="flex flex-col gap-6 sm:grid grid-cols-2 sm:gap-4">
+            <FormInput
+              name="firstName"
+              label="First Name"
+              placeholder="Ahmed"
+              control={form.control}
+              disabled={isPending}
+            />
+            <FormInput
+              name="lastName"
+              label="Last Name"
+              placeholder="Omar"
+              control={form.control}
+              disabled={isPending}
+            />
+          </div>
+          <FormInput
+            name="address"
+            label="Address"
+            placeholder="Enter your specific address"
             control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={isPending}
-                    type="text"
-                    placeholder="Ahmed Al-Farouq"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            disabled={isPending}
           />
-
-          <FormField
+          <FormInput
+            name="city"
+            label="City"
+            placeholder="New York"
             control={form.control}
+            disabled={isPending}
+          />
+          <div className="flex flex-col gap-6 sm:grid grid-cols-2 sm:gap-4">
+            <FormInput
+              name="state"
+              label="State"
+              placeholder="Example: NY"
+              control={form.control}
+              disabled={isPending}
+            />
+            <FormInput
+              name="postalCode"
+              label="Postal Code"
+              placeholder="Example: 11101"
+              control={form.control}
+              disabled={isPending}
+            />
+          </div>
+          <div className="flex flex-col gap-6 sm:grid grid-cols-2 sm:gap-4">
+            <DateInput
+              name="dateOfBirth"
+              label="Date of birth"
+              error={form.formState.errors.dateOfBirth}
+              control={form.control}
+              endMonth={new Date(new Date().getFullYear() - 21, 11)}
+              disabled={isPending}
+              dateFormat="yyyy-MM-dd"
+            />
+            <FormInput
+              name="ssn"
+              label="SSN"
+              placeholder="Example: 1234"
+              control={form.control}
+              disabled={isPending}
+            />
+          </div>
+          <FormInput
+            type="email"
             name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email Address</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={isPending}
-                    type="email"
-                    placeholder="ahmed.omar.alfarouq@gmail.com"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
+            label="Email Address"
+            placeholder="ahmed.omar.alfarouq@gmail.com"
             control={form.control}
+            disabled={isPending}
+          />
+          <FormInput
+            type="password"
             name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={isPending}
-                    type="password"
-                    placeholder="********"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
+            label="Password"
+            placeholder="********"
             control={form.control}
+            disabled={isPending}
+          />
+          <FormInput
+            type="password"
             name="confirmPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Confirm Password</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={isPending}
-                    type="password"
-                    placeholder="********"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            label="Confirm Password"
+            placeholder="********"
+            control={form.control}
+            disabled={isPending}
           />
 
           <FormError message={formError} />

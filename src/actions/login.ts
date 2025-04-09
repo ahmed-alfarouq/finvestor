@@ -112,7 +112,3 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
     throw error;
   }
 };
-
-export const handleGoogleLogin = async () => {
-  await signIn("google", { redirectTo: DEFAULT_LOGIN_REDIRECT });
-};
