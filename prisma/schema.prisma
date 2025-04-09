@@ -21,25 +21,25 @@ enum UserRole {
 
 model User {
   id                    String                 @id @default(auto()) @map("_id") @db.ObjectId
-  name                  String?
-  firstName             String?
-  lastName              String?
-  address1              String?
-  city                  String?
-  state                 String?
-  postalCode            String?
-  dateOfBirth           DateTime?
-  ssn                   String?
+  firstName             String
+  lastName              String
+  address               String
+  city                  String
+  state                 String
+  postalCode            String
+  dateOfBirth           String
+  ssn                   String
   email                 String                 @unique
   emailVerified         DateTime?
   image                 String?
-  password              String?
+  password              String
   dwollaCustomerUrl     String
   dwollaCustomerId      String
   accounts              Account[]
   role                  UserRole               @default(USER)
   isTwoFactorEnabled    Boolean                @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
+  bankAccounts          BankAccount[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -98,6 +98,19 @@ model TwoFactorConfirmation {
   id     String @id @default(cuid()) @map("_id")
   userId String @db.ObjectId
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId])
+}
+
+model BankAccount {
+  id               String @id @default(cuid()) @map("_id")
+  userId           String @db.ObjectId
+  user             User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bankId           String
+  accountId        String
+  accessToken      String
+  fundingSourceUrl String
+  sharableId       String
 
   @@unique([userId])
 }
