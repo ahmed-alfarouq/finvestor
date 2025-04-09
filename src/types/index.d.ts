@@ -318,11 +318,6 @@ declare interface signInProps {
   email: string;
   password: string;
 }
-
-declare interface getUserInfoProps {
-  userId: string;
-}
-
 declare interface exchangePublicTokenProps {
   publicToken: string;
   user: User;
@@ -335,16 +330,4 @@ declare interface createBankAccountProps {
   bankId: string;
   fundingSourceUrl: string;
   sharableId: string;
-}
-
-declare interface getBanksProps {
-  userId: string;
-}
-
-declare interface getBankProps {
-  documentId: string;
-}
-
-declare interface getBankByAccountIdProps {
-  accountId: string;
 }
