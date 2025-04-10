@@ -1,5 +1,4 @@
 import Credentials from "next-auth/providers/credentials";
-import Google from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 
 import { LoginSchema } from "./schemas/auth";
@@ -13,7 +12,6 @@ import { prisma } from "./prisma";
 
 export default {
   providers: [
-    Google,
     Credentials({
       credentials: {
         email: {},
