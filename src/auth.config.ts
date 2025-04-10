@@ -6,7 +6,6 @@ import { LoginSchema } from "./schemas/auth";
 import { getUserByEmail, getUserById } from "./lib/getUserFromDb";
 
 import type { NextAuthConfig } from "next-auth";
-import { updateEmailVerification } from "./lib/updateUser";
 import { getTwoFactorConfirmationByUserId } from "./lib/twoFactorConfirmation";
 import { prisma } from "./prisma";
 
@@ -44,13 +43,6 @@ export default {
   pages: {
     signIn: "/login",
   },
-  events: {
-    async linkAccount({ user }) {
-      if (user.id) {
-        await updateEmailVerification(user.id);
-      }
-    },
-  },
   callbacks: {
     async signIn({ user }) {
       if (user.id) {
@@ -72,7 +64,6 @@ export default {
       if (token.sub && session.user) {
         session.user.id = token.sub;
       }
-
       if (token.role && session.user) {
         session.user.role = token.role;
       }
