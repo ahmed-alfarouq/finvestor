@@ -60,7 +60,6 @@ declare type BankAccount = {
 
 declare type Transaction = {
   id: string;
-  $id: string;
   name: string;
   paymentChannel: string;
   type: string;
@@ -77,8 +76,8 @@ declare type Transaction = {
   receiverBankId: string;
 };
 
-declare type Bank = {
-  $id: string;
+declare type BankAccountProps = {
+  id: string;
   accountId: string;
   bankId: string;
   accessToken: string;
@@ -281,18 +280,6 @@ declare interface getAccountsProps {
   userId: string;
 }
 
-declare interface getAccountProps {
-  appwriteItemId: string;
-}
-
-declare interface getInstitutionProps {
-  institutionId: string;
-}
-
-declare interface getTransactionsProps {
-  accessToken: string;
-}
-
 declare interface CreateFundingSourceOptions {
   customerId: string; // Dwolla Customer ID
   fundingSourceName: string; // Dwolla Funding Source Name
@@ -308,10 +295,6 @@ declare interface CreateTransactionProps {
   receiverId: string;
   receiverBankId: string;
   email: string;
-}
-
-declare interface getTransactionsByBankIdProps {
-  bankId: string;
 }
 
 declare interface signInProps {
