@@ -1,8 +1,8 @@
 "use client";
-import { useSession } from "next-auth/react";
+import { UseSessionContext } from "@/context/SessionContext";
 
 const useCurrentUser = () => {
-  const { data: session } = useSession();
+  const { session } = UseSessionContext();
   return session?.user;
 };
 

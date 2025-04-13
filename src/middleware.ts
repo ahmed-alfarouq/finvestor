@@ -12,7 +12,9 @@ const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
   const reponse = NextResponse.next();
+
   const { pathname } = req.nextUrl;
+  const session = req.auth;
   const isLoggedin = !!req.auth;
 
   const isApiRoute = pathname.startsWith(API_AUTH_PREFIX);
@@ -25,9 +27,12 @@ export default auth((req) => {
 
   if (isAuthRoute) {
     if (isLoggedin) {
-      return NextResponse.redirect(
-        new URL(DEFAULT_LOGIN_REDIRECT, req.nextUrl)
-      );
+      if (!!session?.user.bankAccounts.length) {
+        return NextResponse.redirect(
+          new URL(DEFAULT_LOGIN_REDIRECT, req.nextUrl)
+        );
+      }
+      return NextResponse.redirect(new URL("/link-account", req.nextUrl));
     }
     return reponse;
   }

@@ -1,10 +1,22 @@
 import type { DefaultSession } from "next-auth";
+import type { BankAccountProps } from "@/types/index";
 import { JWT } from "next-auth/jwt";
 
 declare module "next-auth" {
   interface Session {
     user: {
       role: string;
+      firstName: string;
+      lastName: string;
+      address1: string;
+      city: string;
+      state: string;
+      postalCode: string;
+      dateOfBirth: string;
+      ssn: string;
+      bankAccounts: BankAccountProps[];
+      dwollaCustomerUrl: string;
+      dwollaCustomerId: string;
     } & DefaultSession["user"];
   }
 }
@@ -12,5 +24,6 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT {
     role?: string;
+    bankAccounts: BankAccountProps[];
   }
 }

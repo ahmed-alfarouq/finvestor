@@ -5,15 +5,16 @@ import { useRouter } from "next/navigation";
 import { createLinkToken, exchangePublicToken } from "@/actions/plaid";
 
 import { Button } from "./button";
+import { PlaidLinkProps } from "@/types";
 
-const plaidLink = ({ user, variant }: PlaidLinkProps) => {
+const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
   const router = useRouter();
   const [token, setToken] = useState("");
 
   useEffect(() => {
     const getLinkToken = async () => {
       const data = await createLinkToken(user);
-      setToken(data?.token);
+      if (data && data.linkToken) setToken(data?.linkToken);
     };
     getLinkToken();
   }, []);
@@ -30,7 +31,6 @@ const plaidLink = ({ user, variant }: PlaidLinkProps) => {
     token,
     onSuccess,
   };
-
   const { open, ready } = usePlaidLink(config);
   return (
     <Button variant={variant} onClick={() => open()} disabled={!ready}>
@@ -39,4 +39,4 @@ const plaidLink = ({ user, variant }: PlaidLinkProps) => {
   );
 };
 
-export default plaidLink;
+export default PlaidLink;

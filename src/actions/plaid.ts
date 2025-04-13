@@ -1,7 +1,7 @@
-"user server";
+"use server";
 import { v4 as uuidv4 } from "uuid";
 import { plaidClient } from "@/lib/plaid";
-import { encryptId, parseStringify } from "@/lib/utils";
+import { encryptId } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
 import {
   CountryCode,
@@ -24,13 +24,12 @@ export const createLinkToken = async (user: User) => {
         client_user_id: user.id,
       },
       client_name: `${user.firstName} ${user.lastName}`,
-      products: ["auth"] as Products[],
+      products: ["auth", "transactions"] as Products[],
       language: "en",
-      country_codes: ["US", "EG", "CA"] as CountryCode[],
+      country_codes: ["US"] as CountryCode[],
     };
-
     const res = await plaidClient.linkTokenCreate(tokenParams);
-    return parseStringify({ linkToken: res.data.link_token });
+    return { linkToken: res.data.link_token };
   } catch (err) {
     console.log(err);
   }
@@ -109,9 +108,9 @@ export const exchangePublicToken = async ({
 
     revalidatePath("/");
 
-    return parseStringify({
+    return {
       publicTokenExchange: "complete",
-    });
+    };
   } catch (err) {
     console.log(err);
   }

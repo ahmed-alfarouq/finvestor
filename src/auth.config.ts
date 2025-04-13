@@ -64,9 +64,11 @@ export default {
       if (token.sub && session.user) {
         session.user.id = token.sub;
       }
+
       if (token.role && session.user) {
         session.user.role = token.role;
       }
+      session.user.bankAccounts = token.bankAccounts;
       return session;
     },
     async jwt({ token }) {
@@ -75,6 +77,8 @@ export default {
 
       if (!existingUser) return token;
       token.role = existingUser.role;
+
+      token.bankAccounts = existingUser.bankAccounts;
       return token;
     },
   },
