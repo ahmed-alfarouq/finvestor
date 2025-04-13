@@ -7,10 +7,7 @@ import { NavView } from "./calendar";
 function YearGrid({
   className,
   displayYears,
-  startMonth,
-  endMonth,
   setNavView,
-  navView,
   ...props
 }: {
   className?: string;
