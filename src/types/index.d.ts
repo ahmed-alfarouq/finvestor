@@ -7,26 +7,11 @@ declare type SearchParamProps = {
 };
 
 // ========================================
-
-declare type SignUpParams = {
-  firstName: string;
-  lastName: string;
-  address1: string;
-  city: string;
-  state: string;
-  postalCode: string;
-  dateOfBirth: string;
-  ssn: string;
-  email: string;
-  password: string;
-};
-
 declare type User = {
   id: string;
   email: string;
   dwollaCustomerUrl: string;
   dwollaCustomerId: string;
-  name: string;
   firstName: string;
   lastName: string;
   address1: string;
@@ -35,13 +20,8 @@ declare type User = {
   postalCode: string;
   dateOfBirth: string;
   ssn: string;
-};
-
-declare type NewUserParams = {
-  id: string;
-  email: string;
-  name: string;
-  password: string;
+  role: string;
+  bankAccounts: BankAccountProps[];
 };
 
 declare type BankAccount = {
@@ -54,7 +34,6 @@ declare type BankAccount = {
   name: string;
   type: string;
   subtype: string;
-  appwriteItemId: string;
   sharableId: string;
 };
 
@@ -66,23 +45,17 @@ declare type Transaction = {
   accountId: string;
   amount: number;
   pending: boolean;
-  category: string;
   date: string;
-  image: string;
-  type: string;
-  $createdAt: string;
-  channel: string;
-  senderBankId: string;
-  receiverBankId: string;
+  image?: string | null;
 };
 
 declare type BankAccountProps = {
   id: string;
-  accountId: string;
+  userId: string;
   bankId: string;
+  accountId: string;
   accessToken: string;
   fundingSourceUrl: string;
-  userId: string;
   sharableId: string;
 };
 
@@ -176,7 +149,7 @@ declare interface CreditCardProps {
 
 declare interface BankInfoProps {
   account: BankAccount;
-  appwriteItemId?: string;
+  id?: string;
   type: "full" | "card";
 }
 
@@ -224,7 +197,7 @@ declare interface BankDropdownProps {
 
 declare interface BankTabItemProps {
   account: BankAccount;
-  appwriteItemId?: string;
+  id?: string;
 }
 
 declare interface TotlaBalanceBoxProps {
@@ -233,30 +206,22 @@ declare interface TotlaBalanceBoxProps {
   totalCurrentBalance: number;
 }
 
-declare interface FooterProps {
-  user: User;
-}
-
 declare interface RightSidebarProps {
   user: User;
   transactions: Transaction[];
-  banks: Bank[] & BankAccount[];
+  banks: BankAccountProps[] & BankAccount[];
 }
 
 declare interface RecentTransactionsProps {
   accounts: BankAccount[];
   transactions: Transaction[];
-  appwriteItemId: string;
+  id: string;
   page: number;
 }
 
 declare interface TransactionHistoryTableProps {
   transactions: Transaction[];
   page: number;
-}
-
-declare interface CategoryBadgeProps {
-  category: string;
 }
 
 declare interface TransactionTableProps {
@@ -276,10 +241,6 @@ declare interface PaymentTransferFormProps {
 }
 
 // Actions
-declare interface getAccountsProps {
-  userId: string;
-}
-
 declare interface CreateFundingSourceOptions {
   customerId: string; // Dwolla Customer ID
   fundingSourceName: string; // Dwolla Funding Source Name
@@ -295,11 +256,6 @@ declare interface CreateTransactionProps {
   receiverId: string;
   receiverBankId: string;
   email: string;
-}
-
-declare interface signInProps {
-  email: string;
-  password: string;
 }
 declare interface exchangePublicTokenProps {
   publicToken: string;
