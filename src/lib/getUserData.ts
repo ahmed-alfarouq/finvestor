@@ -17,7 +17,7 @@ export const getBanks = async (userId: string) => {
 
 export const getBank = async (bankId: string) => {
   try {
-    const bank = await prisma.bankAccount.findFirst({ where: { id: bankId } });
+    const bank = await prisma.bankAccount.findFirst({ where: { bankId: bankId } });
     return bank;
   } catch (error) {
     console.log(error);
