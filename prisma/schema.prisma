@@ -89,7 +89,5 @@ model BankAccount {
   accessToken      String
   fundingSourceUrl String
   sharableId       String
-
-  @@unique([userId])
 }
 
