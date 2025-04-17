@@ -18,65 +18,15 @@ export default {
         },
       },
       colors: {
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        fill: {
-          1: "rgba(255, 255, 255, 0.10)",
-        },
-        bankGradient: "#0179FE",
-        indigo: {
-          500: "#6172F3",
-          700: "#3538CD",
-        },
-        success: {
-          25: "#F6FEF9",
-          50: "#ECFDF3",
-          100: "#D1FADF",
-          600: "#039855",
-          700: "#027A48",
-          900: "#054F31",
-        },
-        pink: {
-          25: "#FEF6FB",
-          100: "#FCE7F6",
-          500: "#EE46BC",
-          600: "#DD2590",
-          700: "#C11574",
-          900: "#851651",
-        },
-        blue: {
-          25: "#F5FAFF",
-          100: "#D1E9FF",
-          500: "#2E90FA",
-          600: "#1570EF",
-          700: "#175CD3",
-          900: "#194185",
-        },
-        sky: {
-          1: "#F3F9FF",
-        },
-        black: {
-          1: "#00214F",
-          2: "#344054",
-        },
-        gray: {
-          25: "#FCFCFD",
-          200: "#EAECF0",
-          300: "#D0D5DD",
-          500: "#667085",
-          600: "#475467",
-          700: "#344054",
-          900: "#101828",
-        },
+        default: { DEFAULT: "#ffffff", dark: "#131629" },
+        body: { DEFAULT: "#F4F5F7", dark: "#141b2d" },
         primary: {
           DEFAULT: "#299D91",
           dark: "#30b6a8",
-          foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
           DEFAULT: "#E4E7EB",
           dark: ",",
-          foreground: "hsl(var(--secondary-foreground))",
         },
         "default-black": "#191919",
         "special-1": {
@@ -107,7 +57,7 @@ export default {
           DEFAULT: "#F3F3F3",
         },
         "gray-7": {
-          DEFAULT: "#999DA3",
+          DEFAULT: "#f1f1f1",
         },
         "primary-color": {
           DEFAULT: "#191D23",
