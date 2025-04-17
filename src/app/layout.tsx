@@ -23,7 +23,6 @@ export default async function RootLayout({
 }) {
   const theme = (await cookies()).get("theme")?.value || "light";
   const session = await auth();
-
   return (
     <html lang="en" className={theme} suppressHydrationWarning>
       <Head>
@@ -41,7 +40,7 @@ export default async function RootLayout({
         />
       </Head>
       <body
-        className={`bg-special-1 text-black dark:bg-[#1e293b] dark:text-white ${inter.className} overflow-x-hidden`}
+        className={`bg-body text-black dark:bg-body-dark dark:text-white ${inter.className} overflow-x-hidden`}
       >
         <ThemeProvider
           attribute="class"
