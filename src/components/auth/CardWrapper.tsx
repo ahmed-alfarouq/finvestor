@@ -15,7 +15,7 @@ const CardWrapper = ({
   backLinkHref,
 }: FormCardWrapperProps) => {
   return (
-    <Card className="shadow-none w-full sm:w-[550px] border-none">
+    <Card className="shadow-none w-full sm:w-[550px] border-none dark:bg-default-dark">
       <CardHeader className="gap-2">
         <Image
           src={logo}
