@@ -1,11 +1,5 @@
 import { FieldError } from "react-hook-form";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-declare type SearchParamProps = {
-  params: { [key: string]: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
-
 // ========================================
 declare type User = {
   id: string;
@@ -26,6 +20,7 @@ declare type User = {
 
 declare type BankAccount = {
   id: string;
+  bankId: string;
   availableBalance: number;
   currentBalance: number;
   officialName: string;
@@ -182,7 +177,9 @@ declare interface PlaidLinkProps {
     | "outline"
     | "secondary"
     | "link";
+  icon?: string;
   dwollaCustomerId?: string;
+  className?: string;
 }
 
 declare interface AuthFormProps {
@@ -216,7 +213,6 @@ declare interface RecentTransactionsProps {
   accounts: BankAccount[];
   transactions: Transaction[];
   id: string;
-  page: number;
 }
 
 declare interface TransactionHistoryTableProps {

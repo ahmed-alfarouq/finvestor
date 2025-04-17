@@ -36,7 +36,7 @@ const LinkAccount = () => {
         bankAccounts: data.bankAccounts,
       });
     };
-
+    
     fetchUser(session?.user.id);
   }, [session]);
 

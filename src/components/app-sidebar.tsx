@@ -5,6 +5,7 @@ import useCurrentUser from "@/hooks/use-current-user";
 
 import Image from "next/image";
 import NavLink from "./nav-link";
+import PlaidLink from "./ui/plaid-link";
 import { usePathname } from "next/navigation";
 
 import { NavUser } from "@/components/nav-user";
@@ -31,10 +32,10 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
 
   return (
     <Sidebar side="left" {...props}>
-      <SidebarHeader className="bg-default-black px-5 py-5">
+      <SidebarHeader className="px-5 py-5">
         <Image src="/img/logo.webp" alt="logo" width={150} height={50} />
       </SidebarHeader>
-      <SidebarContent className="bg-default-black">
+      <SidebarContent>
         <SidebarMenu className="px-2 py-6 gap-4">
           <SidebarMenuItem>
             <NavLink
@@ -99,11 +100,21 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
               handleClick={isMobile ? toggleSidebar : () => {}}
             />
           </SidebarMenuItem>
+          {user && (
+            <SidebarMenuItem>
+              <PlaidLink
+                user={user}
+                icon="/icons/connect-bank.svg"
+                variant="ghost"
+                className="w-full justify-start text-white hover:text-white hover:bg-primary dark:hover:bg-primary-dark"
+              />
+            </SidebarMenuItem>
+          )}
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter className="bg-default-black text-white">
+      <SidebarFooter className="text-white">
         <NavUser
-          name={user?.name || ""}
+          name={user?.firstName || ""}
           email={user?.email || ""}
           avatar={user?.image || ""}
         />
