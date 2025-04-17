@@ -5,6 +5,8 @@ import { JWT } from "next-auth/jwt";
 declare module "next-auth" {
   interface Session {
     user: {
+      id: string;
+      email: string;
       role: string;
       firstName: string;
       lastName: string;
@@ -23,7 +25,19 @@ declare module "next-auth" {
 
 declare module "next-auth/jwt" {
   interface JWT {
-    role?: string;
+    email: string;
+    role: string;
+    firstName: string;
+    lastName: string;
+    address1: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    dateOfBirth: string;
+    ssn: string;
+    bankAccounts: BankAccountProps[];
+    dwollaCustomerUrl: string;
+    dwollaCustomerId: string;
     bankAccounts: BankAccountProps[];
   }
 }
