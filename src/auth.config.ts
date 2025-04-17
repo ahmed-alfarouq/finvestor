@@ -68,7 +68,21 @@ export default {
       if (token.role && session.user) {
         session.user.role = token.role;
       }
-      session.user.bankAccounts = token.bankAccounts;
+      const {
+        firstName,
+        lastName,
+        dwollaCustomerId,
+        dwollaCustomerUrl,
+        bankAccounts,
+      } = token;
+
+      Object.assign(session.user, {
+        firstName,
+        lastName,
+        dwollaCustomerId,
+        dwollaCustomerUrl,
+        bankAccounts,
+      });
       return session;
     },
     async jwt({ token }) {
@@ -76,9 +90,8 @@ export default {
       const existingUser = await getUserById(token.sub);
 
       if (!existingUser) return token;
-      token.role = existingUser.role;
+      Object.assign(token, existingUser);
 
-      token.bankAccounts = existingUser.bankAccounts;
       return token;
     },
   },
