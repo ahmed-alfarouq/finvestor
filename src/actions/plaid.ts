@@ -76,36 +76,36 @@ export const exchangePublicToken = async ({
       access_token: accessToken,
     });
 
-    const accountData = accountsResponse.data.accounts[0];
+    const allAccounts = accountsResponse.data.accounts;
 
-    const request: ProcessorTokenCreateRequest = {
-      access_token: accessToken,
-      account_id: accountData.account_id,
-      processor: "dwolla" as ProcessorTokenCreateRequestProcessorEnum,
-    };
+    for (const accountData of allAccounts) {
+      const request: ProcessorTokenCreateRequest = {
+        access_token: accessToken,
+        account_id: accountData.account_id,
+        processor: "dwolla" as ProcessorTokenCreateRequestProcessorEnum,
+      };
 
-    const processorTokenResponse = await plaidClient.processorTokenCreate(
-      request
-    );
-    const processorToken = processorTokenResponse.data.processor_token;
+      const processorTokenResponse = await plaidClient.processorTokenCreate(
+        request
+      );
+      const processorToken = processorTokenResponse.data.processor_token;
+      const fundingSourceUrl = await addFundingSource({
+        dwollaCustomerId: user.dwollaCustomerId,
+        processorToken,
+        bankName: accountData.name,
+      });
 
-    const fundingSourceUrl = await addFundingSource({
-      dwollaCustomerId: user.dwollaCustomerId,
-      processorToken,
-      bankName: accountData.name,
-    });
+      if (!fundingSourceUrl) throw Error;
 
-    if (!fundingSourceUrl) throw Error;
-
-    await createBankAccount({
-      userId: user.id,
-      bankId: itemId,
-      accountId: accountData.account_id,
-      accessToken,
-      fundingSourceUrl,
-      sharableId: encryptId(accountData.account_id),
-    });
-
+      await createBankAccount({
+        userId: user.id,
+        bankId: itemId,
+        accountId: accountData.account_id,
+        accessToken,
+        fundingSourceUrl,
+        sharableId: encryptId(accountData.account_id),
+      });
+    }
     revalidatePath("/");
 
     return {
