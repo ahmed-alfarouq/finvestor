@@ -46,7 +46,7 @@ export const getAccounts = async (userId: string) => {
       ));
     const totalBanks = accounts?.length || 0;
     const totalCurrentBalance =
-      accounts?.reduce((total, account) => {
+      accounts?.reduce((total: number, account: { currentBalance: number }) => {
         return total + account.currentBalance;
       }, 0) || 0;
     return { data: accounts, totalBanks, totalCurrentBalance };
