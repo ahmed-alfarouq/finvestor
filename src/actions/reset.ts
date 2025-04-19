@@ -10,7 +10,7 @@ export const reset = async (email: string) => {
   if (!token || !user) return { error: "Something went wrong!" };
   try {
     await sendResetEmail({
-      username: user.name || "",
+      username: `${user.firstName} ${user.lastName}` || "",
       email,
       token,
     });
