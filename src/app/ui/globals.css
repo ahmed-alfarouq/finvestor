@@ -118,6 +118,18 @@
 }
 
 @layer utilities {
+  .loading-container {
+    @apply flex flex-col items-center justify-center gap-4 bg-body dark:bg-body-dark absolute top-0 right-0 bottom-0 left-0;
+  }
+  
+  .loading-spinner {
+    @apply h-12 w-12 animate-spin rounded-full border-4 border-primary dark:border-primary-dark dark:border-t-transparent border-t-transparent shadow-lg;
+  }
+
+  .loading-text {
+    @apply text-lg font-medium text-default-black dark:text-white;
+  }
+
   .input-class {
     @apply text-16 placeholder:text-16 rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500;
   }
