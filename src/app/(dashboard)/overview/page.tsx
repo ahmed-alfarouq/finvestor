@@ -22,7 +22,7 @@ const OverviewPage = async ({
   const account = await getAccount(accountBankId);
 
   return (
-    <section className="flex w-full flex-1 flex-col gap-8 px-5 sm:px-8 py-7 lg:py-12 xl:max-h-screen xl:overflow-y-scroll">
+    <section className="flex w-full flex-1 flex-col gap-8 px-5 sm:px-8 py-7 lg:py-12">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         <TotalBalanceBox
           accounts={accountsData}
