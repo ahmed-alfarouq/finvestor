@@ -13,7 +13,7 @@ const DashboardHeader = () => {
   const user = useCurrentUser();
   const isMobile = useIsMobile();
   return (
-    <header className="flex items-center justify-between shrink-0 h-16 border-b px-4">
+    <header className="flex items-center justify-between shrink-0 h-16 border-b border-gray-4 dark:border-gray-5 px-4">
       <div className="flex items-center sm:gap-2 px-1  text-default-black dark:text-white">
         <SidebarTrigger className="-ml-1" />
         <SidebarSeparator orientation="vertical" />
