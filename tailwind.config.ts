@@ -29,6 +29,20 @@ export default {
           dark: ",",
         },
         "default-black": "#191919",
+        "primary-color": {
+          DEFAULT: "#191D23",
+          dark: "#D1D1D1",
+        },
+        "secondary-color": {
+          DEFAULT: "#525256",
+          dark: "#F3F3F3",
+        },
+        "third-color": {
+          DEFAULT: "#4B5768",
+        },
+        "shadow-1": {
+          DEFAULT: "#4C6764",
+        },
         "special-1": {
           DEFAULT: "#d2d2d240",
         },
@@ -58,17 +72,6 @@ export default {
         },
         "gray-7": {
           DEFAULT: "#f1f1f1",
-        },
-        "primary-color": {
-          DEFAULT: "#191D23",
-          dark: "#D1D1D1",
-        },
-        "secondary-color": {
-          DEFAULT: "#525256",
-          dark: "#F3F3F3",
-        },
-        "third-color": {
-          DEFAULT: "#4B5768",
         },
         card: {
           DEFAULT: "hsl(var(--card))",

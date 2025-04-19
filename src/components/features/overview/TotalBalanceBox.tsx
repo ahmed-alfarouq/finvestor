@@ -11,10 +11,10 @@ const TotalBalanceBox = ({
 }: TotlaBalanceBoxProps) => {
   return (
     <section>
-      <h2 className="text-2xl text-gray-1 dark:text-gray-7 mb-2">
+      <h2 className="text-2xl text-gray-2 dark:text-gray-7 mb-2">
         Total Balance
       </h2>
-      <div className="flex items-center gap-4 rounded-xl border bg-white dark:bg-[#131629] shadow-sm p-4 sm:gap-6 sm:p-6">
+      <div className="flex items-center gap-4 rounded-xl border bg-white dark:bg-[#131629] shadow-xl shadow-shadow-1/10 p-4 sm:gap-6 sm:p-6">
         <div className="flex size-full max-w-[100px] items-center sm:max-w-[120px]">
           <DoughnutChart accounts={accounts} />
         </div>
