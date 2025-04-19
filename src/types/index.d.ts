@@ -99,6 +99,28 @@ declare type NewDwollaCustomerParams = {
   ssn: string;
 };
 
+declare interface CarouselProps {
+  children: React.ReactNode[];
+  className?: string;
+  navigation?: boolean;
+  pagination?: boolean;
+  slidesPerView?: number | "auto";
+  spaceBetween?: number;
+  breakpoints?: {
+    [key: number]: {
+      slidesPerView: number | "auto";
+      spaceBetween: number;
+    };
+  };
+}
+declare interface BankCardProps {
+  accountNumber: string;
+  type: string;
+  balance: number;
+  bankName: string;
+  className?: string;
+}
+
 declare interface FormInputProps {
   name: string;
   label: string;

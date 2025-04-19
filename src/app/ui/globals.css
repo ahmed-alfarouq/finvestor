@@ -121,13 +121,21 @@
   .loading-container {
     @apply flex flex-col items-center justify-center gap-4 bg-body dark:bg-body-dark absolute top-0 right-0 bottom-0 left-0;
   }
-  
+
   .loading-spinner {
     @apply h-12 w-12 animate-spin rounded-full border-4 border-primary dark:border-primary-dark dark:border-t-transparent border-t-transparent shadow-lg;
   }
 
   .loading-text {
     @apply text-lg font-medium text-default-black dark:text-white;
+  }
+
+  /* Swiper */
+  .swiper-pagination-bullet {
+    @apply bg-gray-1 dark:bg-gray-5 !important;
+  }
+  .swiper-pagination-bullet-active {
+    @apply bg-primary dark:bg-primary-dark !important;
   }
 
   .input-class {
