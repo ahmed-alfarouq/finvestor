@@ -68,7 +68,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "esbuild": "^0.25.1",
-    "eslint": "^9",
+    "eslint": "^9.25.0",
     "eslint-config-next": "15.1.6",
     "eslint-config-prettier": "^10.0.1",
     "postcss": "^8",
