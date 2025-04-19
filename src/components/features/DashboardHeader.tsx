@@ -7,6 +7,7 @@ import { SidebarSeparator, SidebarTrigger } from "@/components/ui/sidebar";
 import DarkModeToggle from "@/components/dark-mode-toggle";
 
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
+import { formatDateTime } from "@/lib/utils";
 
 const DashboardHeader = () => {
   const user = useCurrentUser();
@@ -17,14 +18,10 @@ const DashboardHeader = () => {
         <SidebarTrigger className="-ml-1" />
         <SidebarSeparator orientation="vertical" />
         {!isMobile && (
-          <h2 className="font-semibold capitalize">hello, {user?.name}</h2>
+          <h2 className="font-semibold capitalize">hello, {user?.firstName}</h2>
         )}
         <MdKeyboardDoubleArrowRight size={24} />
-        {new Date().toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })}
+        {formatDateTime(new Date()).dateOnly}
       </div>
       <DarkModeToggle />
     </header>
