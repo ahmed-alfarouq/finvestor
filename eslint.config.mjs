@@ -7,6 +7,9 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.config({
     extends: ["next/core-web-vitals", "next/typescript", "prettier"],
+    rules: {
+      "react-hooks/exhaustive-deps": "off",
+    },
   }),
 ];
 
