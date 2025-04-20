@@ -1,4 +1,5 @@
 import { FieldError } from "react-hook-form";
+import { Control, UseFormSetValue } from "react-hook-form";
 
 // ========================================
 declare type User = {
@@ -57,17 +58,9 @@ declare type BankAccountProps = {
 declare type AccountTypes =
   | "depository"
   | "credit"
-  | "loan "
+  | "loan"
   | "investment"
   | "other";
-
-declare type Category = "Food and Drink" | "Travel" | "Transfer";
-
-declare type CategoryCount = {
-  name: string;
-  count: number;
-  totalCount: number;
-};
 
 declare type Receiver = {
   firstName: string;
@@ -126,14 +119,14 @@ declare interface FormInputProps {
   label: string;
   placeholder: string;
   type?: string;
-  control: any;
+  control: Control<FormValues>;
   disabled?: boolean;
 }
 
 declare interface DateInputProps {
   name: string;
   label: string;
-  control: any;
+  control: Control<FormValues>;
   error?: FieldError;
   disabled?: boolean;
   endMonth?: Date;
@@ -210,7 +203,7 @@ declare interface AuthFormProps {
 
 declare interface BankDropdownProps {
   accounts: BankAccount[];
-  setValue?: UseFormSetValue<any>;
+  setValue?: UseFormSetValue<Record<string, unknown>>;
   otherStyles?: string;
 }
 
