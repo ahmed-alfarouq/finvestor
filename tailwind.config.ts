@@ -19,7 +19,7 @@ export default {
       },
       colors: {
         default: { DEFAULT: "#ffffff", dark: "#131629" },
-        body: { DEFAULT: "#F4F5F7", dark: "#141b2d" },
+        body: { DEFAULT: "#F4F5F7", dark: "#1e293b" },
         primary: {
           DEFAULT: "#299D91",
           dark: "#30b6a8",
