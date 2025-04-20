@@ -282,3 +282,13 @@ declare interface createBankAccountProps {
   fundingSourceUrl: string;
   sharableId: string;
 }
+
+export type NotificationStatus = "success" | "warning" | "error" | "info";
+
+declare interface NotificationAlertProps {
+  onClose?: () => void;
+  title: string;
+  message: string;
+  status?: NotificationStatus;
+  duration?: number;
+}

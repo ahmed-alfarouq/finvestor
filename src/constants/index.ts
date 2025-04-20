@@ -1,3 +1,5 @@
+import { AlertCircle, AlertTriangle, CheckCircle2, Info } from "lucide-react";
+
 // good_user / good_password - Bank of America
 export const TEST_USER_ID = "6627ed3d00267aa6fa3e";
 
@@ -110,5 +112,34 @@ export const transactionCategoryStyles = {
     backgroundColor: "bg-blue-500",
     textColor: "text-blue-700",
     chipBackgroundColor: "bg-inherit",
+  },
+};
+
+export const alertStatusConfig = {
+  info: {
+    icon: Info,
+    styles: "bg-blue-50 border-blue-200 text-blue-700",
+    darkStyles: "dark:bg-blue-950/50 dark:border-blue-800 dark:text-blue-400",
+    iconColor: "text-blue-500",
+  },
+  warning: {
+    icon: AlertTriangle,
+    styles: "bg-amber-50 border-amber-200 text-amber-700",
+    darkStyles:
+      "dark:bg-amber-950/50 dark:border-amber-800 dark:text-amber-400",
+    iconColor: "text-amber-500",
+  },
+  error: {
+    icon: AlertCircle,
+    styles: "bg-red-50 border-red-200 text-red-700",
+    darkStyles: "dark:bg-red-950/50 dark:border-red-800 dark:text-red-400",
+    iconColor: "text-red-500",
+  },
+  success: {
+    icon: CheckCircle2,
+    styles: "bg-green-50 border-green-200 text-green-700",
+    darkStyles:
+      "dark:bg-green-950/50 dark:border-green-800 dark:text-green-400",
+    iconColor: "text-green-500",
   },
 };
