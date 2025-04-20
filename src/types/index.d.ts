@@ -37,12 +37,13 @@ declare type Transaction = {
   id: string;
   name: string;
   paymentChannel: string;
-  type: string;
   accountId: string;
   amount: number;
   pending: boolean;
   date: string;
   image?: string | null;
+  category?: PersonalFinanceCategory | null;
+  category_icon?: string;
 };
 
 declare type BankAccountProps = {

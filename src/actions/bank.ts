@@ -135,12 +135,13 @@ export const getTransactions = async (accessToken: string) => {
         id: transaction.transaction_id,
         name: transaction.name,
         paymentChannel: transaction.payment_channel,
-        type: transaction.payment_channel,
         accountId: transaction.account_id,
         amount: transaction.amount,
         pending: transaction.pending,
         date: transaction.date,
         image: transaction.logo_url,
+        category: transaction.personal_finance_category,
+        category_icon: transaction.personal_finance_category_icon_url,
       }));
 
       hasMore = data.has_more;
