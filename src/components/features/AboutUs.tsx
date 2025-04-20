@@ -56,7 +56,7 @@ const AboutUs = () => {
           alt=""
           width={600}
           height={400}
-          className="rounded-sm w-full lg:w-[400] xl:w-[600]"
+          className="rounded-sm w-full lg:w-[500px] xl:w-[600px]"
         />
       </div>
     </section>

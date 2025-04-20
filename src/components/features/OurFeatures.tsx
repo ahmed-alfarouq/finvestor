@@ -55,14 +55,14 @@ const OurFeatures = () => {
           alt=""
           width={600}
           height={400}
-          className="rounded-sm w-full lg:w-[400] xl:w-[600]"
+          className="rounded-sm w-full lg:w-[500px] xl:w-[600px]"
         />
         <div>
           <p className="text-center lg:text-left mb-5">
             Finvestor empowers you to track and manage your finances with
             precision and ease.
           </p>
-          <article className="grid gird-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-4">
+          <article className="grid gird-cols-1 sm:grid-cols-2 xl:grid-cols-3  gap-4">
             {whyFinvestor.map((reason) => (
               <Card key={reason.id} className="text-center">
                 <CardHeader>
