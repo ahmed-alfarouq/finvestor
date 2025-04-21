@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { cn, formUrlQuery } from "@/lib/utils";
 import { BankTabItemProps } from "@/types";
 
-export const BankTabItem = ({ account, id }: BankTabItemProps) => {
+export const BankTabItem = ({ account, id, className }: BankTabItemProps) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const isActive = id === account?.bankId;
@@ -23,12 +23,13 @@ export const BankTabItem = ({ account, id }: BankTabItemProps) => {
     <div
       onClick={handleBankChange}
       className={cn(
-        `px-2 sm:px-4 py-2 transition-all`,
+        `text-secondary-color dark:text-secondary-color-dark py-1 transition-all`,
+        className,
         isActive &&
           "text-primary dark:text-primary-dark border-b-2 border-primary dark:border-primary-dark"
       )}
     >
-      <p className="text-base line-clamp-1 flex-1 font-medium">
+      <p className="text-base line-clamp-1 flex-1 font-bold">
         {account.name}
       </p>
     </div>
