@@ -76,7 +76,7 @@ export function NotificationAlert({
     <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
       <div
         className={cn(
-          "relative flex items-start gap-3 rounded-md border px-4 py-8 shadow-sm min-w-[320px] max-w-[420px]",
+          "relative flex items-start gap-3 rounded-md border px-4 py-6 shadow-sm min-w-[320px] max-w-[420px]",
           "transition-all duration-300 ease-in-out",
           "animate-in fade-in slide-in-from-top-4",
           isLeaving && "animate-out fade-out slide-out-to-top-4",
