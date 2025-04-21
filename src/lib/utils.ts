@@ -67,7 +67,19 @@ export const formatDateTime = (dateString: Date) => {
   };
 };
 
-export function formatAmount(amount: number): string {
+export function formatAmount(
+  amount: number,
+  useKFormat: boolean = false
+): string {
+  if (amount === 0) {
+    return "$0";
+  }
+
+  if (useKFormat && Math.abs(amount) >= 1000) {
+    const formattedNumber = (amount / 1000).toFixed(0);
+    return `$${formattedNumber}k`;
+  }
+
   const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",

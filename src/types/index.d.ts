@@ -232,6 +232,18 @@ declare interface RightSidebarProps {
   banks: BankAccountProps[] & BankAccount[];
 }
 
+declare interface CircledProgressBarProps {
+  targetAmount: number;
+  achievedAmount: number;
+}
+
+declare interface GoalsBoxProps {
+  targetAmount: number;
+  achievedAmount: number;
+  thisMonthTarget: number;
+  date: Date;
+}
+
 declare interface RecentTransactionsProps {
   accounts: BankAccount[];
   transactions: Transaction[];
