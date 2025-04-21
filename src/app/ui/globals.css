@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 /* Hide scrollbar for Chrome, Safari and Opera */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
@@ -113,7 +107,7 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border box-border m-0 p-0;
   }
 }
 
@@ -144,6 +138,15 @@
 
   .flex-center {
     @apply flex items-center justify-center;
+  }
+
+  /* Card */
+  .card-title {
+    @apply text-xl sm:text-2xl text-gray-2 dark:text-gray-7 mb-2;
+  }
+
+  .card-shadow {
+    @apply shadow-xl shadow-shadow-1/10;
   }
 }
 
