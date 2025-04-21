@@ -77,6 +77,10 @@ export function formatAmount(amount: number): string {
   return formatter.format(amount);
 }
 
+export const formatCategory = (category: string) => {
+  return category.replace(/_/g, " ");
+};
+
 export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));
 
 export const removeSpecialCharacters = (value: string) => {

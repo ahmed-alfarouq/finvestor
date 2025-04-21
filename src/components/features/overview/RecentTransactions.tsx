@@ -2,48 +2,50 @@ import React from "react";
 import Link from "next/link";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BankTabItem } from "../BankTabItem";
-import TransactionsTable from "../TransactionsTable";
+import TransactionsList from "../TransactionsList";
 
-import { RecentTransactionsProps } from "@/types";
+import { ArrowRight } from "lucide-react";
+import { Transaction } from "@/types";
 
 const RecentTransactions = ({
-  accounts,
   transactions,
-  id,
-}: RecentTransactionsProps) => {
-  const currentTransactions = transactions.slice(0, 4);
-  
+}: {
+  transactions: Transaction[];
+}) => {
+  // Plaid returns negative values for revenue, and positive values for expenses
+  const revenue = transactions.filter((t) => t.amount < 0).slice(0, 6);
+  const expenses = transactions.filter((t) => t.amount > 0).slice(0, 6);
+
   return (
-    <section className="flex w-full flex-col gap-6">
+    <section className="flex flex-col gap-2">
       <header className="flex items-center justify-between">
-        <h2 className="text-20 md:text-24 font-semibold text-default-black dark:text-white">
-          Recent Transactions
-        </h2>
+        <h2 className="card-title">Recent Transactions</h2>
         <Link
-          href="transactions"
-          className="text-sm font-semibold text-default-black dark:text-gray-7 hover:text-white transition"
+          href="/transactions"
+          className="flex items-center gap-2 text-xs font-medium text-gray-2 dark:text-gray-7"
         >
-          View All
+          View All <ArrowRight className="w-4 h-4" />
         </Link>
       </header>
-      <Tabs defaultValue={id} className="w-full">
-        <TabsList className="mb-8 flex w-full flex-nowrap">
-          {accounts.map((account) => (
-            <TabsTrigger key={account.bankId} value={account.bankId}>
-              <BankTabItem id={id} account={account} />
-            </TabsTrigger>
-          ))}
+      <Tabs
+        defaultValue="revenue"
+        className="w-full bg-default dark:bg-default-dark rounded-lg py-4 px-6 card-shadow"
+      >
+        <TabsList className="mb-4 w-full flex flex-nowrap gap-8 p-0 overflow-x-auto overflow-y-hidden">
+          <TabsTrigger value="revenue" className="px-0 text-base font-bold">
+            Revenue
+          </TabsTrigger>
+          <TabsTrigger value="expenses" className="px-0 text-base font-bold">
+            Expenses
+          </TabsTrigger>
         </TabsList>
-        {accounts.map((account) => (
-          <TabsContent
-            key={account.bankId}
-            value={account.bankId}
-            className="space-y-4"
-          >
-            <TransactionsTable transactions={currentTransactions} />
-          </TabsContent>
-        ))}
+
+        <TabsContent value="revenue" className="space-y-4">
+          <TransactionsList transactions={revenue} />
+        </TabsContent>
+        <TabsContent value="expenses" className="space-y-4">
+          <TransactionsList transactions={expenses} />
+        </TabsContent>
       </Tabs>
     </section>
   );

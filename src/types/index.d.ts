@@ -33,6 +33,12 @@ declare type BankAccount = {
   sharableId: string;
 };
 
+declare type Category = {
+  primary: string;
+  detailed: string;
+  confidence_level: string;
+};
+
 declare type Transaction = {
   id: string;
   name: string;
@@ -42,7 +48,7 @@ declare type Transaction = {
   pending: boolean;
   date: string;
   image?: string | null;
-  category?: PersonalFinanceCategory | null;
+  category?: Category | null;
   category_icon?: string;
 };
 
@@ -211,6 +217,7 @@ declare interface BankDropdownProps {
 declare interface BankTabItemProps {
   account: BankAccount;
   id?: string;
+  className?: string;
 }
 
 declare interface TotlaBalanceBoxProps {
