@@ -33,7 +33,7 @@ declare type BankAccount = {
   sharableId: string;
 };
 
-declare type Category = {
+declare type PersonalFinanceCategory = {
   primary: string;
   detailed: string;
   confidence_level: string;
@@ -48,7 +48,7 @@ declare type Transaction = {
   pending: boolean;
   date: string;
   image?: string | null;
-  category?: Category | null;
+  category?: PersonalFinanceCategory | null;
   category_icon?: string;
 };
 
