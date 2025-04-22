@@ -32,6 +32,9 @@ const Carousel = ({
         pagination={{
           clickable: true,
           el: ".swiper-pagination",
+          dynamicBullets: true,
+          bulletClass: "swiper-pagination-bullet",
+          bulletActiveClass: "swiper-pagination-bullet-active",
         }}
         slidesPerView={slidesPerView}
         spaceBetween={spaceBetween}
