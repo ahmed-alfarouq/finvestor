@@ -29,7 +29,7 @@ const TotalBalanceBox = ({
               key={account.id}
               accountNumber={account.mask}
               type={account.type}
-              balance={account.availableBalance}
+              balance={account.currentBalance}
               bankName={account.name}
             />
           ))}
