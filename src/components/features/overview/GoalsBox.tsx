@@ -34,7 +34,7 @@ const GoalsBox = ({
         </div>
 
         <div className="flex justify-between items-center sm:items-start flex-col-reverse sm:flex-row w-full ">
-          <div className="w-full flex flex-wrap sm:flex-col justify-center xs:justify-between items-center sm:items-start space-y-8 xs:space-y-0 sm:space-y-8">
+          <div className="w-full flex flex-wrap sm:flex-col justify-center gap-4 sm:gap-0 xs:justify-evenly items-center sm:items-start xs:space-y-0 sm:space-y-8">
             <div className="flex gap-2">
               <CheckIcon className="w-6 h-6 p-1 rounded-full dark:bg-green-100 bg-green-900" />
               <div>
