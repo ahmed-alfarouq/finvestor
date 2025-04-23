@@ -19,6 +19,7 @@ import { BankAccountProps, Transaction } from "@/types";
 export const getAccounts = async (userId: string) => {
   try {
     const banks = await getBanksByUserId(userId);
+
     const accounts =
       banks &&
       (await Promise.all(
@@ -26,7 +27,13 @@ export const getAccounts = async (userId: string) => {
           const accountResponse = await plaidClient.accountsGet({
             access_token: bank.accessToken,
           });
-          const accountData = accountResponse.data.accounts[0];
+          const accountData = accountResponse.data.accounts.find(
+            (account) => account.account_id === bank.accountId
+          );
+
+          if (!accountData) {
+            throw Error("Account not found");
+          }
 
           const institution = await getInstitution(
             accountResponse.data.item.institution_id!
@@ -55,9 +62,12 @@ export const getAccounts = async (userId: string) => {
       ));
     const totalBanks = accounts?.length || 0;
     const totalCurrentBalance =
-      accounts?.reduce((total: number, account: { currentBalance: number }) => {
-        return total + account.currentBalance;
-      }, 0) || 0;
+      accounts?.reduce(
+        (total: number, account: { availableBalance: number }) => {
+          return total + account.availableBalance;
+        },
+        0
+      ) || 0;
     return { data: accounts, totalBanks, totalCurrentBalance };
   } catch (error) {
     console.log("Error happened while getting bank accounts", error);
