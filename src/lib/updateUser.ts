@@ -27,3 +27,13 @@ export const updatePassword = async ({
     return { error: "Something went wrong!" };
   }
 };
+
+export const removeBanksByBankId = async (bankId: string) => {
+  try {
+    await prisma.bankAccount.deleteMany({ where: { bankId } });
+    return { success: "Bank account removed successfully" };
+  } catch (error) {
+    console.error("An error occurred while removing the bank:", error);
+    return { error: "Something went wrong while removing the bank from DB!" };
+  }
+};

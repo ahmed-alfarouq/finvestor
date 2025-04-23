@@ -24,7 +24,7 @@ export const createLinkToken = async (user: User) => {
         client_user_id: user.id,
       },
       client_name: `${user.firstName} ${user.lastName}`,
-      products: ["auth", "transactions", "liabilities"] as Products[],
+      products: ["auth", "transactions"] as Products[],
       language: "en",
       country_codes: ["US"] as CountryCode[],
     };
@@ -77,7 +77,7 @@ export const exchangePublicToken = async ({
     });
 
     const allAccounts = accountsResponse.data.accounts;
-
+    console.log(allAccounts);
     for (const accountData of allAccounts) {
       const request: ProcessorTokenCreateRequest = {
         access_token: accessToken,

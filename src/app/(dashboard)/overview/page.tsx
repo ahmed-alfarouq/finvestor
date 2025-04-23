@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { getAccounts, getAccount } from "@/actions/bank";
 
 import GoalsBox from "@/components/features/overview/GoalsBox";
+import RefreshSession from "@/components/features/RefreshSession";
 import TotalBalanceBox from "@/components/features/overview/TotalBalanceBox";
 import RecentTransactions from "@/components/features/overview/RecentTransactions";
 
@@ -13,7 +14,7 @@ const OverviewPage = async () => {
   if (!session || !session.user.id) return;
   const accounts = await getAccounts(session.user.id);
 
-  if (!accounts || !accounts.data) return;
+  if (!accounts || !accounts.data?.length) return <RefreshSession />;
   const accountsData = accounts.data;
   const transactions: Transaction[] = [];
 

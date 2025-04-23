@@ -5,6 +5,7 @@ import {
   CreateFundingSourceOptions,
   NewDwollaCustomerParams,
   TransferParams,
+  BankAccountProps,
 } from "@/types";
 import { Client } from "dwolla-v2";
 
@@ -116,5 +117,24 @@ export const addFundingSource = async ({
     return await createFundingSource(fundingSourceOptions);
   } catch (err) {
     console.error("Transfer fund failed: ", err);
+  }
+};
+
+export const removeFundingSources = async (
+  bankAccounts: BankAccountProps[]
+) => {
+  try {
+    for (const bankAccount of bankAccounts) {
+      const response = await dwollaClient.post(bankAccount.fundingSourceUrl, {
+        removed: true,
+      });
+      if (response.status !== 200) {
+        return { error: "Failed to remove funding source" };
+      }
+    }
+    return { success: "Funding sources removed successfully" };
+  } catch (error) {
+    console.error("Error removing funding source:", error);
+    return { error: "Failed to remove funding source" };
   }
 };

@@ -1,15 +1,24 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import { CountryCode } from "plaid";
 
 import { plaidClient } from "@/lib/plaid";
-import { getBanks, getBank } from "@/lib/getUserData";
+import {
+  getBanksByUserId,
+  getBank,
+  getBankAccountsByBankId,
+} from "@/lib/getUserData";
+import { removeBanksByBankId } from "@/lib/updateUser";
+
+import { removeFundingSources } from "@/actions/dwolla";
 
 import { BankAccountProps, Transaction } from "@/types";
 
 export const getAccounts = async (userId: string) => {
   try {
-    const banks = await getBanks(userId);
+    const banks = await getBanksByUserId(userId);
     const accounts =
       banks &&
       (await Promise.all(
@@ -128,7 +137,6 @@ export const getTransactions = async (accessToken: string) => {
       const response = await plaidClient.transactionsSync({
         access_token: accessToken,
       });
-
       const data = response.data;
 
       transactions = data.added.map((transaction) => ({
@@ -150,5 +158,42 @@ export const getTransactions = async (accessToken: string) => {
     return transactions;
   } catch (error) {
     console.error("An error occurred while getting the transactions:", error);
+  }
+};
+
+export const removeBankAccount = async (bankId: string) => {
+  try {
+    const bankAccounts = await getBankAccountsByBankId(bankId);
+    if (!bankAccounts) return { error: "Bank not found!" };
+
+    // remove bank accounts from db first in case of error
+    const removeBanksRes = await removeBanksByBankId(bankId);
+
+    if (removeBanksRes.error) return { error: removeBanksRes.error };
+
+    const removeFundingSourcesRes = await removeFundingSources(bankAccounts);
+
+    if (removeFundingSourcesRes.error)
+      return {
+        error: removeFundingSourcesRes.error,
+      };
+
+    // all accounts from the same bank are removed
+    const plaidRemoveRes = await plaidClient.itemRemove({
+      access_token: bankAccounts[0].accessToken,
+    });
+
+    if (plaidRemoveRes.status !== 200)
+      return {
+        error: "Something went wrong while removing the account from plaid!",
+      };
+
+    revalidatePath("/");
+    return {
+      message: "Account removed successfully",
+      requestId: plaidRemoveRes.data.request_id,
+    };
+  } catch (error) {
+    console.error("An error occurred while removing the account:", error);
   }
 };
