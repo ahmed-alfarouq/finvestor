@@ -77,7 +77,6 @@ export const exchangePublicToken = async ({
     });
 
     const allAccounts = accountsResponse.data.accounts;
-    console.log(allAccounts);
     for (const accountData of allAccounts) {
       const request: ProcessorTokenCreateRequest = {
         access_token: accessToken,
@@ -89,14 +88,14 @@ export const exchangePublicToken = async ({
         request
       );
       const processorToken = processorTokenResponse.data.processor_token;
-      const fundingSourceUrl = await addFundingSource({
-        dwollaCustomerId: user.dwollaCustomerId,
-        processorToken,
-        bankName: accountData.name,
-      });
+      const fundingSourceUrl: string | null | undefined =
+        await addFundingSource({
+          dwollaCustomerId: user.dwollaCustomerId,
+          processorToken,
+          bankName: accountData.name,
+        });
 
       if (!fundingSourceUrl) throw Error;
-
       await createBankAccount({
         userId: user.id,
         bankId: itemId,
