@@ -27,6 +27,7 @@ declare type BankAccount = {
   officialName: string;
   mask: string;
   institutionId: string;
+  institutionName: string;
   name: string;
   type: string;
   subtype: string;

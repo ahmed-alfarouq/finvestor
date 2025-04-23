@@ -19,12 +19,11 @@ const OverviewPage = async () => {
   const transactions: Transaction[] = [];
 
   for (const account of accountsData) {
-    const accountDetails = await getAccount(account.bankId);
+    const accountDetails = await getAccount(account.id);
     if (accountDetails?.transactions) {
       transactions.push(...accountDetails.transactions);
     }
   }
-
   return (
     <section className="flex w-full flex-1 flex-col gap-8 px-5 sm:px-8 py-7 lg:py-12">
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">

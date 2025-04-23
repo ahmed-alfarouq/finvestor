@@ -14,42 +14,53 @@ import { removeBanksByBankId } from "@/lib/updateUser";
 
 import { removeFundingSources } from "@/actions/dwolla";
 
-import { BankAccountProps, Transaction } from "@/types";
+import { BankAccount, BankAccountProps, Transaction } from "@/types";
 
 export const getAccounts = async (userId: string) => {
   try {
     const banks = await getBanksByUserId(userId);
 
-    const accounts =
-      banks &&
-      (await Promise.all(
-        banks.map(async (bank: BankAccountProps) => {
-          const accountResponse = await plaidClient.accountsGet({
-            access_token: bank.accessToken,
-          });
-          const accountData = accountResponse.data.accounts.find(
-            (account) => account.account_id === bank.accountId
-          );
+    if (!banks) return { error: "No banks found" };
 
-          if (!accountData) {
-            throw Error("Account not found");
-          }
+    // Remove duplicate banks, because plaid returns all accounts for a bank/institution
+    const uniqueBanks = banks.reduce((acc, bank) => {
+      const bankExists = acc.find((b) => b.bankId === bank.bankId);
+      if (!bankExists) {
+        acc.push(bank);
+      }
+      return acc;
+    }, [] as BankAccountProps[]);
 
-          const institution = await getInstitution(
-            accountResponse.data.item.institution_id!
-          );
+    // Get accounts from plaid
+    const nestedAccounts = await Promise.all(
+      uniqueBanks.map(async (bank: BankAccountProps) => {
+        const accountResponse = await plaidClient.liabilitiesGet({
+          access_token: bank.accessToken,
+        });
 
-          if (!institution)
-            throw Error(
-              "An error occurred while getting the accounts: Line 23"
-            );
+        const accounts = accountResponse.data.accounts;
 
-          const account = {
+        if (!accounts) {
+          throw Error("Accounts not found");
+        }
+
+        const institution = await getInstitution(
+          accountResponse.data.item.institution_id!
+        );
+
+        if (!institution)
+          throw Error("An error occurred while getting the accounts: Line 23");
+
+        const returnedAccounts: BankAccount[] = [];
+
+        for (const accountData of accounts) {
+          const account: BankAccount = {
             bankId: bank.bankId,
             id: accountData.account_id!,
             availableBalance: accountData.balances.available!,
             currentBalance: accountData.balances.current!,
             institutionId: institution?.institution_id,
+            institutionName: institution?.name,
             name: accountData.name!,
             officialName: accountData.official_name!,
             mask: accountData.mask!,
@@ -57,31 +68,52 @@ export const getAccounts = async (userId: string) => {
             subtype: accountData.subtype! as string,
             sharableId: bank.sharableId!,
           };
-          return account;
-        })
-      ));
-    const totalBanks = accounts?.length || 0;
+          returnedAccounts.push(account);
+        }
+
+        return returnedAccounts;
+      })
+    );
+
+    const accounts = nestedAccounts.flat();
+
+    if (!accounts) return { error: "No accounts found" };
+
+    const totalBanks = accounts.length || 0;
     const totalCurrentBalance =
-      accounts?.reduce(
-        (total: number, account: { availableBalance: number }) => {
-          return total + account.availableBalance;
+      accounts.reduce(
+        (total: number, currentValue: BankAccount | undefined) => {
+          return total + (currentValue?.availableBalance || 0);
         },
         0
       ) || 0;
     return { data: accounts, totalBanks, totalCurrentBalance };
-  } catch (error) {
-    console.log("Error happened while getting bank accounts", error);
+  } catch {
+    throw Error("Error happened while getting bank accounts");
   }
 };
 
-export const getAccount = async (bankId: string) => {
+export const getAccount = async (accountId: string) => {
   try {
-    const bank = await getBank(bankId);
+    const bank = await getBank(accountId);
+
     if (bank) {
-      const accountsResponse = await plaidClient.accountsGet({
+      // Dwolla and Plaid only supports checking and savings accounts for transactions
+      if (!bank.fundingSourceUrl) {
+        return {
+          error:
+            "Transactions are not available for this account type. valid types 'savings', and 'checking'",
+        };
+      }
+
+      const accountsResponse = await plaidClient.liabilitiesGet({
         access_token: bank.accessToken,
       });
-      const accountData = accountsResponse.data.accounts[0];
+      const accountData = accountsResponse.data.accounts.find(
+        (account) => account.account_id === bank.accountId
+      );
+
+      if (!accountData) throw Error("Account not found");
 
       // get institution info from plaid
       const institution = await getInstitution(
@@ -110,7 +142,7 @@ export const getAccount = async (bankId: string) => {
       };
 
       // sort transactions by date such that the most recent transaction is first
-      const sortedTransactions = [...transactions].sort(
+      const sortedTransactions = transactions.sort(
         (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
       );
 
