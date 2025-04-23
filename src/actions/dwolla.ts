@@ -125,11 +125,14 @@ export const removeFundingSources = async (
 ) => {
   try {
     for (const bankAccount of bankAccounts) {
-      const response = await dwollaClient.post(bankAccount.fundingSourceUrl, {
-        removed: true,
-      });
-      if (response.status !== 200) {
-        return { error: "Failed to remove funding source" };
+      // Some accounts are not Dwolla accounts, so we need to check if the there is a funding source url
+      if (bankAccount.fundingSourceUrl) {
+        const response = await dwollaClient.post(bankAccount.fundingSourceUrl, {
+          removed: true,
+        });
+        if (response.status !== 200) {
+          return { error: "Failed to remove funding source" };
+        }
       }
     }
     return { success: "Funding sources removed successfully" };
