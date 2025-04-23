@@ -8,6 +8,7 @@ import { cookies } from "next/headers";
 import { ThemeProvider } from "next-themes";
 
 import SessionProviderWrapper from "@/components/auth/SessionProviderWrapper";
+import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
   title: {
@@ -42,16 +43,18 @@ export default async function RootLayout({
       <body
         className={`bg-body text-black dark:bg-body-dark dark:text-white ${inter.className} overflow-x-hidden`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <SessionProviderWrapper session={session}>
-            {children}
-          </SessionProviderWrapper>
-        </ThemeProvider>
+        <SessionProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <SessionProviderWrapper session={session}>
+              {children}
+            </SessionProviderWrapper>
+          </ThemeProvider>
+        </SessionProvider>
       </body>
     </html>
   );
