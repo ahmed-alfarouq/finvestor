@@ -1,8 +1,10 @@
 "use server";
-import { v4 as uuidv4 } from "uuid";
-import { plaidClient } from "@/lib/plaid";
-import { encryptId } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
+
+import { encryptId } from "@/lib/utils";
+import { plaidClient } from "@/lib/plaid";
+import { createBankAccount } from "@/lib/updateUser";
+
 import {
   CountryCode,
   ProcessorTokenCreateRequest,
@@ -10,12 +12,8 @@ import {
   Products,
 } from "plaid";
 import { addFundingSource } from "./dwolla";
-import { prisma } from "@/prisma";
-import {
-  createBankAccountProps,
-  exchangePublicTokenProps,
-  User,
-} from "@/types";
+
+import { exchangePublicTokenProps, User } from "@/types";
 
 export const createLinkToken = async (user: User) => {
   try {
@@ -30,31 +28,6 @@ export const createLinkToken = async (user: User) => {
     };
     const res = await plaidClient.linkTokenCreate(tokenParams);
     return { linkToken: res.data.link_token };
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-export const createBankAccount = async ({
-  userId,
-  bankId,
-  accountId,
-  accessToken,
-  fundingSourceUrl,
-  sharableId,
-}: createBankAccountProps) => {
-  try {
-    await prisma.bankAccount.create({
-      data: {
-        id: uuidv4(),
-        userId,
-        bankId,
-        accountId,
-        accessToken,
-        fundingSourceUrl,
-        sharableId,
-      },
-    });
   } catch (err) {
     console.log(err);
   }

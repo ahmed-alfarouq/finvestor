@@ -1,6 +1,9 @@
 "use server";
-import { prisma } from "@/prisma";
 import bcrypt from "bcryptjs";
+import { prisma } from "@/prisma";
+import { v4 as uuidv4 } from "uuid";
+
+import { createBankAccountProps } from "@/types";
 
 export const updateEmailVerification = async (id: string) => {
   await prisma.user.update({
@@ -25,6 +28,31 @@ export const updatePassword = async ({
     return { success: "Password update successfully! go to login" };
   } catch {
     return { error: "Something went wrong!" };
+  }
+};
+
+export const createBankAccount = async ({
+  userId,
+  bankId,
+  accountId,
+  accessToken,
+  fundingSourceUrl,
+  sharableId,
+}: createBankAccountProps) => {
+  try {
+    await prisma.bankAccount.create({
+      data: {
+        id: uuidv4(),
+        userId,
+        bankId,
+        accountId,
+        accessToken,
+        fundingSourceUrl,
+        sharableId,
+      },
+    });
+  } catch (err) {
+    console.log(err);
   }
 };
 
