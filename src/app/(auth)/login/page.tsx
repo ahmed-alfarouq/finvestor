@@ -46,13 +46,11 @@ const LoginPage = () => {
             form.reset();
             setFormError(data.error);
           }
-
           if (data?.twoFactor) {
             setShowTwoFactor(true);
             setFormError("");
           }
         })
-        .catch(() => setFormError("Something went wrong!"));
     });
   };
 
@@ -125,7 +123,12 @@ const LoginPage = () => {
                   <FormLabel>Two Factor Code</FormLabel>
 
                   <FormControl>
-                    <Input type="text" disabled={isPending} placeholder="123456" {...field} />
+                    <Input
+                      type="text"
+                      disabled={isPending}
+                      placeholder="123456"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
