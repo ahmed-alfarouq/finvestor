@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { logout } from "@/actions/logout";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -35,6 +36,12 @@ export function NavUser({
   avatar?: string;
 }) {
   const { toggleSidebar, isMobile } = useSidebar();
+  const [diableLogout, setDiableLogout] = useState(false);
+
+  const handleLogout = () => {
+    setDiableLogout(true);
+    logout();
+  };
 
   return (
     <SidebarMenu>
@@ -42,7 +49,8 @@ export function NavUser({
         <Button
           size="lg"
           className="w-full justify-start gap-2 mb-20 bg-special-3 text-base font-semibold"
-          onClick={logout}
+          onClick={handleLogout}
+          disabled={diableLogout}
         >
           <CgLogOut size={22} className=" rotate-180" />
           Logout
