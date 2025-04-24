@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 import { PlaidLinkOptions, usePlaidLink } from "react-plaid-link";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 import { createLinkToken, exchangePublicToken } from "@/actions/plaid";
@@ -8,8 +7,15 @@ import { createLinkToken, exchangePublicToken } from "@/actions/plaid";
 import { Button } from "./button";
 import { PlaidLinkProps } from "@/types";
 
-const PlaidLink = ({ user, variant, icon, className }: PlaidLinkProps) => {
-  const router = useRouter();
+const PlaidLink = ({
+  user,
+  variant,
+  icon,
+  handleSuccess = () => {},
+  handleExit = () => {},
+  onClick = () => {},
+  className,
+}: PlaidLinkProps) => {
   const [token, setToken] = useState("");
   const [disabled, setDisabled] = useState(false);
 
@@ -24,8 +30,13 @@ const PlaidLink = ({ user, variant, icon, className }: PlaidLinkProps) => {
   const onSuccess = useCallback(
     async (public_token: string) => {
       setDisabled(true);
-      await exchangePublicToken({ publicToken: public_token, user });
-      router.push("/overview");
+      const res = await exchangePublicToken({
+        publicToken: public_token,
+        user,
+      });
+      if (res && res.publicTokenExchange === "complete") {
+        handleSuccess();
+      }
     },
     [user]
   );
@@ -33,13 +44,20 @@ const PlaidLink = ({ user, variant, icon, className }: PlaidLinkProps) => {
   const config: PlaidLinkOptions = {
     token,
     onSuccess,
+    onExit: () => handleExit(),
   };
 
   const { open, ready } = usePlaidLink(config);
+
+  const handleClick = () => {
+    onClick();
+    open();
+  };
+
   return (
     <Button
       variant={variant}
-      onClick={() => open()}
+      onClick={handleClick}
       disabled={!ready || disabled}
       className={className}
     >

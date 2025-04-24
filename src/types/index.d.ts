@@ -197,6 +197,9 @@ declare interface PlaidLinkProps {
   icon?: string;
   dwollaCustomerId?: string;
   className?: string;
+  handleSuccess?: () => void;
+  handleExit?: () => void;
+  onClick?: () => void;
 }
 
 declare interface AuthFormProps {

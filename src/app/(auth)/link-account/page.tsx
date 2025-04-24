@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { UseSessionContext } from "@/context/SessionContext";
 
@@ -6,45 +7,55 @@ import CardWrapper from "@/components/auth/CardWrapper";
 import PlaidLink from "@/components/ui/plaid-link";
 import Loading from "@/app/loading";
 
-import { getUserById } from "@/lib/getUserFromDb";
-
-import { User } from "@/types";
-
 const LinkAccount = () => {
-  const [user, setUser] = useState<User>();
+  const [collectingData, setCollectingData] = useState(false);
   const { session } = UseSessionContext();
+  const router = useRouter();
 
   useEffect(() => {
-    const fetchUser = async (id?: string) => {
-      if (!id) return;
-      const data = await getUserById(id);
-      if (data === null) return;
-      setUser({
-        id: data.id,
-        email: data.email,
-        dwollaCustomerUrl: data.dwollaCustomerUrl,
-        dwollaCustomerId: data.dwollaCustomerId,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        address1: data.address,
-        city: data.city,
-        state: data.state,
-        postalCode: data.postalCode,
-        dateOfBirth: data.dateOfBirth,
-        ssn: data.ssn,
-        role: data.role,
-        bankAccounts: data.bankAccounts,
-      });
-    };
-    
-    fetchUser(session?.user.id);
-  }, [session]);
+    if (!session) return;
 
-  if (!session || !user) return <Loading />;
-  return (
+    if (session.user.bankAccounts.length > 0) {
+      router.push("/overview");
+    }
+  }, [session?.user.bankAccounts, router]);
+
+  const handleSuccess = () => {
+    setCollectingData(false);
+    /**
+     * This is a workaround to refresh the page after the user has linked their account
+     * Can't use router because it doesn't refresh the entire session
+     */
+    window.location.href = "/overview";
+  };
+
+  const handleExit = () => {
+    setCollectingData(false);
+  };
+
+  const handleClick = () => {
+    setCollectingData(true);
+  };
+
+  return !session ? (
+    <Loading />
+  ) : (
     <CardWrapper logo="/img/logo.webp" backLinkText="" backLinkHref="">
-      <div className="flex justify-center items-center">
-        <PlaidLink user={user} />
+      <div className="flex flex-col gap-4 justify-center items-center">
+        <PlaidLink
+          user={session.user}
+          handleSuccess={handleSuccess}
+          handleExit={handleExit}
+          onClick={handleClick}
+        />
+        <p className="font-medium text-default-black dark:text-gray-7">
+          {collectingData && (
+            <span className="flex items-center gap-2">
+              Collecting data
+              <span className="bg-transparent animate-spin border border-gray-2 dark:border-gray-7 !border-b-transparent rounded-full h-5 w-5"></span>
+            </span>
+          )}
+        </p>
       </div>
     </CardWrapper>
   );
