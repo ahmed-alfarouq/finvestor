@@ -165,21 +165,6 @@ declare interface BankInfoProps {
   type: "full" | "card";
 }
 
-declare interface HeaderBoxProps {
-  type?: "title" | "greeting";
-  title: string;
-  subtext: string;
-  user?: string;
-}
-
-declare interface PageHeaderProps {
-  topTitle: string;
-  bottomTitle: string;
-  topDescription: string;
-  bottomDescription: string;
-  connectBank?: boolean;
-}
-
 declare interface PaginationProps {
   page: number;
   totalPages: number;
@@ -202,32 +187,11 @@ declare interface PlaidLinkProps {
   onClick?: () => void;
 }
 
-declare interface AuthFormProps {
-  type: "sign-in" | "sign-up";
-}
-
-declare interface BankDropdownProps {
-  accounts: BankAccount[];
-  setValue?: UseFormSetValue<Record<string, unknown>>;
-  otherStyles?: string;
-}
-
-declare interface BankTabItemProps {
-  account: BankAccount;
-  id?: string;
-  className?: string;
-}
-
 declare interface TotlaBalanceBoxProps {
   accounts: BankAccount[];
   totalAvailableBalance: number;
 }
 
-declare interface RightSidebarProps {
-  user: User;
-  transactions: Transaction[];
-  banks: BankAccountProps[] & BankAccount[];
-}
 
 declare interface CircledProgressBarProps {
   targetAmount: number;
