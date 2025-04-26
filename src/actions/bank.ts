@@ -80,32 +80,36 @@ export const getAccounts = async (userId: string) => {
     if (!accounts) return { error: "No accounts found" };
 
     const totalBanks = accounts.length || 0;
-    const totalCurrentBalance =
+    const totalAvailableBalance =
       accounts.reduce(
         (total: number, currentValue: BankAccount | undefined) => {
           return total + (currentValue?.availableBalance || 0);
         },
         0
       ) || 0;
-    return { data: accounts, totalBanks, totalCurrentBalance };
+    return { data: accounts, totalBanks, totalAvailableBalance };
   } catch {
     throw Error("Error happened while getting bank accounts");
   }
 };
 
-export const getAccount = async (accountId: string) => {
+export const getAccountWithTransactions = async (account: BankAccount) => {
+  // Dwolla and Plaid only supports checking and savings accounts for transactions
+  if (
+    account.type !== "depository" ||
+    (account.subtype !== "savings" && account.subtype !== "checking")
+  ) {
+    return {
+      error:
+        "Transactions are not available for this account type. valid types 'savings', and 'checking'",
+    };
+  }
+
   try {
+    const accountId = account.id;
     const bank = await getBank(accountId);
 
     if (bank) {
-      // Dwolla and Plaid only supports checking and savings accounts for transactions
-      if (!bank.fundingSourceUrl) {
-        return {
-          error:
-            "Transactions are not available for this account type. valid types 'savings', and 'checking'",
-        };
-      }
-
       const accountsResponse = await plaidClient.liabilitiesGet({
         access_token: bank.accessToken,
       });

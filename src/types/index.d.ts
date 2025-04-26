@@ -220,7 +220,7 @@ declare interface BankTabItemProps {
 
 declare interface TotlaBalanceBoxProps {
   accounts: BankAccount[];
-  totalCurrentBalance: number;
+  totalAvailableBalance: number;
 }
 
 declare interface RightSidebarProps {

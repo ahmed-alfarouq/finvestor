@@ -7,7 +7,7 @@ import { TotlaBalanceBoxProps } from "@/types";
 
 const TotalBalanceBox = ({
   accounts = [],
-  totalCurrentBalance,
+  totalAvailableBalance,
 }: TotlaBalanceBoxProps) => {
   return (
     <section>
@@ -15,7 +15,7 @@ const TotalBalanceBox = ({
       <div className="h-72 flex flex-col items-center gap-4 sm:gap-6 rounded-xl border bg-default dark:bg-default-dark card-shadow p-4 sm:px-7 sm:py-5">
         <div className="flex items-center justify-between w-full border-b border-gray-6 pb-4">
           <h3 className="default-black text-[22px] font-extrabold">
-            <AnimatedCounter amount={totalCurrentBalance} />
+            <AnimatedCounter amount={totalAvailableBalance} />
           </h3>
           <span className="text-secondary-color dark:text-secondary-color-dark text-sm font-medium">
             All Accounts

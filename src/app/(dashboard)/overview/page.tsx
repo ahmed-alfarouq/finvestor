@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { getAccounts, getAccount } from "@/actions/bank";
+import { getAccounts, getAccountWithTransactions } from "@/actions/bank";
 
 import GoalsBox from "@/components/features/overview/GoalsBox";
 import RefreshSession from "@/components/features/RefreshSession";
@@ -19,17 +19,18 @@ const OverviewPage = async () => {
   const transactions: Transaction[] = [];
 
   for (const account of accountsData) {
-    const accountDetails = await getAccount(account.id);
+    const accountDetails = await getAccountWithTransactions(account);
     if (accountDetails?.transactions) {
       transactions.push(...accountDetails.transactions);
     }
   }
+
   return (
     <section className="flex w-full flex-1 flex-col gap-8 px-5 sm:px-8 py-7 lg:py-12">
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         <TotalBalanceBox
           accounts={accountsData}
-          totalCurrentBalance={accounts.totalCurrentBalance}
+          totalAvailableBalance={accounts.totalAvailableBalance}
         />
         <GoalsBox
           targetAmount={5000}
