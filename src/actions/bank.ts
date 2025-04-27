@@ -1,8 +1,5 @@
 "use server";
-
 import { revalidatePath } from "next/cache";
-
-import { CountryCode } from "plaid";
 
 import { plaidClient } from "@/lib/plaid";
 import {
@@ -14,7 +11,8 @@ import { removeBanksByBankId } from "@/lib/updateUser";
 
 import { removeFundingSources } from "@/actions/dwolla";
 
-import { BankAccount, BankAccountProps, Transaction } from "@/types";
+import { BankAccount, BankAccountProps, Transaction, Loan } from "@/types";
+import { CountryCode, LiabilitiesObject } from "plaid";
 
 export const getAccounts = async (userId: string) => {
   try {
@@ -160,6 +158,53 @@ export const getAccountWithTransactions = async (account: BankAccount) => {
   }
 };
 
+export const getBankLoans = async (account: BankAccount) => {
+  try {
+    const accountId = account.id;
+    const bank = await getBank(accountId);
+    if (!bank) throw Error("Bank not found");
+
+    const liabilitiesResponse = await plaidClient.liabilitiesGet({
+      access_token: bank.accessToken,
+    });
+
+    const liabilities = liabilitiesResponse.data.liabilities;
+    const loans: Loan[] = [];
+    console.log(liabilities);
+    // Get mortgage and student loans
+    for (const key in liabilities) {
+      if (key !== "credit") {
+        const liability = liabilities[key as keyof LiabilitiesObject];
+        liability?.map((liability) => {
+          // Used for TS to tell it's not CreditCardLiability type
+          if ("ytd_interest_paid" in liability) {
+            loans.push({
+              name: key,
+              accountId: liability.account_id!,
+              lastPaymentAmount: liability.last_payment_amount!,
+              lastPaymentDate: liability.last_payment_date!,
+              nextPaymentDueDate: liability.next_payment_due_date!,
+              nextMonthlyPayment:
+                "next_monthly_payment" in liability
+                  ? liability.next_monthly_payment!
+                  : liability.minimum_payment_amount!,
+              isOverdue:
+                "is_overdue" in liability
+                  ? (liability.is_overdue! as boolean)
+                  : liability.past_due_amount! > 0,
+              ytdTotalPaid:
+                liability.ytd_interest_paid! + liability.ytd_principal_paid!,
+            });
+          }
+        });
+      }
+    }
+    console.log(loans);
+    return loans;
+  } catch (error) {
+    console.error("An error occured while getting loans", error);
+  }
+};
 export const getInstitution = async (institutionId: string) => {
   try {
     const institutionResponse = await plaidClient.institutionsGetById({

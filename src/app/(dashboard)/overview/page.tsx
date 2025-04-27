@@ -1,21 +1,41 @@
 import { auth } from "@/auth";
-import { getAccounts, getAccountWithTransactions } from "@/actions/bank";
+import {
+  getAccounts,
+  getAccountWithTransactions,
+  getBankLoans,
+} from "@/actions/bank";
 
 import GoalsBox from "@/components/features/overview/GoalsBox";
 import RefreshSession from "@/components/features/RefreshSession";
 import TotalBalanceBox from "@/components/features/overview/TotalBalanceBox";
 import RecentTransactions from "@/components/features/overview/RecentTransactions";
+import LoansBox from "@/components/features/overview/LoansBox";
 
-import { Transaction } from "@/types";
+import { BankAccount, Transaction } from "@/types";
 
 const OverviewPage = async () => {
   const session = await auth();
 
   if (!session || !session.user.id) return;
+  // Get all accounts
   const accounts = await getAccounts(session.user.id);
 
+  // If no accounts, refresh session maybe something went wrong
   if (!accounts || !accounts.data?.length) return <RefreshSession />;
   const accountsData = accounts.data;
+
+  // Get liabilities for banks, we only want one instance of each bank
+  const uniqueAccounts = accountsData.reduce((acc, account) => {
+    const bankExists = acc.find((a) => a.bankId === account.bankId);
+    if (!bankExists) {
+      acc.push(account);
+    }
+    return acc;
+  }, [] as BankAccount[]);
+
+  const loans = await getBankLoans(uniqueAccounts[0]);
+
+  // Get transactions for all accounts
   const transactions: Transaction[] = [];
 
   for (const account of accountsData) {
@@ -38,6 +58,7 @@ const OverviewPage = async () => {
           thisMonthTarget={1000}
           date={new Date()}
         />
+        <LoansBox loans={loans || []} />
       </section>
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         <RecentTransactions transactions={transactions} />

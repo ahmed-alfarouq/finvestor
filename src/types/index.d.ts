@@ -192,7 +192,6 @@ declare interface TotlaBalanceBoxProps {
   totalAvailableBalance: number;
 }
 
-
 declare interface CircledProgressBarProps {
   targetAmount: number;
   achievedAmount: number;
@@ -230,6 +229,21 @@ declare interface DoughnutChartProps {
 
 declare interface PaymentTransferFormProps {
   accounts: BankAccount[];
+}
+
+declare interface Loan {
+  name: string;
+  accountId: string;
+  lastPaymentAmount: number;
+  lastPaymentDate: string;
+  nextPaymentDueDate: string;
+  nextMonthlyPayment: number;
+  isOverdue: boolean;
+  /**
+   * Year to date total paid
+   * ytd_interest_paid + ytd_principal_paid
+   */
+  ytdTotalPaid: number;
 }
 
 // Actions
