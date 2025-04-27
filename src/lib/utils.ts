@@ -27,16 +27,26 @@ export const formatDateTime = (dateString: Date) => {
     day: "2-digit", // numeric day of the month (e.g., '25')
   };
 
-  const dateOptions: Intl.DateTimeFormatOptions = {
-    month: "short", // abbreviated month name (e.g., 'Oct')
-    year: "numeric", // numeric year (e.g., '2023')
-    day: "numeric", // numeric day of the month (e.g., '25')
-  };
-
   const timeOptions: Intl.DateTimeFormatOptions = {
     hour: "numeric", // numeric hour (e.g., '8')
     minute: "numeric", // numeric minute (e.g., '30')
     hour12: true, // use 12-hour clock (true) or 24-hour clock (false)
+  };
+
+  const monthShortOptions: Intl.DateTimeFormatOptions = {
+    month: "short", // abbreviated month name (e.g., 'Oct')
+  };
+
+  const monthLongOptions: Intl.DateTimeFormatOptions = {
+    month: "long", // full month name (e.g., 'October')
+  };
+
+  const monthNumericOptions: Intl.DateTimeFormatOptions = {
+    month: "2-digit", // numeric month (e.g., '10')
+  };
+
+  const dayOnlyOptions: Intl.DateTimeFormatOptions = {
+    day: "numeric", // numeric day of the month (e.g., '25')
   };
 
   const formattedDateTime: string = new Date(dateString).toLocaleString(
@@ -49,14 +59,36 @@ export const formatDateTime = (dateString: Date) => {
     dateDayOptions
   );
 
-  const formattedDate: string = new Date(dateString).toLocaleString(
-    "en-US",
-    dateOptions
-  );
+  // Custom format for dateOnly
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const month = date.toLocaleString("en-US", { month: "short" });
+  const year = date.getFullYear();
+  const formattedDate = `${day} ${month}, ${year}`;
 
   const formattedTime: string = new Date(dateString).toLocaleString(
     "en-US",
     timeOptions
+  );
+
+  const formattedMonthShort: string = new Date(dateString).toLocaleString(
+    "en-US",
+    monthShortOptions
+  );
+
+  const formattedMonthLong: string = new Date(dateString).toLocaleString(
+    "en-US",
+    monthLongOptions
+  );
+
+  const formattedMonthNumeric: string = new Date(dateString).toLocaleString(
+    "en-US",
+    monthNumericOptions
+  );
+
+  const formattedDayOnly: string = new Date(dateString).toLocaleString(
+    "en-US",
+    dayOnlyOptions
   );
 
   return {
@@ -64,6 +96,10 @@ export const formatDateTime = (dateString: Date) => {
     dateDay: formattedDateDay,
     dateOnly: formattedDate,
     timeOnly: formattedTime,
+    monthShort: formattedMonthShort,
+    monthLong: formattedMonthLong,
+    monthNumeric: formattedMonthNumeric,
+    dayOnly: formattedDayOnly,
   };
 };
 
