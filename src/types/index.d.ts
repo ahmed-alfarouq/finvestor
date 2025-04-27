@@ -1,5 +1,5 @@
 import { FieldError } from "react-hook-form";
-import { Control, UseFormSetValue } from "react-hook-form";
+import { Control } from "react-hook-form";
 
 // ========================================
 declare type User = {
