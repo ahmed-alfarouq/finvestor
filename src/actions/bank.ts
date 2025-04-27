@@ -170,7 +170,6 @@ export const getBankLoans = async (account: BankAccount) => {
 
     const liabilities = liabilitiesResponse.data.liabilities;
     const loans: Loan[] = [];
-    console.log(liabilities);
     // Get mortgage and student loans
     for (const key in liabilities) {
       if (key !== "credit") {
@@ -199,7 +198,6 @@ export const getBankLoans = async (account: BankAccount) => {
         });
       }
     }
-    console.log(loans);
     return loans;
   } catch (error) {
     console.error("An error occured while getting loans", error);
