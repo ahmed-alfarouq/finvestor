@@ -49,6 +49,11 @@ export const formatDateTime = (dateString: Date) => {
     day: "numeric", // numeric day of the month (e.g., '25')
   };
 
+  const daywithWeekdayOptions: Intl.DateTimeFormatOptions = {
+    day: "numeric", // numeric day of the month (e.g., '25')
+    weekday: "short", // abbreviated weekday name (e.g., 'Mon')
+  };
+
   const formattedDateTime: string = new Date(dateString).toLocaleString(
     "en-US",
     dateTimeOptions
@@ -91,6 +96,11 @@ export const formatDateTime = (dateString: Date) => {
     dayOnlyOptions
   );
 
+  const formattedDaywithWeekday: string = new Date(dateString).toLocaleString(
+    "en-US",
+    daywithWeekdayOptions
+  );
+
   return {
     dateTime: formattedDateTime,
     dateDay: formattedDateDay,
@@ -100,12 +110,14 @@ export const formatDateTime = (dateString: Date) => {
     monthLong: formattedMonthLong,
     monthNumeric: formattedMonthNumeric,
     dayOnly: formattedDayOnly,
+    daywithWeekday: formattedDaywithWeekday,
   };
 };
 
 export function formatAmount(
   amount: number,
-  useKFormat: boolean = false
+  useKFormat: boolean = false,
+  minimumFractionDigits: number = 2
 ): string {
   if (amount === 0) {
     return "$0";
@@ -119,7 +131,7 @@ export function formatAmount(
   const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
-    minimumFractionDigits: 2,
+    minimumFractionDigits,
   });
 
   return formatter.format(amount);
@@ -201,10 +213,49 @@ export function decryptId(id: string) {
   return atob(id);
 }
 
-export const getTransactionStatus = (date: Date) => {
-  const today = new Date();
-  const twoDaysAgo = new Date(today);
-  twoDaysAgo.setDate(today.getDate() - 2);
+/**
+ * Sorts an array of elements by their date values in descending order (newest first)
+ * @param array The array to sort
+ * @param getDate A function that extracts the date from each element
+ * @returns A new sorted array
+ */
+export function sortByDate<T>(
+  array: T[],
+  getDate: (item: T) => Date | string | number
+): T[] {
+  return [...array].sort((a, b) => {
+    const dateA = new Date(getDate(a)).getTime();
+    const dateB = new Date(getDate(b)).getTime();
+    return dateA - dateB;
+  });
+}
 
-  return date > twoDaysAgo ? "Processing" : "Success";
+/**
+ * Filters an array of elements by a given array of dates
+ * @param array The array to filter
+ * @param dates The dates to filter by
+ * @returns A new filtered array
+ */
+export const filterByDates = <T>(
+  array: T[],
+  dates: string[],
+  getDate: (item: T) => Date | string | number,
+) => {
+  return array.filter((item) =>
+    dates.includes(formatDateTime(new Date(getDate(item))).dateOnly)
+  );
+};
+
+/**
+ * Filters an array of elements by a given year
+ * @param array The array to filter
+ * @param year The year to filter by
+ * @returns A new filtered array
+ */
+export const filterByYear = <T>(
+  array: T[],
+  year: number,
+  getDate: (item: T) => Date | string | number
+) => {
+  return array.filter((item) => new Date(getDate(item)).getFullYear() === year);
 };

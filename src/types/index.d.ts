@@ -223,6 +223,22 @@ declare interface CategoryProps {
   category: CategoryCount;
 }
 
+interface BarChartDataset {
+  label: string;
+  data: number[];
+  backgroundColor?: string;
+  borderColor?: string;
+  stack?: string;
+  order?: number;
+}
+
+interface BarChartProps {
+  labels: string[];
+  datasets: BarChartDataset[];
+  options?: Partial<ChartOptions<"bar">>;
+  className?: string;
+}
+
 declare interface DoughnutChartProps {
   accounts: BankAccount[];
 }

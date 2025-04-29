@@ -6,10 +6,11 @@ import {
 } from "@/actions/bank";
 
 import GoalsBox from "@/components/features/overview/GoalsBox";
+import LoansBox from "@/components/features/overview/LoansBox";
 import RefreshSession from "@/components/features/RefreshSession";
+import StatisticsBox from "@/components/features/overview/StatisticsBox";
 import TotalBalanceBox from "@/components/features/overview/TotalBalanceBox";
 import RecentTransactions from "@/components/features/overview/RecentTransactions";
-import LoansBox from "@/components/features/overview/LoansBox";
 
 import { BankAccount, Transaction } from "@/types";
 
@@ -62,7 +63,9 @@ const OverviewPage = async () => {
       </section>
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         <RecentTransactions transactions={transactions} />
-        <div className="lg:col-span-2"></div>
+        <div className="grid grid-cols-1 grid-rows-2 gap-2 lg:col-span-2">
+          <StatisticsBox transactions={transactions} />
+        </div>
       </section>
     </section>
   );
