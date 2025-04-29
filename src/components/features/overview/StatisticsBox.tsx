@@ -73,13 +73,13 @@ const StatisticsBox = ({ transactions }: { transactions: Transaction[] }) => {
               label: statisticsType === "weekly" ? "Last week" : "Last year",
               data: comparedExpenses.lastPeriod,
               backgroundColor: isDarkMode ? "#f1f1f1" : "#E8E8E8",
-              borderColor: isDarkMode ? "#D1D1D1" : "#299D91",
+              borderColor: isDarkMode ? "#f1f1f1" : "#299D91",
             },
             {
               label: statisticsType === "weekly" ? "This week" : "This year",
               data: comparedExpenses.currentPeriod,
-              backgroundColor: isDarkMode ? "#D1D1D1" : "#299D91",
-              borderColor: isDarkMode ? "#f1f1f1" : "#E8E8E8",
+              backgroundColor: isDarkMode ? "#9F9F9F" : "#299D91",
+              borderColor: isDarkMode ? "#9F9F9F" : "#E8E8E8",
             },
           ]}
         />
