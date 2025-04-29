@@ -10,10 +10,9 @@ import CategoryBadge from "@/components/category-badge";
 import {
   formatAmount,
   formatDateTime,
-  getTransactionStatus,
   removeSpecialCharacters,
 } from "@/lib/utils";
-
+import { getTransactionStatus } from "@/lib/transactions";
 import { Transaction, TransactionTableProps } from "@/types";
 
 const TransactionsTable = ({ transactions }: TransactionTableProps) => {
