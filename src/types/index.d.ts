@@ -293,6 +293,12 @@ declare interface createBankAccountProps {
   sharableId: string;
 }
 
+declare interface BankTabItemProps {
+  account: BankAccount;
+  id: string;
+  className?: string;
+}
+
 export type NotificationStatus = "success" | "warning" | "error" | "info";
 
 declare interface NotificationAlertProps {
