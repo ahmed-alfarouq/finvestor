@@ -29,7 +29,7 @@ const RecentTransactions = ({
       </header>
       <Tabs
         defaultValue="revenue"
-        className="w-full bg-default dark:bg-default-dark rounded-lg py-4 px-6 card-shadow"
+        className="w-full h-full bg-default dark:bg-default-dark rounded-lg py-4 px-6 card-shadow"
       >
         <TabsList className="mb-4 w-full flex flex-nowrap gap-8 p-0 overflow-x-auto overflow-y-hidden">
           <TabsTrigger value="revenue" className="px-0 text-base font-bold">

@@ -49,7 +49,7 @@ const StatisticsBox = ({ transactions }: { transactions: Transaction[] }) => {
   }, [transactions, statisticsType]);
 
   return (
-    <section className="flex flex-col gap-2">
+    <section className="h-full flex flex-col gap-2">
       <header className="flex items-center justify-between">
         <h2 className="card-title">Statistics</h2>
         <span className="text-sm text-gray-3 dark:text-gray-5 font-medium">
