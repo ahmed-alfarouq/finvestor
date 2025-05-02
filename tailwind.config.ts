@@ -60,6 +60,8 @@ export default {
         "special-3": {
           DEFAULT: "#FFFFFF08",
         },
+        "special-green": { DEFAULT: "#4DAF6E" },
+        "special-red": { DEFAULT: "#E73D1C" },
         "gray-1": {
           DEFAULT: "#666666",
         },
