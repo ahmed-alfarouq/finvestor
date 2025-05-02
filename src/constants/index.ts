@@ -131,119 +131,367 @@ export const monthsNames = [
 
 // Dummy transactions for testing
 export const dummyTransactions = [
-  // Generate transactions for current year (2 per day for the last 180 days)
-  ...Array(180)
-    .fill(null)
-    .flatMap((_, index) => {
-      const date = new Date();
-      date.setHours(0, 0, 0, 0); // Reset time portion
-      date.setDate(date.getDate() - index); // Count backwards from today
-
-      const icons = {
-        INCOME: "https://plaid-category-icons.plaid.com/PFC_INCOME.png",
-        GENERAL_MERCHANDISE:
-          "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
-        HOME_IMPROVEMENT:
-          "https://plaid-category-icons.plaid.com/PFC_HOME_IMPROVEMENT.png",
-        TRANSPORTATION:
-          "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
-        ENTERTAINMENT:
-          "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
-        FOOD_AND_DRINK:
-          "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
-        MEDICAL: "https://plaid-category-icons.plaid.com/PFC_MEDICAL.png",
-        PERSONAL_CARE:
-          "https://plaid-category-icons.plaid.com/PFC_PERSONAL_CARE.png",
-        TRAVEL: "https://plaid-category-icons.plaid.com/PFC_TRAVEL.png",
-        RENT_AND_UTILITIES:
-          "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
-        OTHER: "https://plaid-category-icons.plaid.com/PFC_OTHER.png",
-      };
-      const categoryName = [
-        "INCOME",
-        "GENERAL_MERCHANDISE",
-        "HOME_IMPROVEMENT",
-        "TRANSPORTATION",
-        "ENTERTAINMENT",
-        "FOOD_AND_DRINK",
-        "MEDICAL",
-        "PERSONAL_CARE",
-        "TRAVEL",
-        "RENT_AND_UTILITIES",
-        "OTHER",
-      ][Math.floor(Math.random() * 11)];
-
-      // Generate 2 transactions for each day
-      return [
-        {
-          id: "current_0_1",
-          amount: 200,
-          date: "2025-05-01",
-          name: "Transaction 0_1",
-          paymentChannel: "Credit Card",
-          accountId: "1",
-          pending: false,
-          category_icon:
-            "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
-          category: {
-            primary: "RENT_AND_UTILITIES",
-            confidence_level: "",
-            detailed: "",
-          },
-        },
-        {
-          accountId: "1",
-          amount: 100,
-          category: {
-            primary: "TRANSPORTATION",
-            confidence_level: "",
-            detailed: "",
-          },
-          category_icon:
-            "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
-          date: "2025-05-01",
-          id: "current_2_0",
-          name: "Transaction 2_0",
-          paymentChannel: "Debit Card",
-          pending: false,
-        },
-        {
-          accountId: "1",
-          amount: 20,
-          category: {
-            primary: "ENTERTAINMENT",
-            confidence_level: "",
-            detailed: "",
-          },
-          category_icon:
-            "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
-          date: "2025-05-01",
-          id: "current_5_0",
-          name: "Transaction 5_0",
-          paymentChannel: "Credit Card",
-          pending: false,
-        },
-        ...Array(2)
-          .fill(null)
-          .map((_, tIndex) => ({
-            id: `current_${index}_${tIndex}`,
-            amount: Math.floor(Math.random() * 2000) + 100, // Random amount between 100-2100
-            date: date.toISOString().split("T")[0],
-            name: `Transaction ${index}_${tIndex}`,
-            paymentChannel: ["Credit Card", "Debit Card", "Bank Transfer"][
-              Math.floor(Math.random() * 3)
-            ],
-            accountId: "1",
-            pending: Math.random() < 0.1, // 10% chance of being pending
-            category_icon: icons[categoryName as keyof typeof icons],
-            category: {
-              primary: categoryName,
-              confidence_level: "",
-              detailed: "",
-            },
-          })),
-      ];
-    }),
+  {
+    id: "current_012_1",
+    amount: 500,
+    date: "2025-05-01",
+    name: "Transaction 0_1",
+    paymentChannel: "Credit Card",
+    accountId: "1",
+    pending: false,
+    category_icon: "https://plaid-category-icons.plaid.com/PFC_MEDICAL.png",
+    category: {
+      primary: "MEDICAL",
+      confidence_level: "",
+      detailed: "",
+    },
+  },
+  {
+    id: "current_12340_1",
+    amount: 200,
+    date: "2025-05-01",
+    name: "Transaction 0_1",
+    paymentChannel: "Credit Card",
+    accountId: "1",
+    pending: false,
+    category_icon: "https://plaid-category-icons.plaid.com/PFC_OTHER.png",
+    category: {
+      primary: "OTHER",
+      confidence_level: "",
+      detailed: "",
+    },
+  },
+  {
+    id: "current_0_1",
+    amount: 200,
+    date: "2025-05-01",
+    name: "Transaction 0_1",
+    paymentChannel: "Credit Card",
+    accountId: "1",
+    pending: false,
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+  },
+  {
+    accountId: "1",
+    amount: 100,
+    category: {
+      primary: "TRANSPORTATION",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
+    date: "2025-05-01",
+    id: "current_2_0",
+    name: "Transaction 2_0",
+    paymentChannel: "Debit Card",
+    pending: false,
+  },
+  {
+    accountId: "1",
+    amount: 20,
+    category: {
+      primary: "ENTERTAINMENT",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
+    date: "2025-05-01",
+    id: "current_5_0",
+    name: "Transaction 5_0",
+    paymentChannel: "Credit Card",
+    pending: false,
+  },
+  {
+    id: "current_0_0",
+    amount: 1200,
+    date: "2025-05-01",
+    name: "Transaction 0_0",
+    paymentChannel: "Credit Card",
+    accountId: "1",
+    pending: false,
+    category_icon: "https://plaid-category-icons.plaid.com/PFC_INCOME.png",
+    category: {
+      primary: "FOOD_AND_DRINK",
+      confidence_level: "",
+      detailed: "",
+    },
+  },
+  {
+    id: "current_0_1",
+    amount: 340,
+    date: "2025-04-28",
+    name: "Transaction 0_1",
+    paymentChannel: "Debit Card",
+    accountId: "1",
+    pending: false,
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+  },
+  {
+    id: "current_1_0",
+    amount: 850,
+    date: "2025-05-01",
+    name: "Transaction 1_0",
+    paymentChannel: "Bank Transfer",
+    accountId: "1",
+    pending: false,
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_HOME_IMPROVEMENT.png",
+    category: {
+      primary: "HOME_IMPROVEMENT",
+      confidence_level: "",
+      detailed: "",
+    },
+  },
+  {
+    id: "current_1_1",
+    amount: 160,
+    date: "2025-04-25",
+    name: "Transaction 1_1",
+    paymentChannel: "Debit Card",
+    accountId: "1",
+    pending: true,
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
+    category: {
+      primary: "TRANSPORTATION",
+      confidence_level: "",
+      detailed: "",
+    },
+  },
+  {
+    id: "current_2_0",
+    amount: 90,
+    date: "2025-04-20",
+    name: "Transaction 2_0",
+    paymentChannel: "Credit Card",
+    accountId: "1",
+    pending: false,
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
+    category: {
+      primary: "ENTERTAINMENT",
+      confidence_level: "",
+      detailed: "",
+    },
+  },
+  {
+    id: "current_2_1",
+    amount: 240,
+    date: "2025-04-20",
+    name: "Transaction 2_1",
+    paymentChannel: "Credit Card",
+    accountId: "1",
+    pending: false,
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
+    category: {
+      primary: "FOOD_AND_DRINK",
+      confidence_level: "",
+      detailed: "",
+    },
+  },
+  {
+    id: "current_3_0",
+    amount: 300,
+    date: "2025-04-18",
+    name: "Transaction 3_0",
+    paymentChannel: "Bank Transfer",
+    accountId: "1",
+    pending: false,
+    category_icon: "https://plaid-category-icons.plaid.com/PFC_MEDICAL.png",
+    category: {
+      primary: "MEDICAL",
+      confidence_level: "",
+      detailed: "",
+    },
+  },
+  {
+    id: "current_3_1",
+    amount: 115,
+    date: "2025-04-18",
+    name: "Transaction 3_1",
+    paymentChannel: "Debit Card",
+    accountId: "1",
+    pending: false,
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_PERSONAL_CARE.png",
+    category: {
+      primary: "PERSONAL_CARE",
+      confidence_level: "",
+      detailed: "",
+    },
+  },
+  {
+    id: "current_4_0",
+    amount: 890,
+    date: "2025-04-10",
+    name: "Transaction 4_0",
+    paymentChannel: "Credit Card",
+    accountId: "1",
+    pending: false,
+    category_icon: "https://plaid-category-icons.plaid.com/PFC_TRAVEL.png",
+    category: {
+      primary: "TRAVEL",
+      confidence_level: "",
+      detailed: "",
+    },
+  },
+  {
+    id: "current_4_1",
+    amount: 410,
+    date: "2025-04-10",
+    name: "Transaction 4_1",
+    paymentChannel: "Debit Card",
+    accountId: "1",
+    pending: true,
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+  },
+  {
+    id: "current_5_0",
+    amount: 70,
+    date: "2025-03-28",
+    name: "Transaction 5_0",
+    paymentChannel: "Credit Card",
+    accountId: "1",
+    pending: false,
+    category_icon: "https://plaid-category-icons.plaid.com/PFC_OTHER.png",
+    category: {
+      primary: "OTHER",
+      confidence_level: "",
+      detailed: "",
+    },
+  },
+  {
+    id: "current_5_1",
+    amount: 1500,
+    date: "2025-03-28",
+    name: "Transaction 5_1",
+    paymentChannel: "Bank Transfer",
+    accountId: "1",
+    pending: false,
+    category_icon: "https://plaid-category-icons.plaid.com/PFC_INCOME.png",
+    category: {
+      primary: "FOOD_AND_DRINK",
+      confidence_level: "",
+      detailed: "",
+    },
+  },
+  {
+    id: "current_6_0",
+    amount: 65,
+    date: "2025-03-25",
+    name: "Transaction 6_0",
+    paymentChannel: "Credit Card",
+    accountId: "1",
+    pending: false,
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
+    category: {
+      primary: "FOOD_AND_DRINK",
+      confidence_level: "",
+      detailed: "",
+    },
+  },
+  {
+    id: "current_6_1",
+    amount: 980,
+    date: "2025-03-25",
+    name: "Transaction 6_1",
+    paymentChannel: "Bank Transfer",
+    accountId: "1",
+    pending: false,
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_HOME_IMPROVEMENT.png",
+    category: {
+      primary: "HOME_IMPROVEMENT",
+      confidence_level: "",
+      detailed: "",
+    },
+  },
+  {
+    id: "current_7_0",
+    amount: 200,
+    date: "2025-03-20",
+    name: "Transaction 7_0",
+    paymentChannel: "Credit Card",
+    accountId: "1",
+    pending: false,
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
+    category: {
+      primary: "ENTERTAINMENT",
+      confidence_level: "",
+      detailed: "",
+    },
+  },
+  {
+    id: "current_7_1",
+    amount: 315,
+    date: "2025-03-20",
+    name: "Transaction 7_1",
+    paymentChannel: "Debit Card",
+    accountId: "1",
+    pending: false,
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_PERSONAL_CARE.png",
+    category: {
+      primary: "PERSONAL_CARE",
+      confidence_level: "",
+      detailed: "",
+    },
+  },
+  {
+    id: "current_8_0",
+    amount: 75,
+    date: "2025-03-10",
+    name: "Transaction 8_0",
+    paymentChannel: "Debit Card",
+    accountId: "1",
+    pending: false,
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
+    category: {
+      primary: "TRANSPORTATION",
+      confidence_level: "",
+      detailed: "",
+    },
+  },
+  {
+    id: "current_8_1",
+    amount: 400,
+    date: "2025-03-10",
+    name: "Transaction 8_1",
+    paymentChannel: "Credit Card",
+    accountId: "1",
+    pending: false,
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+  },
 ];
 
 // Dummy transactions for testing, because plaid doesn't provide last year transactions
