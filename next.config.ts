@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
         hostname: "plaid-merchant-logos.plaid.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "plaid-category-icons.plaid.com",
+        pathname: "/**",
+      },
     ],
   },
 };
