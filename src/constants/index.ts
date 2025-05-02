@@ -27,7 +27,7 @@ export const ITEMS = [
 ];
 
 export const topCategoryStyles = {
-  "Food and Drink": {
+  "FOOD_AND_DRINK and Drink": {
     bg: "bg-blue-25",
     circleBg: "bg-blue-100",
     text: {
@@ -64,12 +64,12 @@ export const topCategoryStyles = {
       bg: "bg-pink-100",
       indicator: "bg-pink-700",
     },
-    icon: "/icons/shopping-bag.svg",
+    icon: "/icons/GENERAL_MERCHANDISE-bag.svg",
   },
 };
 
 export const transactionCategoryStyles = {
-  "Food and Drink": {
+  "FOOD_AND_DRINK and Drink": {
     borderColor: "border-pink-600",
     backgroundColor: "bg-pink-500",
     textColor: "text-pink-700",
@@ -139,23 +139,110 @@ export const dummyTransactions = [
       date.setHours(0, 0, 0, 0); // Reset time portion
       date.setDate(date.getDate() - index); // Count backwards from today
 
+      const icons = {
+        INCOME: "https://plaid-category-icons.plaid.com/PFC_INCOME.png",
+        GENERAL_MERCHANDISE:
+          "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
+        HOME_IMPROVEMENT:
+          "https://plaid-category-icons.plaid.com/PFC_HOME_IMPROVEMENT.png",
+        TRANSPORTATION:
+          "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
+        ENTERTAINMENT:
+          "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
+        FOOD_AND_DRINK:
+          "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
+        MEDICAL: "https://plaid-category-icons.plaid.com/PFC_MEDICAL.png",
+        PERSONAL_CARE:
+          "https://plaid-category-icons.plaid.com/PFC_PERSONAL_CARE.png",
+        TRAVEL: "https://plaid-category-icons.plaid.com/PFC_TRAVEL.png",
+        RENT_AND_UTILITIES:
+          "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
+        OTHER: "https://plaid-category-icons.plaid.com/PFC_OTHER.png",
+      };
+      const categoryName = [
+        "INCOME",
+        "GENERAL_MERCHANDISE",
+        "HOME_IMPROVEMENT",
+        "TRANSPORTATION",
+        "ENTERTAINMENT",
+        "FOOD_AND_DRINK",
+        "MEDICAL",
+        "PERSONAL_CARE",
+        "TRAVEL",
+        "RENT_AND_UTILITIES",
+        "OTHER",
+      ][Math.floor(Math.random() * 11)];
+
       // Generate 2 transactions for each day
-      return Array(2)
-        .fill(null)
-        .map((_, tIndex) => ({
-          id: `current_${index}_${tIndex}`,
-          amount: Math.floor(Math.random() * 2000) + 100, // Random amount between 100-2100
-          date: date.toISOString().split("T")[0],
-          name: `Transaction ${index}_${tIndex}`,
-          paymentChannel: ["Credit Card", "Debit Card", "Bank Transfer"][
-            Math.floor(Math.random() * 3)
-          ],
+      return [
+        {
+          id: "current_0_1",
+          amount: 200,
+          date: "2025-05-01",
+          name: "Transaction 0_1",
+          paymentChannel: "Credit Card",
           accountId: "1",
-          pending: Math.random() < 0.1, // 10% chance of being pending
-          category: ["Food", "Shopping", "Transport", "Entertainment", "Bills"][
-            Math.floor(Math.random() * 5)
-          ],
-        }));
+          pending: false,
+          category_icon:
+            "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
+          category: {
+            primary: "RENT_AND_UTILITIES",
+            confidence_level: "",
+            detailed: "",
+          },
+        },
+        {
+          accountId: "1",
+          amount: 100,
+          category: {
+            primary: "TRANSPORTATION",
+            confidence_level: "",
+            detailed: "",
+          },
+          category_icon:
+            "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
+          date: "2025-05-01",
+          id: "current_2_0",
+          name: "Transaction 2_0",
+          paymentChannel: "Debit Card",
+          pending: false,
+        },
+        {
+          accountId: "1",
+          amount: 20,
+          category: {
+            primary: "ENTERTAINMENT",
+            confidence_level: "",
+            detailed: "",
+          },
+          category_icon:
+            "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
+          date: "2025-05-01",
+          id: "current_5_0",
+          name: "Transaction 5_0",
+          paymentChannel: "Credit Card",
+          pending: false,
+        },
+        ...Array(2)
+          .fill(null)
+          .map((_, tIndex) => ({
+            id: `current_${index}_${tIndex}`,
+            amount: Math.floor(Math.random() * 2000) + 100, // Random amount between 100-2100
+            date: date.toISOString().split("T")[0],
+            name: `Transaction ${index}_${tIndex}`,
+            paymentChannel: ["Credit Card", "Debit Card", "Bank Transfer"][
+              Math.floor(Math.random() * 3)
+            ],
+            accountId: "1",
+            pending: Math.random() < 0.1, // 10% chance of being pending
+            category_icon: icons[categoryName as keyof typeof icons],
+            category: {
+              primary: categoryName,
+              confidence_level: "",
+              detailed: "",
+            },
+          })),
+      ];
     }),
 ];
 
@@ -169,7 +256,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_0_1",
@@ -179,7 +272,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_1_0",
@@ -189,7 +284,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_1_1",
@@ -199,7 +300,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_2_0",
@@ -209,7 +312,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_2_1",
@@ -219,7 +328,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_3_0",
@@ -229,7 +340,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_3_1",
@@ -239,7 +352,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_4_0",
@@ -249,7 +364,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_4_1",
@@ -259,7 +376,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_5_0",
@@ -269,7 +388,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_5_1",
@@ -279,7 +400,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_6_0",
@@ -289,7 +412,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_6_1",
@@ -299,7 +424,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_7_0",
@@ -309,7 +440,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_7_1",
@@ -319,7 +456,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_8_0",
@@ -329,7 +468,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_8_1",
@@ -339,7 +484,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: true,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_9_0",
@@ -349,7 +500,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_9_1",
@@ -359,7 +512,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_10_0",
@@ -369,7 +528,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_10_1",
@@ -379,7 +544,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_11_0",
@@ -389,7 +556,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_11_1",
@@ -399,7 +568,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_12_0",
@@ -409,7 +580,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_12_1",
@@ -419,7 +592,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_13_0",
@@ -429,7 +604,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_13_1",
@@ -439,7 +616,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_14_0",
@@ -449,7 +628,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_14_1",
@@ -459,7 +640,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_15_0",
@@ -469,7 +652,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_15_1",
@@ -479,7 +668,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_16_0",
@@ -489,7 +680,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_16_1",
@@ -499,7 +696,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_17_0",
@@ -509,7 +712,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_17_1",
@@ -519,7 +724,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_18_0",
@@ -529,7 +740,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_18_1",
@@ -539,7 +752,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_19_0",
@@ -549,7 +764,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_19_1",
@@ -559,7 +776,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_20_0",
@@ -569,7 +788,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_20_1",
@@ -579,7 +804,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_21_0",
@@ -589,7 +820,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_21_1",
@@ -599,7 +836,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_22_0",
@@ -609,7 +852,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_22_1",
@@ -619,7 +864,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_23_0",
@@ -629,7 +880,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_23_1",
@@ -639,7 +892,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_24_0",
@@ -649,7 +904,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_24_1",
@@ -659,7 +916,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_25_0",
@@ -669,7 +932,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_25_1",
@@ -679,7 +944,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_26_0",
@@ -689,7 +956,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_26_1",
@@ -699,7 +968,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_27_0",
@@ -709,7 +984,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_27_1",
@@ -719,7 +996,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_28_0",
@@ -729,7 +1012,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_28_1",
@@ -739,7 +1024,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_29_0",
@@ -749,7 +1036,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_29_1",
@@ -759,7 +1052,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_30_0",
@@ -769,7 +1064,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_30_1",
@@ -779,7 +1076,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_31_0",
@@ -789,7 +1088,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_31_1",
@@ -799,7 +1100,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_32_0",
@@ -809,7 +1112,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_32_1",
@@ -819,7 +1124,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_33_0",
@@ -829,7 +1140,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_33_1",
@@ -839,7 +1152,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_34_0",
@@ -849,7 +1164,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_34_1",
@@ -859,7 +1176,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_35_0",
@@ -869,7 +1188,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_35_1",
@@ -879,7 +1200,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_36_0",
@@ -889,7 +1212,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_36_1",
@@ -899,7 +1224,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_37_0",
@@ -909,7 +1240,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_37_1",
@@ -919,7 +1252,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_38_0",
@@ -929,7 +1264,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_38_1",
@@ -939,7 +1276,7 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: true,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
   },
   {
     id: "lastFull_39_0",
@@ -949,7 +1286,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_39_1",
@@ -959,7 +1302,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_40_0",
@@ -969,7 +1314,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_40_1",
@@ -979,7 +1326,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_41_0",
@@ -989,7 +1342,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_41_1",
@@ -999,7 +1358,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_42_0",
@@ -1009,7 +1374,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_42_1",
@@ -1019,7 +1386,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_43_0",
@@ -1029,7 +1398,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_43_1",
@@ -1039,7 +1414,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_44_0",
@@ -1049,7 +1426,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_44_1",
@@ -1059,7 +1438,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_45_0",
@@ -1069,7 +1454,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_45_1",
@@ -1079,7 +1466,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_46_0",
@@ -1089,7 +1478,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_46_1",
@@ -1099,7 +1490,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_47_0",
@@ -1109,7 +1502,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_47_1",
@@ -1119,7 +1514,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_48_0",
@@ -1129,7 +1530,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_48_1",
@@ -1139,7 +1542,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_49_0",
@@ -1149,7 +1558,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_49_1",
@@ -1159,7 +1570,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_50_0",
@@ -1169,7 +1582,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_50_1",
@@ -1179,7 +1594,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_51_0",
@@ -1189,7 +1610,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_51_1",
@@ -1199,7 +1626,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_52_0",
@@ -1209,7 +1638,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_52_1",
@@ -1219,7 +1654,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_53_0",
@@ -1229,7 +1670,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_53_1",
@@ -1239,7 +1682,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_54_0",
@@ -1249,7 +1694,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_54_1",
@@ -1259,7 +1706,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_55_0",
@@ -1269,7 +1718,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_55_1",
@@ -1279,7 +1730,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_56_0",
@@ -1289,7 +1742,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_56_1",
@@ -1299,7 +1754,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_57_0",
@@ -1309,7 +1770,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_57_1",
@@ -1319,7 +1786,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_58_0",
@@ -1329,7 +1798,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_58_1",
@@ -1339,7 +1814,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_59_0",
@@ -1349,7 +1826,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_59_1",
@@ -1359,7 +1838,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_60_0",
@@ -1369,7 +1854,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_60_1",
@@ -1379,7 +1870,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_61_0",
@@ -1389,7 +1882,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_61_1",
@@ -1399,7 +1898,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_62_0",
@@ -1409,7 +1910,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_62_1",
@@ -1419,7 +1922,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_63_0",
@@ -1429,7 +1934,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_63_1",
@@ -1439,7 +1946,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_64_0",
@@ -1449,7 +1958,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_64_1",
@@ -1459,7 +1974,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_65_0",
@@ -1469,7 +1986,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_65_1",
@@ -1479,7 +2002,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_66_0",
@@ -1489,7 +2014,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_66_1",
@@ -1499,7 +2026,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_67_0",
@@ -1509,7 +2038,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_67_1",
@@ -1519,7 +2050,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_68_0",
@@ -1529,7 +2066,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_68_1",
@@ -1539,7 +2082,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_69_0",
@@ -1549,7 +2098,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_69_1",
@@ -1559,7 +2114,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_70_0",
@@ -1569,7 +2126,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_70_1",
@@ -1579,7 +2138,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_71_0",
@@ -1589,7 +2150,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_71_1",
@@ -1599,7 +2166,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_72_0",
@@ -1609,7 +2178,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_72_1",
@@ -1619,7 +2190,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_73_0",
@@ -1629,7 +2202,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_73_1",
@@ -1639,7 +2214,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_74_0",
@@ -1649,7 +2226,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_74_1",
@@ -1659,7 +2242,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_75_0",
@@ -1669,7 +2254,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_75_1",
@@ -1679,7 +2266,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_76_0",
@@ -1689,7 +2278,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_76_1",
@@ -1699,7 +2294,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_77_0",
@@ -1709,7 +2310,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_77_1",
@@ -1719,7 +2322,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_78_0",
@@ -1729,7 +2334,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_78_1",
@@ -1739,7 +2346,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_79_0",
@@ -1749,7 +2358,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_79_1",
@@ -1759,7 +2370,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_80_0",
@@ -1769,7 +2382,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_80_1",
@@ -1779,7 +2398,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_81_0",
@@ -1789,7 +2410,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_81_1",
@@ -1799,7 +2422,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_82_0",
@@ -1809,7 +2438,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_82_1",
@@ -1819,7 +2454,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_83_0",
@@ -1829,7 +2466,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_83_1",
@@ -1839,7 +2478,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_84_0",
@@ -1849,7 +2490,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_84_1",
@@ -1859,7 +2502,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: true,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_85_0",
@@ -1869,7 +2514,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_85_1",
@@ -1879,7 +2530,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_86_0",
@@ -1889,7 +2546,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_86_1",
@@ -1899,7 +2562,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_87_0",
@@ -1909,7 +2574,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_87_1",
@@ -1919,7 +2590,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_88_0",
@@ -1929,7 +2606,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_88_1",
@@ -1939,7 +2618,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_89_0",
@@ -1949,7 +2634,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_89_1",
@@ -1959,7 +2650,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_90_0",
@@ -1969,7 +2666,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_90_1",
@@ -1979,7 +2682,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_91_0",
@@ -1989,7 +2694,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_91_1",
@@ -1999,7 +2710,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_92_0",
@@ -2009,7 +2722,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_92_1",
@@ -2019,7 +2734,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_93_0",
@@ -2029,7 +2746,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_93_1",
@@ -2039,7 +2758,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_94_0",
@@ -2049,7 +2770,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_94_1",
@@ -2059,7 +2786,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_95_0",
@@ -2069,7 +2798,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_95_1",
@@ -2079,7 +2810,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_96_0",
@@ -2089,7 +2826,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_96_1",
@@ -2099,7 +2842,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_97_0",
@@ -2109,7 +2854,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_97_1",
@@ -2119,7 +2866,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_98_0",
@@ -2129,7 +2882,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: true,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_98_1",
@@ -2139,7 +2894,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_99_0",
@@ -2149,7 +2906,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_99_1",
@@ -2159,7 +2922,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_100_0",
@@ -2169,7 +2934,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_100_1",
@@ -2179,7 +2946,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_101_0",
@@ -2189,7 +2958,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_101_1",
@@ -2199,7 +2970,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_102_0",
@@ -2209,7 +2982,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_102_1",
@@ -2219,7 +2998,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_103_0",
@@ -2229,7 +3010,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_103_1",
@@ -2239,7 +3026,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_104_0",
@@ -2249,7 +3042,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_104_1",
@@ -2259,7 +3054,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_105_0",
@@ -2269,7 +3066,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_105_1",
@@ -2279,7 +3082,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_106_0",
@@ -2289,7 +3098,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_106_1",
@@ -2299,7 +3114,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_107_0",
@@ -2309,7 +3130,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_107_1",
@@ -2319,7 +3146,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_108_0",
@@ -2329,7 +3158,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_108_1",
@@ -2339,7 +3174,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_109_0",
@@ -2349,7 +3190,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_109_1",
@@ -2359,7 +3202,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_110_0",
@@ -2369,7 +3214,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_110_1",
@@ -2379,7 +3226,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_111_0",
@@ -2389,7 +3242,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_111_1",
@@ -2399,7 +3254,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_112_0",
@@ -2409,7 +3270,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_112_1",
@@ -2419,7 +3282,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_113_0",
@@ -2429,7 +3294,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_113_1",
@@ -2439,7 +3306,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_114_0",
@@ -2449,7 +3322,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_114_1",
@@ -2459,7 +3338,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_115_0",
@@ -2469,7 +3350,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_115_1",
@@ -2479,7 +3362,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_116_0",
@@ -2489,7 +3378,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_116_1",
@@ -2499,7 +3394,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_117_0",
@@ -2509,7 +3406,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_117_1",
@@ -2519,7 +3422,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_118_0",
@@ -2529,7 +3434,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_118_1",
@@ -2539,7 +3446,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_119_0",
@@ -2549,7 +3462,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_119_1",
@@ -2559,7 +3474,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_120_0",
@@ -2569,7 +3490,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_120_1",
@@ -2579,7 +3506,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: true,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_121_0",
@@ -2589,7 +3518,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_121_1",
@@ -2599,7 +3534,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_122_0",
@@ -2609,7 +3546,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_122_1",
@@ -2619,7 +3562,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_123_0",
@@ -2629,7 +3574,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_123_1",
@@ -2639,7 +3586,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: true,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_124_0",
@@ -2649,7 +3598,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_124_1",
@@ -2659,7 +3614,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_125_0",
@@ -2669,7 +3626,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_125_1",
@@ -2679,7 +3638,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_126_0",
@@ -2689,7 +3650,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_126_1",
@@ -2699,7 +3662,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_127_0",
@@ -2709,7 +3678,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_127_1",
@@ -2719,7 +3694,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_128_0",
@@ -2729,7 +3706,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_128_1",
@@ -2739,7 +3718,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_129_0",
@@ -2749,7 +3730,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_129_1",
@@ -2759,7 +3746,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_130_0",
@@ -2769,7 +3762,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_130_1",
@@ -2779,7 +3774,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_131_0",
@@ -2789,7 +3786,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_131_1",
@@ -2799,7 +3802,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_132_0",
@@ -2809,7 +3814,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_132_1",
@@ -2819,7 +3826,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_133_0",
@@ -2829,7 +3838,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_133_1",
@@ -2839,7 +3850,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_134_0",
@@ -2849,7 +3862,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_134_1",
@@ -2859,7 +3874,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_135_0",
@@ -2869,7 +3886,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_135_1",
@@ -2879,7 +3902,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_136_0",
@@ -2889,7 +3918,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_136_1",
@@ -2899,7 +3934,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_137_0",
@@ -2909,7 +3946,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_137_1",
@@ -2919,7 +3962,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_138_0",
@@ -2929,7 +3974,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_138_1",
@@ -2939,7 +3986,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_139_0",
@@ -2949,7 +3998,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: true,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_139_1",
@@ -2959,7 +4010,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_140_0",
@@ -2969,7 +4026,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_140_1",
@@ -2979,7 +4038,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_141_0",
@@ -2989,7 +4050,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_141_1",
@@ -2999,7 +4062,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_142_0",
@@ -3009,7 +4074,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_142_1",
@@ -3019,7 +4086,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_143_0",
@@ -3029,7 +4098,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_143_1",
@@ -3039,7 +4114,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_144_0",
@@ -3049,7 +4130,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_144_1",
@@ -3059,7 +4146,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_145_0",
@@ -3069,7 +4162,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_145_1",
@@ -3079,7 +4174,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_146_0",
@@ -3089,7 +4186,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_146_1",
@@ -3099,7 +4198,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_147_0",
@@ -3109,7 +4210,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_147_1",
@@ -3119,7 +4222,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_148_0",
@@ -3129,7 +4238,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_148_1",
@@ -3139,7 +4250,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_149_0",
@@ -3149,7 +4266,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_149_1",
@@ -3159,7 +4278,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_150_0",
@@ -3169,7 +4290,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_150_1",
@@ -3179,7 +4306,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: true,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_151_0",
@@ -3189,7 +4318,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_151_1",
@@ -3199,7 +4330,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_152_0",
@@ -3209,7 +4342,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_152_1",
@@ -3219,7 +4354,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_153_0",
@@ -3229,7 +4370,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_153_1",
@@ -3239,7 +4386,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_154_0",
@@ -3249,7 +4398,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_154_1",
@@ -3259,7 +4414,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_155_0",
@@ -3269,7 +4426,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_155_1",
@@ -3279,7 +4438,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_156_0",
@@ -3289,7 +4454,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_156_1",
@@ -3299,7 +4466,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_157_0",
@@ -3309,7 +4478,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_157_1",
@@ -3319,7 +4490,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_158_0",
@@ -3329,7 +4502,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: true,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_158_1",
@@ -3339,7 +4518,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_159_0",
@@ -3349,7 +4530,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_159_1",
@@ -3359,7 +4546,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_160_0",
@@ -3369,7 +4558,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_160_1",
@@ -3379,7 +4570,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_161_0",
@@ -3389,7 +4582,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_161_1",
@@ -3399,7 +4594,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_162_0",
@@ -3409,7 +4606,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_162_1",
@@ -3419,7 +4618,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_163_0",
@@ -3429,7 +4630,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_163_1",
@@ -3439,7 +4642,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_164_0",
@@ -3449,7 +4658,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_164_1",
@@ -3459,7 +4674,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_165_0",
@@ -3469,7 +4686,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_165_1",
@@ -3479,7 +4702,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_166_0",
@@ -3489,7 +4718,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_166_1",
@@ -3499,7 +4730,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_167_0",
@@ -3509,7 +4746,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_167_1",
@@ -3519,7 +4758,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_168_0",
@@ -3529,7 +4770,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_168_1",
@@ -3539,7 +4782,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_169_0",
@@ -3549,7 +4798,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_169_1",
@@ -3559,7 +4814,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_170_0",
@@ -3569,7 +4830,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_170_1",
@@ -3579,7 +4842,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_171_0",
@@ -3589,7 +4858,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_171_1",
@@ -3599,7 +4870,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_172_0",
@@ -3609,7 +4882,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_172_1",
@@ -3619,7 +4898,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_173_0",
@@ -3629,7 +4910,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_173_1",
@@ -3639,7 +4922,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_174_0",
@@ -3649,7 +4938,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_174_1",
@@ -3659,7 +4954,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_175_0",
@@ -3669,7 +4970,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_175_1",
@@ -3679,7 +4982,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_176_0",
@@ -3689,7 +4994,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_176_1",
@@ -3699,7 +5006,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_177_0",
@@ -3709,7 +5018,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_177_1",
@@ -3719,7 +5034,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_178_0",
@@ -3729,7 +5050,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_178_1",
@@ -3739,7 +5062,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_179_0",
@@ -3749,7 +5078,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_179_1",
@@ -3759,7 +5090,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_180_0",
@@ -3769,7 +5106,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_180_1",
@@ -3779,7 +5118,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_181_0",
@@ -3789,7 +5130,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_181_1",
@@ -3799,7 +5142,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_182_0",
@@ -3809,7 +5154,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_182_1",
@@ -3819,7 +5166,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_183_0",
@@ -3829,7 +5182,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_183_1",
@@ -3839,7 +5194,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_184_0",
@@ -3849,7 +5206,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_184_1",
@@ -3859,7 +5218,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_185_0",
@@ -3869,7 +5234,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_185_1",
@@ -3879,7 +5250,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_186_0",
@@ -3889,7 +5262,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_186_1",
@@ -3899,7 +5278,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_187_0",
@@ -3909,7 +5290,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_187_1",
@@ -3919,7 +5302,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_188_0",
@@ -3929,7 +5314,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_188_1",
@@ -3939,7 +5330,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_189_0",
@@ -3949,7 +5342,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_189_1",
@@ -3959,7 +5354,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_190_0",
@@ -3969,7 +5366,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_190_1",
@@ -3979,7 +5382,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_191_0",
@@ -3989,7 +5394,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_191_1",
@@ -3999,7 +5406,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_192_0",
@@ -4009,7 +5422,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_192_1",
@@ -4019,7 +5434,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_193_0",
@@ -4029,7 +5446,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_193_1",
@@ -4039,7 +5458,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_194_0",
@@ -4049,7 +5474,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_194_1",
@@ -4059,7 +5490,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_195_0",
@@ -4069,7 +5502,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_195_1",
@@ -4079,7 +5518,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_196_0",
@@ -4089,7 +5530,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_196_1",
@@ -4099,7 +5542,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_197_0",
@@ -4109,7 +5554,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_197_1",
@@ -4119,7 +5566,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_198_0",
@@ -4129,7 +5582,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_198_1",
@@ -4139,7 +5598,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_199_0",
@@ -4149,7 +5610,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_199_1",
@@ -4159,7 +5626,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_200_0",
@@ -4169,7 +5638,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_200_1",
@@ -4179,7 +5654,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_201_0",
@@ -4189,7 +5670,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_201_1",
@@ -4199,7 +5686,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_202_0",
@@ -4209,7 +5698,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_202_1",
@@ -4219,7 +5710,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_203_0",
@@ -4229,7 +5722,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_203_1",
@@ -4239,7 +5734,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_204_0",
@@ -4249,7 +5746,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_204_1",
@@ -4259,7 +5758,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_205_0",
@@ -4269,7 +5770,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_205_1",
@@ -4279,7 +5782,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_206_0",
@@ -4289,7 +5794,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_206_1",
@@ -4299,7 +5810,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_207_0",
@@ -4309,7 +5826,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_207_1",
@@ -4319,7 +5842,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_208_0",
@@ -4329,7 +5854,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: true,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_208_1",
@@ -4339,7 +5870,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_209_0",
@@ -4349,7 +5882,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_209_1",
@@ -4359,7 +5898,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_210_0",
@@ -4369,7 +5910,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_210_1",
@@ -4379,7 +5922,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_211_0",
@@ -4389,7 +5934,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_211_1",
@@ -4399,7 +5950,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_212_0",
@@ -4409,7 +5966,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_212_1",
@@ -4419,7 +5978,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_213_0",
@@ -4429,7 +5990,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_213_1",
@@ -4439,7 +6002,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_214_0",
@@ -4449,7 +6018,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: true,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_214_1",
@@ -4459,7 +6030,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_215_0",
@@ -4469,7 +6042,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_215_1",
@@ -4479,7 +6054,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_216_0",
@@ -4489,7 +6070,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_216_1",
@@ -4499,7 +6086,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_217_0",
@@ -4509,7 +6098,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_217_1",
@@ -4519,7 +6110,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_218_0",
@@ -4529,7 +6126,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: true,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_218_1",
@@ -4539,7 +6138,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_219_0",
@@ -4549,7 +6154,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_219_1",
@@ -4559,7 +6166,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_220_0",
@@ -4569,7 +6178,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_220_1",
@@ -4579,7 +6194,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_221_0",
@@ -4589,7 +6206,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_221_1",
@@ -4599,7 +6222,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_222_0",
@@ -4609,7 +6234,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_222_1",
@@ -4619,7 +6250,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_223_0",
@@ -4629,7 +6262,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_223_1",
@@ -4639,7 +6274,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_224_0",
@@ -4649,7 +6286,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_224_1",
@@ -4659,7 +6298,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_225_0",
@@ -4669,7 +6314,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_225_1",
@@ -4679,7 +6330,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_226_0",
@@ -4689,7 +6346,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_226_1",
@@ -4699,7 +6362,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_227_0",
@@ -4709,7 +6374,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_227_1",
@@ -4719,7 +6386,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_228_0",
@@ -4729,7 +6402,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_228_1",
@@ -4739,7 +6414,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_229_0",
@@ -4749,7 +6426,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_229_1",
@@ -4759,7 +6438,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_230_0",
@@ -4769,7 +6450,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_230_1",
@@ -4779,7 +6462,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_231_0",
@@ -4789,7 +6478,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_231_1",
@@ -4799,7 +6490,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_232_0",
@@ -4809,7 +6502,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_232_1",
@@ -4819,7 +6518,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_233_0",
@@ -4829,7 +6530,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_233_1",
@@ -4839,7 +6546,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_234_0",
@@ -4849,7 +6558,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_234_1",
@@ -4859,7 +6570,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_235_0",
@@ -4869,7 +6582,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_235_1",
@@ -4879,7 +6598,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_236_0",
@@ -4889,7 +6610,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_236_1",
@@ -4899,7 +6626,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: true,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_237_0",
@@ -4909,7 +6638,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_237_1",
@@ -4919,7 +6650,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_238_0",
@@ -4929,7 +6662,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_238_1",
@@ -4939,7 +6674,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_239_0",
@@ -4949,7 +6686,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_239_1",
@@ -4959,7 +6698,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_240_0",
@@ -4969,7 +6710,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_240_1",
@@ -4979,7 +6726,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_241_0",
@@ -4989,7 +6742,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_241_1",
@@ -4999,7 +6758,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_242_0",
@@ -5009,7 +6770,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_242_1",
@@ -5019,7 +6782,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_243_0",
@@ -5029,7 +6798,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_243_1",
@@ -5039,7 +6814,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_244_0",
@@ -5049,7 +6826,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_244_1",
@@ -5059,7 +6838,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_245_0",
@@ -5069,7 +6850,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_245_1",
@@ -5079,7 +6862,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_246_0",
@@ -5089,7 +6878,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_246_1",
@@ -5099,7 +6894,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_247_0",
@@ -5109,7 +6910,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: true,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_247_1",
@@ -5119,7 +6922,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: true,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_248_0",
@@ -5129,7 +6934,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: true,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_248_1",
@@ -5139,7 +6950,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_249_0",
@@ -5149,7 +6962,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_249_1",
@@ -5159,7 +6974,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_250_0",
@@ -5169,7 +6990,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_250_1",
@@ -5179,7 +7006,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_251_0",
@@ -5189,7 +7018,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_251_1",
@@ -5199,7 +7030,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_252_0",
@@ -5209,7 +7046,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_252_1",
@@ -5219,7 +7058,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_253_0",
@@ -5229,7 +7074,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_253_1",
@@ -5239,7 +7086,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_254_0",
@@ -5249,7 +7098,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_254_1",
@@ -5259,7 +7114,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_255_0",
@@ -5269,7 +7130,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_255_1",
@@ -5279,7 +7146,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_256_0",
@@ -5289,7 +7158,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_256_1",
@@ -5299,7 +7174,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_257_0",
@@ -5309,7 +7190,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_257_1",
@@ -5319,7 +7202,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_258_0",
@@ -5329,7 +7214,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_258_1",
@@ -5339,7 +7230,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_259_0",
@@ -5349,7 +7246,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_259_1",
@@ -5359,7 +7262,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_260_0",
@@ -5369,7 +7278,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_260_1",
@@ -5379,7 +7294,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_261_0",
@@ -5389,7 +7306,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_261_1",
@@ -5399,7 +7322,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_262_0",
@@ -5409,7 +7338,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_262_1",
@@ -5419,7 +7350,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_263_0",
@@ -5429,7 +7362,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_263_1",
@@ -5439,7 +7374,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_264_0",
@@ -5449,7 +7386,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: true,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_264_1",
@@ -5459,7 +7398,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_265_0",
@@ -5469,7 +7410,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_265_1",
@@ -5479,7 +7422,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_266_0",
@@ -5489,7 +7438,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_266_1",
@@ -5499,7 +7450,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_267_0",
@@ -5509,7 +7462,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_267_1",
@@ -5519,7 +7474,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_268_0",
@@ -5529,7 +7486,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_268_1",
@@ -5539,7 +7502,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_269_0",
@@ -5549,7 +7514,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_269_1",
@@ -5559,7 +7526,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_270_0",
@@ -5569,7 +7538,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_270_1",
@@ -5579,7 +7554,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_271_0",
@@ -5589,7 +7570,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_271_1",
@@ -5599,7 +7586,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_272_0",
@@ -5609,7 +7598,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_272_1",
@@ -5619,7 +7610,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_273_0",
@@ -5629,7 +7622,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_273_1",
@@ -5639,7 +7638,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_274_0",
@@ -5649,7 +7650,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_274_1",
@@ -5659,7 +7666,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_275_0",
@@ -5669,7 +7678,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_275_1",
@@ -5679,7 +7690,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_276_0",
@@ -5689,7 +7702,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_276_1",
@@ -5699,7 +7714,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_277_0",
@@ -5709,7 +7726,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_277_1",
@@ -5719,7 +7738,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_278_0",
@@ -5729,7 +7754,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_278_1",
@@ -5739,7 +7770,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_279_0",
@@ -5749,7 +7782,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_279_1",
@@ -5759,7 +7798,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_280_0",
@@ -5769,7 +7810,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_280_1",
@@ -5779,7 +7822,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_281_0",
@@ -5789,7 +7834,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_281_1",
@@ -5799,7 +7846,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_282_0",
@@ -5809,7 +7858,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_282_1",
@@ -5819,7 +7870,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_283_0",
@@ -5829,7 +7882,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_283_1",
@@ -5839,7 +7894,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_284_0",
@@ -5849,7 +7910,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_284_1",
@@ -5859,7 +7922,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_285_0",
@@ -5869,7 +7934,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_285_1",
@@ -5879,7 +7946,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_286_0",
@@ -5889,7 +7962,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_286_1",
@@ -5899,7 +7974,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: true,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_287_0",
@@ -5909,7 +7990,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_287_1",
@@ -5919,7 +8006,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_288_0",
@@ -5929,7 +8018,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_288_1",
@@ -5939,7 +8034,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_289_0",
@@ -5949,7 +8046,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_289_1",
@@ -5959,7 +8058,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_290_0",
@@ -5969,7 +8074,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_290_1",
@@ -5979,7 +8090,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_291_0",
@@ -5989,7 +8106,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_291_1",
@@ -5999,7 +8122,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_292_0",
@@ -6009,7 +8134,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_292_1",
@@ -6019,7 +8146,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_293_0",
@@ -6029,7 +8158,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_293_1",
@@ -6039,7 +8174,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_294_0",
@@ -6049,7 +8190,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_294_1",
@@ -6059,7 +8206,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_295_0",
@@ -6069,7 +8218,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_295_1",
@@ -6079,7 +8230,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_296_0",
@@ -6089,7 +8242,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_296_1",
@@ -6099,7 +8254,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_297_0",
@@ -6109,7 +8266,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_297_1",
@@ -6119,7 +8278,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_298_0",
@@ -6129,7 +8294,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_298_1",
@@ -6139,7 +8310,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_299_0",
@@ -6149,7 +8326,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_299_1",
@@ -6159,7 +8338,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_300_0",
@@ -6169,7 +8354,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_300_1",
@@ -6179,7 +8370,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_301_0",
@@ -6189,7 +8386,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_301_1",
@@ -6199,7 +8398,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_302_0",
@@ -6209,7 +8414,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_302_1",
@@ -6219,7 +8426,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_303_0",
@@ -6229,7 +8442,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_303_1",
@@ -6239,7 +8454,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_304_0",
@@ -6249,7 +8470,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_304_1",
@@ -6259,7 +8486,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_305_0",
@@ -6269,7 +8498,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_305_1",
@@ -6279,7 +8514,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_306_0",
@@ -6289,7 +8530,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_306_1",
@@ -6299,7 +8546,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_307_0",
@@ -6309,7 +8562,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_307_1",
@@ -6319,7 +8574,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_308_0",
@@ -6329,7 +8586,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_308_1",
@@ -6339,7 +8602,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_309_0",
@@ -6349,7 +8618,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_309_1",
@@ -6359,7 +8630,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_310_0",
@@ -6369,7 +8642,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_310_1",
@@ -6379,7 +8658,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_311_0",
@@ -6389,7 +8670,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_311_1",
@@ -6399,7 +8682,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_312_0",
@@ -6409,7 +8694,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_312_1",
@@ -6419,7 +8706,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: true,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_313_0",
@@ -6429,7 +8718,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_313_1",
@@ -6439,7 +8734,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_314_0",
@@ -6449,7 +8746,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_314_1",
@@ -6459,7 +8758,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_315_0",
@@ -6469,7 +8770,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_315_1",
@@ -6479,7 +8782,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_316_0",
@@ -6489,7 +8794,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_316_1",
@@ -6499,7 +8810,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_317_0",
@@ -6509,7 +8826,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_317_1",
@@ -6519,7 +8842,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_318_0",
@@ -6529,7 +8858,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_318_1",
@@ -6539,7 +8870,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_319_0",
@@ -6549,7 +8882,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_319_1",
@@ -6559,7 +8894,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_320_0",
@@ -6569,7 +8906,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_320_1",
@@ -6579,7 +8918,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_321_0",
@@ -6589,7 +8930,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_321_1",
@@ -6599,7 +8946,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_322_0",
@@ -6609,7 +8958,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_322_1",
@@ -6619,7 +8970,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_323_0",
@@ -6629,7 +8982,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_323_1",
@@ -6639,7 +8994,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_324_0",
@@ -6649,7 +9010,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_324_1",
@@ -6659,7 +9022,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_325_0",
@@ -6669,7 +9034,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_325_1",
@@ -6679,7 +9046,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_326_0",
@@ -6689,7 +9062,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_326_1",
@@ -6699,7 +9074,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: true,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_327_0",
@@ -6709,7 +9086,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_327_1",
@@ -6719,7 +9098,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_328_0",
@@ -6729,7 +9114,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_328_1",
@@ -6739,7 +9130,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_329_0",
@@ -6749,7 +9142,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_329_1",
@@ -6759,7 +9158,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_330_0",
@@ -6769,7 +9174,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_330_1",
@@ -6779,7 +9190,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: true,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_331_0",
@@ -6789,7 +9206,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_331_1",
@@ -6799,7 +9218,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_332_0",
@@ -6809,7 +9230,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_332_1",
@@ -6819,7 +9246,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_333_0",
@@ -6829,7 +9258,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_333_1",
@@ -6839,7 +9270,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_334_0",
@@ -6849,7 +9282,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_334_1",
@@ -6859,7 +9298,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_335_0",
@@ -6869,7 +9310,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_335_1",
@@ -6879,7 +9322,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_336_0",
@@ -6889,7 +9338,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_336_1",
@@ -6899,7 +9350,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_337_0",
@@ -6909,7 +9362,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_337_1",
@@ -6919,7 +9374,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_338_0",
@@ -6929,7 +9390,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_338_1",
@@ -6939,7 +9406,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_339_0",
@@ -6949,7 +9418,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_339_1",
@@ -6959,7 +9430,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_340_0",
@@ -6969,7 +9442,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_340_1",
@@ -6979,7 +9458,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_341_0",
@@ -6989,7 +9470,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_341_1",
@@ -6999,7 +9482,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_342_0",
@@ -7009,7 +9494,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_342_1",
@@ -7019,7 +9506,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_343_0",
@@ -7029,7 +9522,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_343_1",
@@ -7039,7 +9534,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_344_0",
@@ -7049,7 +9546,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_344_1",
@@ -7059,7 +9558,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_345_0",
@@ -7069,7 +9570,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_345_1",
@@ -7079,7 +9582,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_346_0",
@@ -7089,7 +9594,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_346_1",
@@ -7099,7 +9610,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_347_0",
@@ -7109,7 +9622,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_347_1",
@@ -7119,7 +9638,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_348_0",
@@ -7129,7 +9650,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_348_1",
@@ -7139,7 +9662,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_349_0",
@@ -7149,7 +9678,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_349_1",
@@ -7159,7 +9690,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_350_0",
@@ -7169,7 +9706,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_350_1",
@@ -7179,7 +9722,7 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
   },
   {
     id: "lastFull_351_0",
@@ -7189,7 +9732,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_351_1",
@@ -7199,7 +9744,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_352_0",
@@ -7209,7 +9760,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_352_1",
@@ -7219,7 +9776,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_353_0",
@@ -7229,7 +9788,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_353_1",
@@ -7239,7 +9800,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_354_0",
@@ -7249,7 +9816,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_354_1",
@@ -7259,7 +9832,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_355_0",
@@ -7269,7 +9848,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: true,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_355_1",
@@ -7279,7 +9860,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_356_0",
@@ -7289,7 +9872,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_356_1",
@@ -7299,7 +9888,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_357_0",
@@ -7309,7 +9900,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_357_1",
@@ -7319,7 +9912,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_358_0",
@@ -7329,7 +9924,13 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: true,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_358_1",
@@ -7339,7 +9940,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_359_0",
@@ -7349,7 +9952,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_359_1",
@@ -7359,7 +9964,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_360_0",
@@ -7369,7 +9976,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_360_1",
@@ -7379,7 +9992,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_361_0",
@@ -7389,7 +10008,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_361_1",
@@ -7399,7 +10024,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_362_0",
@@ -7409,7 +10040,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_362_1",
@@ -7419,7 +10052,13 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Bills",
+    category: {
+      primary: "RENT_AND_UTILITIES",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
   },
   {
     id: "lastFull_363_0",
@@ -7429,7 +10068,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
   {
     id: "lastFull_363_1",
@@ -7439,7 +10080,9 @@ export const lastYearTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_364_0",
@@ -7449,7 +10092,9 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Food",
+    category: { primary: "FOOD_AND_DRINK", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
   },
   {
     id: "lastFull_364_1",
@@ -7459,7 +10104,9 @@ export const lastYearTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category: "Transport",
+    category: { primary: "TRANSPORTATION", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
   },
   {
     id: "lastFull_365_0",
@@ -7469,7 +10116,13 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: false,
-    category: "Shopping",
+    category: {
+      primary: "GENERAL_MERCHANDISE",
+      confidence_level: "",
+      detailed: "",
+    },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
   },
   {
     id: "lastFull_365_1",
@@ -7479,6 +10132,8 @@ export const lastYearTransactions = [
     paymentChannel: "Bank Transfer",
     accountId: "1",
     pending: true,
-    category: "Entertainment",
+    category: { primary: "ENTERTAINMENT", confidence_level: "", detailed: "" },
+    category_icon:
+      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
   },
 ];
