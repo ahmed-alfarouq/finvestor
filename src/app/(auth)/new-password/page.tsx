@@ -19,9 +19,9 @@ import { Button } from "@/components/ui/button";
 import FormError from "@/components/form-error";
 import CardWrapper from "@/components/auth/CardWrapper";
 
-import { getResetTokenByToken, removeResetToken } from "@/lib/tokens";
-import { getUserByEmail } from "@/lib/getUserFromDb";
-import { updatePassword } from "@/lib/updateUser";
+import { getResetTokenByToken, removeResetToken } from "@/actions/auth/tokens";
+import { getUserByEmail } from "@/actions/user/getUserFromDb";
+import { updatePassword } from "@/actions/user/updateUser";
 import FormSuccess from "@/components/form-success";
 
 type NewPasswordFields = z.infer<typeof NewPasswordSchema>;

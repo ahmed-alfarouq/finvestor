@@ -2,8 +2,8 @@
 import { revalidatePath } from "next/cache";
 
 import { encryptId } from "@/lib/utils";
-import { plaidClient } from "@/lib/plaid";
-import { createBankAccount } from "@/lib/updateUser";
+import { plaidClient } from "@/plaid";
+import { createBankAccount } from "@/actions/user/updateUser";
 
 import {
   CountryCode,

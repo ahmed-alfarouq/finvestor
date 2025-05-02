@@ -18,7 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import FormError from "@/components/form-error";
 import CardWrapper from "@/components/auth/CardWrapper";
-import { login } from "@/actions/login";
+import { login } from "@/actions/auth/login";
 import Link from "next/link";
 
 type LoginFields = z.infer<typeof LoginSchema>;

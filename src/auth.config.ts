@@ -3,10 +3,10 @@ import bcrypt from "bcryptjs";
 
 import { LoginSchema } from "./schemas/auth";
 
-import { getUserByEmail, getUserById } from "./lib/getUserFromDb";
+import { getUserByEmail, getUserById } from "./actions/user/getUserFromDb";
 
 import type { NextAuthConfig } from "next-auth";
-import { getTwoFactorConfirmationByUserId } from "./lib/twoFactorConfirmation";
+import { getTwoFactorConfirmationByUserId } from "./actions/auth/twoFactorConfirmation";
 import { prisma } from "./prisma";
 
 export default {

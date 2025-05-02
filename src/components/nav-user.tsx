@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { logout } from "@/actions/logout";
+import { logout } from "@/actions/auth/logout";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {

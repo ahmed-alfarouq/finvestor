@@ -1,13 +1,13 @@
 "use server";
 import { revalidatePath } from "next/cache";
 
-import { plaidClient } from "@/lib/plaid";
+import { plaidClient } from "@/plaid";
 import {
   getBanksByUserId,
   getBank,
   getBankAccountsByBankId,
-} from "@/lib/getUserData";
-import { removeBanksByBankId } from "@/lib/updateUser";
+} from "@/actions/user/getUserData";
+import { removeBanksByBankId } from "@/actions/user/updateUser";
 
 import { removeFundingSources } from "@/actions/dwolla";
 

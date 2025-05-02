@@ -5,10 +5,11 @@ import { format } from "date-fns";
 import { prisma } from "@/prisma";
 
 import { RegisterSchema } from "@/schemas/auth";
-import { getUserByEmail } from "@/lib/getUserFromDb";
-import { generateVerificationToken } from "@/lib/tokens";
-import { sendVerificationEmail } from "@/lib/mail";
-import { createDwollaCustomer } from "./dwolla";
+import { sendVerificationEmail } from "@/actions/mail";
+import { createDwollaCustomer } from "@/actions/dwolla";
+import { getUserByEmail } from "@/actions/user/getUserFromDb";
+import { generateVerificationToken } from "@/actions/auth/tokens";
+
 import { extractCustomerIdFromUrl } from "@/lib/utils";
 
 export const register = async (data: z.infer<typeof RegisterSchema>) => {

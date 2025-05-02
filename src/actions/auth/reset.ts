@@ -1,7 +1,7 @@
 "use server";
-import { getUserByEmail } from "@/lib/getUserFromDb";
-import { sendResetEmail } from "@/lib/mail";
-import { generateResetToken } from "@/lib/tokens";
+import { sendResetEmail } from "@/actions/mail";
+import { generateResetToken } from "@/actions/auth/tokens";
+import { getUserByEmail } from "@/actions/user/getUserFromDb";
 
 export const reset = async (email: string) => {
   const token = await generateResetToken(email);

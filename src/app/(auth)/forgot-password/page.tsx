@@ -20,7 +20,7 @@ import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 import CardWrapper from "@/components/auth/CardWrapper";
 
-import { reset } from "@/actions/reset";
+import { reset } from "@/actions/auth/reset";
 
 type ResetFields = z.infer<typeof ResetSchema>;
 

@@ -14,7 +14,7 @@ import FormError from "@/components/form-error";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 
-import { register } from "@/actions/register";
+import { register } from "@/actions/auth/register";
 
 type RegisterFields = z.infer<typeof RegisterSchema>;
 

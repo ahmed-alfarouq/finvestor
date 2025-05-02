@@ -2,12 +2,12 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { getUserByEmail } from "@/lib/getUserFromDb";
+import { getUserByEmail } from "@/actions/user/getUserFromDb";
 import {
   getVerificationTokenByToken,
   removeEmailVerificationToken,
-} from "@/lib/tokens";
-import { updateEmailVerification } from "@/lib/updateUser";
+} from "@/actions/auth/tokens";
+import { updateEmailVerification } from "@/actions/user/updateUser";
 
 const VerifyEmail = () => {
   const searchParams = useSearchParams();
