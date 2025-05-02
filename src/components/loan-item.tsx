@@ -20,15 +20,15 @@ const LoanItem = ({ loan }: { loan: Loan }) => {
           {loan.name}
         </p>
         {loan.isOverdue ? (
-          <p className="text-sm text-red-500">
+          <p className="text-xs xs:text-sm text-special-red">
             Overdue by ${loan.lastPaymentAmount.toFixed(0)}
           </p>
         ) : (
-          <p className="text-sm text-gray-3">
-            last payment amount - ${loan.lastPaymentAmount.toFixed(0)}
+          <p className="text-xs xs:text-sm text-gray-3">
+            last payment - ${loan.lastPaymentAmount.toFixed(0)}
           </p>
         )}
-        <p className="text-sm text-gray-3">
+        <p className="text-xs xs:text-sm text-gray-3">
           last charge -{" "}
           {formatDateTime(new Date(loan.lastPaymentDate)).dateOnly}
         </p>
@@ -36,7 +36,7 @@ const LoanItem = ({ loan }: { loan: Loan }) => {
       <AnimatedCounter
         amount={loan.nextMonthlyPayment}
         decimals={0}
-        className="min-w-20 w-fit flex justify-center items-center ml-auto font-bold text-secondary-color dark:text-secondary-color-dark border border-gray-5 rounded-md p-3"
+        className="min-w-[65px] xs:min-w-20 w-fit text-xs xs:text-sm font-bold flex justify-center items-center ml-auto text-secondary-color dark:text-secondary-color-dark border border-gray-5 rounded-md p-3"
       />
     </div>
   );

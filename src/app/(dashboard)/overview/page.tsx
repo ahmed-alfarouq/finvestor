@@ -49,7 +49,7 @@ const OverviewPage = async () => {
 
   return (
     <section className="flex w-full flex-1 flex-col gap-8 px-5 sm:px-8 py-7 lg:py-12">
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-3">
         <TotalBalanceBox
           accounts={accountsData}
           totalAvailableBalance={accounts.totalAvailableBalance}
@@ -62,9 +62,9 @@ const OverviewPage = async () => {
         />
         <LoansBox loans={loans || []} />
       </section>
-      <section className="h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+      <section className="h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-3">
         <RecentTransactions transactions={transactions} />
-        <div className="h-full grid grid-cols-1 grid-rows-2 gap-3 lg:col-span-2">
+        <div className="h-full grid grid-cols-1 grid-rows-2 gap-8 md:gap-3 lg:col-span-2">
           <StatisticsBox transactions={transactions} />
           <ExpensesBox transactions={transactions} />
         </div>

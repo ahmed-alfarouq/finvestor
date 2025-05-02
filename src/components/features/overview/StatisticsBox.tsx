@@ -50,15 +50,15 @@ const StatisticsBox = ({ transactions }: { transactions: Transaction[] }) => {
 
   return (
     <section className="h-full flex flex-col gap-2">
-      <header className="flex items-center justify-between">
+      <header className="flex items-center justify-between gap-4">
         <h2 className="card-title">Statistics</h2>
-        <span className="text-sm text-gray-3 dark:text-gray-5 font-medium">
+        <span className="text-sm text-gray-3 dark:text-gray-5 font-medium truncate">
           * Combination of dummy and plaid transactions
         </span>
       </header>
       <div className="h-full relative flex flex-col items-center gap-4 sm:gap-6 rounded-xl border bg-default dark:bg-default-dark card-shadow p-4 sm:px-7 sm:py-8">
         <Select value={statisticsType} onValueChange={selectStatisticsType}>
-          <SelectTrigger className="w-24 text-base font-semibold text-default-black dark:text-white absolute top-3 left-8 sm:top-[19px] sm:left-16 md:top-7 md:left-4 lg:top-[19px] lg:left-12 capitalize shadow-none border-none focus:ring-0">
+          <SelectTrigger className="w-28 xs:w-24 text-base font-semibold text-default-black dark:text-white absolute xxs:static xs:absolute top-3 left-8 sm:top-[19px] sm:left-16 md:top-7 md:left-4 lg:top-[19px] lg:left-12 capitalize shadow-none border-none focus:ring-0">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
