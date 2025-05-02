@@ -173,3 +173,56 @@ export const getTransactionStatus = (date: Date) => {
 
   return date > twoDaysAgo ? "Processing" : "Success";
 };
+
+/**
+ * Splits an array of transactions by their category
+ * @param transactions The transactions to split
+ * @returns A new array of transactions grouped by category
+ */
+export const splitTransactionsByCategory = (transactions: Transaction[]) => {
+  const categorisedTransactions: Record<string, Transaction[]> = {};
+
+  transactions.forEach((transaction) => {
+    const category = transaction.category;
+    // If the category doesn't exist, create it and add the transaction to it
+    if (!categorisedTransactions[category.primary]) {
+      categorisedTransactions[category.primary] = [transaction];
+    } else {
+      // If the category exists, add the transaction to it
+      categorisedTransactions[category.primary].push(transaction);
+    }
+  });
+
+  return categorisedTransactions;
+};
+
+/**
+ * Get the total expenses from an array of transactions
+ * @param transactions The transactions to get the total expenses from
+ * @returns The total expenses
+ */
+export const getTotalExpenses = (transactions: Transaction[]) => {
+  return transactions.reduce((acc, curr) => {
+    // Ignore transactions with amount < 0, because they are fund transfers
+    if (curr.amount < 0) return acc;
+    return acc + curr.amount;
+  }, 0);
+};
+
+/**
+ * @param currentPeriod
+ * @param lastPeriod
+ * @returns percentage of increase (+) or decrease (-)
+ */
+export const compareExpenses = (
+  currentPeriod: Transaction[],
+  lastPeriod: Transaction[]
+) => {
+  const currentPeriodTotal = getTotalExpenses(currentPeriod);
+  const lastPeriodTotal = getTotalExpenses(lastPeriod);
+
+  if (lastPeriodTotal === 0) return 0;
+  const percentage =
+    ((currentPeriodTotal - lastPeriodTotal) / lastPeriodTotal) * 100;
+  return Number(percentage.toFixed(1));
+};

@@ -8,6 +8,7 @@ import {
 import GoalsBox from "@/components/features/overview/GoalsBox";
 import LoansBox from "@/components/features/overview/LoansBox";
 import RefreshSession from "@/components/features/RefreshSession";
+import ExpensesBox from "@/components/features/overview/ExpensesBox";
 import StatisticsBox from "@/components/features/overview/StatisticsBox";
 import TotalBalanceBox from "@/components/features/overview/TotalBalanceBox";
 import RecentTransactions from "@/components/features/overview/RecentTransactions";
@@ -61,10 +62,11 @@ const OverviewPage = async () => {
         />
         <LoansBox loans={loans || []} />
       </section>
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+      <section className="h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         <RecentTransactions transactions={transactions} />
-        <div className="grid grid-cols-1 grid-rows-2 gap-2 lg:col-span-2">
+        <div className="h-full grid grid-cols-1 grid-rows-2 gap-3 lg:col-span-2">
           <StatisticsBox transactions={transactions} />
+          <ExpensesBox transactions={transactions} />
         </div>
       </section>
     </section>
