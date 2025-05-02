@@ -27,7 +27,7 @@ import { CiSettings } from "react-icons/ci";
 
 const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
   const user = useCurrentUser();
-  const { toggleSidebar, isMobile } = useSidebar();
+  const { toggleSidebar } = useSidebar();
   const pathname = usePathname();
 
   return (
@@ -43,7 +43,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
               active={pathname === "/overview"}
               text="Overview"
               beforeIcon={<AiOutlineWindows size={24} />}
-              handleClick={isMobile ? toggleSidebar : () => {}}
+              handleClick={toggleSidebar}
             />
           </SidebarMenuItem>
           <SidebarMenuItem>
@@ -52,7 +52,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
               active={pathname === "/balances"}
               text="Balances"
               beforeIcon={<Wallet size={24} />}
-              handleClick={isMobile ? toggleSidebar : () => {}}
+              handleClick={toggleSidebar}
             />
           </SidebarMenuItem>
           <SidebarMenuItem>
@@ -61,7 +61,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
               active={pathname === "/transactions"}
               text="Transactions"
               beforeIcon={<ArrowLeftRight size={24} />}
-              handleClick={isMobile ? toggleSidebar : () => {}}
+              handleClick={toggleSidebar}
             />
           </SidebarMenuItem>
           <SidebarMenuItem>
@@ -70,7 +70,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
               active={pathname === "/bills"}
               text="Bills"
               beforeIcon={<FaMoneyBills size={24} />}
-              handleClick={isMobile ? toggleSidebar : () => {}}
+              handleClick={toggleSidebar}
             />
           </SidebarMenuItem>
           <SidebarMenuItem>
@@ -79,7 +79,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
               active={pathname === "/expenses"}
               text="Expenses"
               beforeIcon={<BiMoneyWithdraw size={24} />}
-              handleClick={isMobile ? toggleSidebar : () => {}}
+              handleClick={toggleSidebar}
             />
           </SidebarMenuItem>
           <SidebarMenuItem>
@@ -88,7 +88,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
               active={pathname === "/goals"}
               text="Goals"
               beforeIcon={<BiTargetLock size={24} />}
-              handleClick={isMobile ? toggleSidebar : () => {}}
+              handleClick={toggleSidebar}
             />
           </SidebarMenuItem>
           <SidebarMenuItem>
@@ -97,7 +97,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
               active={pathname === "/settings"}
               text="Settings"
               beforeIcon={<CiSettings size={24} />}
-              handleClick={isMobile ? toggleSidebar : () => {}}
+              handleClick={toggleSidebar}
             />
           </SidebarMenuItem>
           {user && (
