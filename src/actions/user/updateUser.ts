@@ -4,6 +4,7 @@ import { prisma } from "@/prisma";
 import { v4 as uuidv4 } from "uuid";
 
 import { createBankAccountProps } from "@/types";
+import { revalidatePath } from "next/cache";
 
 export const updateEmailVerification = async (id: string) => {
   await prisma.user.update({
@@ -63,5 +64,25 @@ export const removeBanksByBankId = async (bankId: string) => {
   } catch (error) {
     console.error("An error occurred while removing the bank:", error);
     return { error: "Something went wrong while removing the bank from DB!" };
+  }
+};
+
+export const updateSavingsGoal = async (userId: string, amount: string) => {
+  try {
+    await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        savingsGoal: amount,
+      },
+    });
+    revalidatePath("/");
+    return { success: "Your goal was updated successfully!" };
+  } catch (error) {
+    console.error("An error occurred while updating savings goal:", error);
+    return {
+      error: `Something went wrong while updating savings goal!`,
+    };
   }
 };

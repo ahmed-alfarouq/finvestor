@@ -14,6 +14,7 @@ import TotalBalanceBox from "@/components/features/overview/TotalBalanceBox";
 import RecentTransactions from "@/components/features/overview/RecentTransactions";
 
 import { BankAccount, Transaction } from "@/types";
+import EmptyGoalsBox from "@/components/features/EmptyGoalsBox";
 
 const OverviewPage = async () => {
   const session = await auth();
@@ -39,10 +40,14 @@ const OverviewPage = async () => {
 
   // Get transactions for all accounts
   const transactions: Transaction[] = [];
+  let achievedAmount: number = 0;
 
   for (const account of accountsData) {
     const accountDetails = await getAccountWithTransactions(account);
     if (accountDetails?.transactions) {
+      if (accountDetails.data.subtype === "savings") {
+        achievedAmount = accountDetails.data.availableBalance;
+      }
       transactions.push(...accountDetails.transactions);
     }
   }
@@ -54,12 +59,17 @@ const OverviewPage = async () => {
           accounts={accountsData}
           totalAvailableBalance={accounts.totalAvailableBalance}
         />
-        <GoalsBox
-          targetAmount={5000}
-          achievedAmount={2500}
-          thisMonthTarget={1000}
-          date={new Date()}
-        />
+        {session.user.savingsGoal ? (
+          <GoalsBox
+            title="Goals"
+            targetAmount={Number(session.user.savingsGoal)}
+            achievedAmount={achievedAmount}
+            thisMonthTarget={Number(session.user.savingsGoal)}
+            date={new Date()}
+          />
+        ) : (
+          <EmptyGoalsBox title="Goals" date={new Date()} />
+        )}
         <LoansBox loans={loans || []} />
       </section>
       <section className="h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-3">

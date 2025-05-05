@@ -74,6 +74,8 @@ export default {
         dwollaCustomerId,
         dwollaCustomerUrl,
         bankAccounts,
+        savingsGoal,
+        expensesGoals,
       } = token;
 
       Object.assign(session.user, {
@@ -82,6 +84,8 @@ export default {
         dwollaCustomerId,
         dwollaCustomerUrl,
         bankAccounts,
+        savingsGoal,
+        expensesGoals,
       });
       return session;
     },

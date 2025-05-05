@@ -1,8 +1,10 @@
 "use client";
+import { useState } from "react";
 
-import React from "react";
 import { formatDateTime, formatAmount } from "@/lib/utils";
 
+import TargetForm from "@/components/target-form";
+import ModalWrapper from "@/components/modal-wrapper";
 import CircledProgressBar from "@/components/circled-progress-bar";
 
 import { EditIcon, CheckIcon, ClockIcon } from "@/components/icons";
@@ -10,21 +12,29 @@ import { EditIcon, CheckIcon, ClockIcon } from "@/components/icons";
 import { GoalsBoxProps } from "@/types";
 
 const GoalsBox = ({
+  title,
   targetAmount,
   achievedAmount,
   thisMonthTarget,
   date,
+  className,
 }: GoalsBoxProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleModal = () => setIsOpen((prev) => !prev);
   return (
-    <section>
-      <h2 className="card-title">Goals</h2>
+    <section className={className}>
+      <h2 className="card-title">{title}</h2>
       <div className="sm:h-72 flex flex-col items-center gap-4 sm:gap-6 rounded-xl border bg-default dark:bg-default-dark card-shadow p-4 sm:px-7 sm:py-5">
         <div className="flex items-center justify-between w-full border-b border-gray-6 pb-4">
           <div className="flex items-center gap-2">
             <h3 className="default-black text-[22px] font-extrabold">
               {formatAmount(targetAmount)}
             </h3>
-            <button className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600">
+            <button
+              className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600"
+              onClick={toggleModal}
+            >
               <EditIcon />
             </button>
           </div>
@@ -64,6 +74,9 @@ const GoalsBox = ({
           />
         </div>
       </div>
+      <ModalWrapper isOpen={isOpen} close={toggleModal}>
+        <TargetForm />
+      </ModalWrapper>
     </section>
   );
 };

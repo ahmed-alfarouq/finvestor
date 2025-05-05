@@ -17,6 +17,8 @@ declare type User = {
   ssn: string;
   role: string;
   bankAccounts: BankAccountProps[];
+  savingsGoal: string;
+  expensesGoals: ExpensesGoal[];
 };
 
 declare type BankAccount = {
@@ -198,12 +200,28 @@ declare interface CircledProgressBarProps {
 }
 
 declare interface GoalsBoxProps {
+  title: string;
   targetAmount: number;
   achievedAmount: number;
   thisMonthTarget: number;
   date: Date;
+  className?: string;
 }
 
+declare interface EmptyGoalsBoxProps {
+  title: string;
+  date: Date;
+  className?: string;
+}
+
+declare interface ExpensesGoal {
+  id: string;
+  userId: string;
+  user: User;
+  date: string;
+  amount: string;
+  category: string;
+}
 declare interface RecentTransactionsProps {
   accounts: BankAccount[];
   transactions: Transaction[];
