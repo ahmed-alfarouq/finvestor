@@ -15,8 +15,9 @@ import FormSuccess from "@/components/form-success";
 import { logout } from "@/actions/auth/logout";
 import { updateSavingsGoal } from "@/actions/user/updateUser";
 
+import { useSession } from "next-auth/react";
+
 import useCurrentUser from "@/hooks/use-current-user";
-import { UseUpdateSessionContext } from "@/context/UpdateSessionContext";
 
 const TargetForm = ({
   category,
@@ -26,7 +27,7 @@ const TargetForm = ({
   onSuccess?: () => void;
 }) => {
   const user = useCurrentUser();
-  const { update } = UseUpdateSessionContext();
+  const { update } = useSession();
   const [pending, startTransition] = useTransition();
 
   const [formError, setFormError] = useState<string | undefined>("");
