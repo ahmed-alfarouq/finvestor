@@ -5,6 +5,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ResetSchema } from "@/schemas/auth";
 
+import Timer from "@/components/timer";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import FormError from "@/components/form-error";
+import FormSuccess from "@/components/form-success";
+import CardWrapper from "@/components/auth/CardWrapper";
 import {
   Form,
   FormControl,
@@ -13,12 +19,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import Timer from "@/components/auth/Timer";
-import FormError from "@/components/form-error";
-import FormSuccess from "@/components/form-success";
-import CardWrapper from "@/components/auth/CardWrapper";
 
 import { reset } from "@/actions/auth/reset";
 
