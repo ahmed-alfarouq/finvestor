@@ -1,76 +1,40 @@
-import { auth } from "@/auth";
-import {
-  getAccounts,
-  getAccountWithTransactions,
-  getBankLoans,
-} from "@/actions/bank";
-
+"use client";
 import GoalsBox from "@/components/features/overview/GoalsBox";
 import LoansBox from "@/components/features/overview/LoansBox";
-import RefreshSession from "@/components/features/RefreshSession";
+import EmptyGoalsBox from "@/components/features/EmptyGoalsBox";
 import ExpensesBox from "@/components/features/overview/ExpensesBox";
 import StatisticsBox from "@/components/features/overview/StatisticsBox";
 import TotalBalanceBox from "@/components/features/overview/TotalBalanceBox";
 import RecentTransactions from "@/components/features/overview/RecentTransactions";
 
-import { BankAccount, Transaction } from "@/types";
-import EmptyGoalsBox from "@/components/features/EmptyGoalsBox";
+import { useBanksDataContext } from "@/context/BanksDataContext";
 
-const OverviewPage = async () => {
-  const session = await auth();
+import useCurrentUser from "@/hooks/use-current-user";
 
-  if (!session || !session.user.id) return;
-  // Get all accounts
-  const accounts = await getAccounts(session.user.id);
-
-  // If no accounts, refresh session maybe something went wrong
-  if (!accounts || !accounts.data?.length) return <RefreshSession />;
-  const accountsData = accounts.data;
-
-  // Get liabilities for banks, we only want one instance of each bank
-  const uniqueAccounts = accountsData.reduce((acc, account) => {
-    const bankExists = acc.find((a) => a.bankId === account.bankId);
-    if (!bankExists) {
-      acc.push(account);
-    }
-    return acc;
-  }, [] as BankAccount[]);
-
-  const loans = await getBankLoans(uniqueAccounts[0]);
-
-  // Get transactions for all accounts
-  const transactions: Transaction[] = [];
-  let achievedAmount: number = 0;
-
-  for (const account of accountsData) {
-    const accountDetails = await getAccountWithTransactions(account);
-    if (accountDetails?.transactions) {
-      if (accountDetails.data.subtype === "savings") {
-        achievedAmount = accountDetails.data.availableBalance;
-      }
-      transactions.push(...accountDetails.transactions);
-    }
-  }
+const OverviewPage = () => {
+  const user = useCurrentUser();
+  const { transactions, loans, accounts, savingsAchievedAmount } =
+    useBanksDataContext();
 
   return (
     <section className="flex w-full flex-1 flex-col gap-8 px-5 sm:px-8 py-7 lg:py-12">
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-3">
         <TotalBalanceBox
-          accounts={accountsData}
+          accounts={accounts.data}
           totalAvailableBalance={accounts.totalAvailableBalance}
         />
-        {session.user.savingsGoal ? (
+        {user && user.savingsGoal ? (
           <GoalsBox
             title="Goals"
-            targetAmount={Number(session.user.savingsGoal)}
-            achievedAmount={achievedAmount}
-            thisMonthTarget={Number(session.user.savingsGoal)}
+            targetAmount={Number(user.savingsGoal)}
+            achievedAmount={savingsAchievedAmount}
+            thisMonthTarget={Number(user.savingsGoal)}
             date={new Date()}
           />
         ) : (
           <EmptyGoalsBox title="Goals" date={new Date()} />
         )}
-        <LoansBox loans={loans || []} />
+        <LoansBox loans={loans} />
       </section>
       <section className="h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-3">
         <RecentTransactions transactions={transactions} />
