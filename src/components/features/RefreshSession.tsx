@@ -1,14 +1,13 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
 
-import { UseUpdateSessionContext } from "@/context/UpdateSessionContext";
-
 const RefreshSession = () => {
   const router = useRouter();
-  const { update } = UseUpdateSessionContext();
+  const { update } = useSession();
 
   const [isRefreshing, setIsRefreshing] = useState(false);
 
