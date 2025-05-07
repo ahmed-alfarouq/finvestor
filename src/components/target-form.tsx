@@ -13,7 +13,10 @@ import FormInput from "@/components/auth/FormInput";
 import FormSuccess from "@/components/form-success";
 
 import { logout } from "@/actions/auth/logout";
-import { updateSavingsGoal } from "@/actions/user/updateUser";
+import {
+  updateExpensesGoal,
+  updateSavingsGoal,
+} from "@/actions/user/updateUser";
 
 import { useSession } from "next-auth/react";
 
@@ -55,15 +58,10 @@ const TargetForm = ({
 
       let res;
       if (category) {
-        /**
-         * To Do:
-         * Handle updating expense's target by category
-         */
-        return;
+        res = await updateExpensesGoal(user.id, category, data.target);
       } else {
         res = await updateSavingsGoal(user.id, data.target);
       }
-
       if (res.error) {
         setFormError(res.error);
         setSessionError(true);

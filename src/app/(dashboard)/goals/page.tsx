@@ -3,6 +3,7 @@ import useCurrentUser from "@/hooks/use-current-user";
 
 import GoalsBox from "@/components/features/overview/GoalsBox";
 import EmptyGoalsBox from "@/components/features/EmptyGoalsBox";
+import ExpensesGoals from "@/components/features/goals/ExpensesGoals";
 import SelectedAccounts from "@/components/features/goals/SelectedAccounts";
 
 import { useBanksDataContext } from "@/context/BanksDataContext";
@@ -32,6 +33,7 @@ const Goals = () => {
         )}
         <SelectedAccounts className="md:col-span-2" />
       </section>
+      <ExpensesGoals />
     </section>
   );
 };

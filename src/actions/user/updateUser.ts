@@ -112,3 +112,37 @@ export const updateSavingsGoalAccounts = async (
     };
   }
 };
+
+export const updateExpensesGoal = async (
+  userId: string,
+  category: string,
+  amount: string
+) => {
+  try {
+    await prisma.expensesGoal.upsert({
+      where: {
+        userId_category: {
+          userId,
+          category,
+        },
+      },
+      update: {
+        amount,
+        lastModified: new Date(),
+      },
+      create: {
+        userId,
+        category,
+        amount,
+        lastModified: new Date(),
+      },
+    });
+    revalidatePath("/");
+    return { success: "Amount updated successfully!" };
+  } catch (error) {
+    console.error("An error occurred while updating expenses goal:", error);
+    return {
+      error: "Something went wrong while updating expenses goal!",
+    };
+  }
+};
