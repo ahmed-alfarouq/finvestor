@@ -10,21 +10,29 @@ import { cn } from "@/lib/utils";
 
 const ExpensesBox = ({ transactions }: { transactions: Transaction[] }) => {
   const currentMonth = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
   const lastMonth = new Date(new Date().setMonth(currentMonth - 1)).getMonth();
 
   const currentMonthTransactions: Transaction[] = [
     ...dummyTransactions,
     ...transactions,
-  ].filter(
-    (transaction) => new Date(transaction.date).getMonth() === currentMonth
-  );
+  ].filter((transaction) => {
+    const transactionYear = new Date(transaction.date).getFullYear();
+    const transactionMonth = new Date(transaction.date).getMonth();
+
+    return currentMonth === transactionMonth && currentYear === transactionYear;
+  });
 
   const lastMonthTransactions: Transaction[] = [
     ...dummyTransactions,
     ...transactions,
-  ].filter(
-    (transaction) => new Date(transaction.date).getMonth() === lastMonth
-  );
+  ].filter((transaction) => {
+    const transactionYear = new Date(transaction.date).getFullYear();
+    const transactionMonth = new Date(transaction.date).getMonth();
+    return (
+      lastMonth === transactionMonth && currentYear === transactionYear
+    );
+  });
 
   const currentMonthCategorised = splitTransactionsByCategory(
     currentMonthTransactions
