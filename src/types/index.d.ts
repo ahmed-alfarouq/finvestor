@@ -19,6 +19,7 @@ declare type User = {
   bankAccounts: BankAccountProps[];
   savingsGoal: string;
   expensesGoals: ExpensesGoal[];
+  savingsGoalAccounts: string[];
 };
 
 declare type BankAccount = {

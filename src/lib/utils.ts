@@ -239,7 +239,7 @@ export function sortByDate<T>(
 export const filterByDates = <T>(
   array: T[],
   dates: string[],
-  getDate: (item: T) => Date | string | number,
+  getDate: (item: T) => Date | string | number
 ) => {
   return array.filter((item) =>
     dates.includes(formatDateTime(new Date(getDate(item))).dateOnly)
@@ -258,4 +258,18 @@ export const filterByYear = <T>(
   getDate: (item: T) => Date | string | number
 ) => {
   return array.filter((item) => new Date(getDate(item)).getFullYear() === year);
+};
+
+/**
+ * Check if two arrays are equal
+ * @param a The first array
+ * @param b The seconda array
+ * @returns Boolean
+ */
+export const arraysEqual = (a: string[], b: string[]) => {
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    if (!b.includes(a[i])) return false;
+  }
+  return true;
 };

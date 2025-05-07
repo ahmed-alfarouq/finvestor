@@ -36,19 +36,23 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
     return acc;
   }, [] as BankAccount[]);
 
-  const loans = await getBankLoans(uniqueAccounts[0]);
+  const loans = (await getBankLoans(uniqueAccounts[0])) || [];
 
   // Get transactions for all accounts
   const transactions: Transaction[] = [];
+
+  const savingsGoalAccounts = session.user.savingsGoalAccounts;
   let achievedAmount: number = 0;
 
   for (const account of accountsData) {
     const accountDetails = await getAccountWithTransactions(account);
     if (accountDetails?.transactions) {
-      if (accountDetails.data.subtype === "savings") {
-        achievedAmount = accountDetails.data.availableBalance;
-      }
       transactions.push(...accountDetails.transactions);
+
+      // Getting amount from accounts with transactions only (Savings, Checking)
+      achievedAmount += savingsGoalAccounts.includes(accountDetails.data.id)
+        ? accountDetails.data.availableBalance
+        : 0;
     }
   }
 
@@ -60,7 +64,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
         <BanksDataProviderWrapper
           data={{
             transactions,
-            loans: loans ? loans : [],
+            loans: loans,
             accounts,
             savingsAchievedAmount: achievedAmount,
           }}

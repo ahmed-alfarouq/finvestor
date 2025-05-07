@@ -37,6 +37,7 @@ model User {
   dwollaCustomerUrl     String
   dwollaCustomerId      String
   savingsGoal           String?
+  savingsGoalAccounts   String[]
   expensesGoals         ExpensesGoal[]
   role                  UserRole               @default(USER)
   isTwoFactorEnabled    Boolean                @default(false)

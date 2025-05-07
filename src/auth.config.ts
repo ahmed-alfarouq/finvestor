@@ -76,6 +76,7 @@ export default {
         bankAccounts,
         savingsGoal,
         expensesGoals,
+        savingsGoalAccounts,
       } = token;
 
       Object.assign(session.user, {
@@ -86,6 +87,7 @@ export default {
         bankAccounts,
         savingsGoal,
         expensesGoals,
+        savingsGoalAccounts,
       });
       return session;
     },

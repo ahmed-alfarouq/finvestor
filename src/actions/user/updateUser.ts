@@ -86,3 +86,29 @@ export const updateSavingsGoal = async (userId: string, amount: string) => {
     };
   }
 };
+
+export const updateSavingsGoalAccounts = async (
+  userId: string,
+  accounts: string[]
+) => {
+  try {
+    await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        savingsGoalAccounts: accounts,
+      },
+    });
+    revalidatePath("/");
+    return { success: "Your savings goal accounts were updated successfully!" };
+  } catch (error) {
+    console.error(
+      "An error occurred while updating savings goal accounts:",
+      error
+    );
+    return {
+      error: `Something went wrong while updating savings goal accounts!`,
+    };
+  }
+};
