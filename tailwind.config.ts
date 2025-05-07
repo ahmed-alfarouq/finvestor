@@ -165,5 +165,12 @@ export default {
       },
     },
   },
+  variants: {
+    extend: {
+      textColor: ["peer-checked"],
+      borderColor: ["peer-checked"],
+      display: ["peer-checked"],
+    },
+  },
   plugins: [tailwindcssAnimate],
 } satisfies Config;

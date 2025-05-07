@@ -1,78 +1,48 @@
 "use client";
-import { cn } from "@/lib/utils";
-import React, { useState } from "react";
-import {
-  FieldError,
-  FieldValues,
-  Path,
-  UseFormRegister,
-} from "react-hook-form";
-
+import React from "react";
+import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 import { ImCheckboxChecked } from "react-icons/im";
+import { cn } from "@/lib/utils";
 
-type checkboxProps<T extends FieldValues> = {
-  name: Path<T>;
+type CheckboxProps<T extends FieldValues> = {
+  registerName: Path<T>;
   label: string;
+  value: string;
   register: UseFormRegister<T>;
-  error?: FieldError | undefined;
+  checked: boolean;
   className?: string;
 };
 
 const Checkbox = <T extends FieldValues>({
   register,
+  registerName,
+  value,
   label,
-  name,
-  error,
+  checked,
   className,
-}: checkboxProps<T>) => {
-  const [isChecked, setIsChecked] = useState<boolean>(false);
-
-  const toggleCheckbox = () => setIsChecked((prev) => !prev);
-
-  const handleEnter = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" || e.key === " ") {
-      toggleCheckbox();
-    }
-  };
-
+}: CheckboxProps<T>) => {
   return (
-    <div className="flex items-center gap-2 my-3">
+    <label
+      htmlFor={value}
+      className={cn("flex items-center gap-2 cursor-pointer group", className)}
+    >
       <input
         type="checkbox"
-        checked={isChecked}
-        id={name}
-        {...register(name)}
-        onChange={toggleCheckbox}
-        onKeyDown={handleEnter}
-        className="sr-only"
-        aria-checked={isChecked}
+        id={value}
+        value={value}
+        {...register(registerName)}
+        className="peer sr-only"
+        defaultChecked={checked}
       />
 
-      <div
-        tabIndex={0}
-        aria-hidden={true}
-        className={cn(
-          isChecked ? "text-primary" : "text-white w-[18px] h-[18px] border",
-          "bg-white text-lg flex items-center justify-center rounded-sm focus:outline-none transition-all cursor-pointer",
-          className
-        )}
-        onClick={toggleCheckbox}
-        onKeyDown={handleEnter}
-      >
-        {isChecked && <ImCheckboxChecked />}
+      <div className="p-0 w-[18px] h-[18px] bg-white text-white border border-default-black peer-checked:text-primary peer-checked:border-primary rounded-sm transition-all">
+        <ImCheckboxChecked className="w-full h-full" />
       </div>
 
-      {label && (
-        <label
-          id={`${name}-label`}
-          htmlFor={name}
-          className="text-primary-color dark:text-gray-200 font-light cursor-pointer"
-        >
-          {label}
-        </label>
-      )}
-      {error && <p role="alert" className="text-sm text-red-500">{error.message}</p>}
-    </div>
+      <span className="text-default-black dark:text-gray-7 font-medium">
+        {label}
+      </span>
+    </label>
   );
 };
 
