@@ -1,14 +1,19 @@
 "use client";
 import Link from "next/link";
-import React, { useTransition } from "react";
+import { useSession } from "next-auth/react";
+import React, { useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
+import FormError from "@/components/form-error";
+import FormSuccess from "@/components/form-success";
+import ModalWrapper from "@/components/modal-wrapper";
 import AnimatedCounter from "@/components/animated-counter";
 
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { CreditCardIcon, VisaIcon } from "@/components/icons";
 
 import { BalanceCardProps } from "@/types";
+import { removeBankAccount } from "@/actions/bank";
 
 const BalanceCard = ({
   id,
@@ -18,14 +23,26 @@ const BalanceCard = ({
   accountNumber,
   totalAmount,
 }: BalanceCardProps) => {
+  const [showModal, setShowModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | undefined>("");
+  const [successMessage, setSuccessMessage] = useState<string | undefined>("");
   const [pending, startTransation] = useTransition();
 
+  const { update } = useSession();
   const validTypesForDetails = ["savings", "checking"];
   const removeAccount = () => {
     startTransation(async () => {
-      console.log(bankId);
+      const res = await removeBankAccount(bankId);
+      if (res?.error) {
+        setErrorMessage(res.error);
+        return;
+      }
+      await update();
+      setSuccessMessage(res?.message);
     });
   };
+
+  const toggleModal = () => setShowModal((prev) => !prev);
   return (
     <section className="rounded-xl border bg-default dark:bg-default-dark card-shadow p-4 sm:px-7 sm:py-5">
       <header className="h-12 flex justify-between items-center border-b border-special pb-2">
@@ -61,8 +78,7 @@ const BalanceCard = ({
           size="lg"
           variant="ghost"
           className="text-left p-0 hover:bg-transparent hover:text-special-red"
-          onClick={removeAccount}
-          disabled={pending}
+          onClick={toggleModal}
         >
           Remove
         </Button>
@@ -74,6 +90,31 @@ const BalanceCard = ({
           </Button>
         )}
       </div>
+      <ModalWrapper isOpen={showModal} close={toggleModal}>
+        <div className="space-y-4 p-4 text-center">
+          <h2 className="text-xl font-semibold text-special-red">
+            Are you sure?
+          </h2>
+          <p className="text-sm text-gray-1 dark:text-gray-6">
+            Removing this will delete <strong>all associated accounts</strong>{" "}
+            linked to this bank, not just this one.
+          </p>
+          <FormError message={errorMessage} />
+          <FormSuccess message={successMessage} />
+          <div className="flex justify-center gap-4 pt-4">
+            <Button variant="outline" onClick={toggleModal} disabled={pending}>
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={removeAccount}
+              disabled={pending}
+            >
+              Yes, Remove All
+            </Button>
+          </div>
+        </div>
+      </ModalWrapper>
     </section>
   );
 };
