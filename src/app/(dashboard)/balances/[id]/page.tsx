@@ -19,6 +19,7 @@ const AccountDetails = async ({
       <NotAvailable
         title="Account Details"
         message="Couldn't find the desired account!"
+        className="flex w-full flex-1 flex-col gap-8 px-5 sm:px-8 py-7 lg:py-12"
       />
     );
 
