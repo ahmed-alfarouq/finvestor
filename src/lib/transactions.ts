@@ -162,19 +162,6 @@ export const compareTransactionsByDate = (
 };
 
 /**
- * Get the status of a transaction based on the date
- * @param date The date of the transaction
- * @returns The status of the transaction
- */
-export const getTransactionStatus = (date: Date) => {
-  const today = new Date();
-  const twoDaysAgo = new Date(today);
-  twoDaysAgo.setDate(today.getDate() - 2);
-
-  return date > twoDaysAgo ? "Processing" : "Success";
-};
-
-/**
  * Splits an array of transactions by their category
  * @param transactions The transactions to split
  * @returns A new array of transactions grouped by category
