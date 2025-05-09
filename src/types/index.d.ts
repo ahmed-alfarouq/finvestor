@@ -215,6 +215,16 @@ declare interface EmptyGoalsBoxProps {
   className?: string;
 }
 
+declare interface BalanceCardProps {
+  id: string;
+  bankId: string;
+  type: string;
+  subtype: string;
+  name: string;
+  accountNumber: string;
+  totalAmount: number;
+}
+
 declare interface ExpensesGoal {
   id: string;
   userId: string;
