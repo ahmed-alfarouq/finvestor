@@ -6,6 +6,7 @@ import { createLinkToken, exchangePublicToken } from "@/actions/plaid";
 
 import { Button } from "./button";
 import { PlaidLinkProps } from "@/types";
+import { useSession } from "next-auth/react";
 
 const PlaidLink = ({
   user,
@@ -18,6 +19,7 @@ const PlaidLink = ({
   onClick = () => {},
   className,
 }: PlaidLinkProps) => {
+  const { update } = useSession();
   const [token, setToken] = useState("");
   const [disabled, setDisabled] = useState(false);
 
@@ -37,6 +39,7 @@ const PlaidLink = ({
         user,
         accountType,
       });
+      await update();
       if (res && res.publicTokenExchange === "complete") {
         handleSuccess();
       }
