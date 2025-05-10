@@ -27,26 +27,35 @@ const RecentTransactions = ({
           View All <ArrowRight className="w-4 h-4" />
         </Link>
       </header>
-      <Tabs
-        defaultValue="revenue"
-        className="w-full h-full bg-default dark:bg-default-dark rounded-lg py-4 px-6 card-shadow"
-      >
-        <TabsList className="mb-4 w-full flex flex-nowrap gap-8 p-0 overflow-x-auto overflow-y-hidden">
-          <TabsTrigger value="revenue" className="px-0 text-base font-bold">
-            Revenue
-          </TabsTrigger>
-          <TabsTrigger value="expenses" className="px-0 text-base font-bold">
-            Expenses
-          </TabsTrigger>
-        </TabsList>
+      {!!transactions.length ? (
+        <Tabs
+          defaultValue="revenue"
+          className="w-full h-full bg-default dark:bg-default-dark rounded-lg py-4 px-6 card-shadow"
+        >
+          <TabsList className="mb-4 w-full flex flex-nowrap gap-8 p-0 overflow-x-auto overflow-y-hidden">
+            <TabsTrigger value="revenue" className="px-0 text-base font-bold">
+              Revenue
+            </TabsTrigger>
+            <TabsTrigger value="expenses" className="px-0 text-base font-bold">
+              Expenses
+            </TabsTrigger>
+          </TabsList>
 
-        <TabsContent value="revenue" className="space-y-4">
-          <TransactionsList transactions={revenue} />
-        </TabsContent>
-        <TabsContent value="expenses" className="space-y-4">
-          <TransactionsList transactions={expenses} />
-        </TabsContent>
-      </Tabs>
+          <TabsContent value="revenue" className="space-y-4">
+            <TransactionsList transactions={revenue} />
+          </TabsContent>
+          <TabsContent value="expenses" className="space-y-4">
+            <TransactionsList transactions={expenses} />
+          </TabsContent>
+        </Tabs>
+      ) : (
+        <section className="w-full h-full flex items-center justify-center bg-default dark:bg-default-dark rounded-lg py-4 px-6 card-shadow">
+          <p className="text-center sm:text-xl text-gray-1 dark:text-gray-7">
+            No transactions found, please connect your checking/savings accounts
+            to see your transactions
+          </p>
+        </section>
+      )}
     </section>
   );
 };
