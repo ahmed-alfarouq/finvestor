@@ -24,7 +24,7 @@ const ExpensesGoals = () => {
     <section>
       <h2 className="card-title">Expenses Goals By Category</h2>
 
-      <div className="w-full grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4">
+      <div className="w-full flex flex-col xs:grid xs:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4">
         {!!categories.length ? (
           categories.map((category) => (
             <ExpenseGoal
