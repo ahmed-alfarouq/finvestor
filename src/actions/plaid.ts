@@ -54,12 +54,18 @@ export const exchangePublicToken = async ({
   try {
     const { accessToken, itemId } = await exchangePlaidToken(publicToken);
 
-    const allAccounts = await getPlaidAccountsSafely(accessToken, accountType);
+    const { accounts: allAccounts, item } = await getPlaidAccountsSafely(
+      accessToken,
+      accountType
+    );
 
-    /**
-     ** Dwolla only supports checking and savings accounts for processor tokens
-     */
-    await processDwollaEligibleAccounts(allAccounts, accessToken, itemId, user);
+    await processDwollaEligibleAccounts(
+      allAccounts,
+      accessToken,
+      itemId,
+      item.institution_name!,
+      user
+    );
 
     // Handle the case of liabilities accounts
     await processLiabilityAccounts(allAccounts, accessToken, itemId, user);
@@ -89,18 +95,18 @@ const exchangePlaidToken = async (publicToken: string) => {
 const getPlaidAccountsSafely = async (
   accessToken: string,
   type: ConnectAccountType
-): Promise<AccountBase[]> => {
+) => {
   try {
     if (type === "liability") {
       const response = await plaidClient.liabilitiesGet({
         access_token: accessToken,
       });
-      return response.data.accounts;
+      return response.data;
     }
     const response = await plaidClient.accountsGet({
       access_token: accessToken,
     });
-    return response.data.accounts;
+    return response.data;
   } catch (error) {
     console.error(error);
     throw error;
@@ -111,8 +117,12 @@ const processDwollaEligibleAccounts = async (
   accounts: AccountBase[],
   accessToken: string,
   bankId: string,
+  bankName: string,
   user: User
 ) => {
+  /**
+   ** Dwolla only supports checking and savings accounts for processor tokens
+   */
   const eligibleAccounts = accounts.filter(
     (a) => a.subtype === "checking" || a.subtype === "savings"
   );
@@ -128,7 +138,7 @@ const processDwollaEligibleAccounts = async (
       const fundingSourceUrl = await addFundingSource({
         dwollaCustomerId: user.dwollaCustomerId,
         processorToken: processorToken.data.processor_token,
-        bankName: account.name,
+        bankName: bankName || account.name,
       });
 
       if (!fundingSourceUrl) throw new Error("Funding source creation failed");
