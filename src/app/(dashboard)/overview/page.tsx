@@ -15,7 +15,7 @@ const OverviewPage = () => {
   const user = useCurrentUser();
   const { transactions, loans, accounts, savingsAchievedAmount } =
     useBanksDataContext();
-
+  
   return (
     <section className="flex w-full flex-1 flex-col gap-8 px-5 sm:px-8 py-7 lg:py-12">
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-3">
@@ -23,13 +23,20 @@ const OverviewPage = () => {
           accounts={accounts.data}
           totalAvailableBalance={accounts.totalAvailableBalance}
         />
-        {user && user.savingsGoal ? (
+        {user && user.savingsGoal && savingsAchievedAmount ? (
           <GoalsBox
             title="Goals"
             targetAmount={Number(user.savingsGoal)}
             achievedAmount={savingsAchievedAmount}
             thisMonthTarget={Number(user.savingsGoal)}
             date={new Date()}
+          />
+        ) : user && user.savingsGoal && !savingsAchievedAmount ? (
+          <EmptyGoalsBox
+            title="Goals"
+            message="Select an account to continue setting up your goal."
+            date={new Date()}
+            selectedAccounts={false}
           />
         ) : (
           <EmptyGoalsBox title="Goals" date={new Date()} />
