@@ -10,7 +10,9 @@ import { PlaidLinkProps } from "@/types";
 const PlaidLink = ({
   user,
   variant,
+  title,
   icon,
+  accountType = "normal",
   handleSuccess = () => {},
   handleExit = () => {},
   onClick = () => {},
@@ -21,7 +23,7 @@ const PlaidLink = ({
 
   useEffect(() => {
     const getLinkToken = async () => {
-      const data = await createLinkToken(user);
+      const data = await createLinkToken(user, accountType);
       if (data && data.linkToken) setToken(data?.linkToken);
     };
     getLinkToken();
@@ -33,6 +35,7 @@ const PlaidLink = ({
       const res = await exchangePublicToken({
         publicToken: public_token,
         user,
+        accountType,
       });
       if (res && res.publicTokenExchange === "complete") {
         handleSuccess();
@@ -64,7 +67,7 @@ const PlaidLink = ({
       {icon && (
         <Image src={icon} alt="Connect bank account" width={24} height={24} />
       )}
-      Connect Bank
+      {title ? title : "Connect Bank"}
     </Button>
   );
 };

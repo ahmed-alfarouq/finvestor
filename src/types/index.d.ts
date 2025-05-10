@@ -1,6 +1,8 @@
 import { FieldError } from "react-hook-form";
 import { Control } from "react-hook-form";
 
+declare type ConnectAccountType = "normal" | "liability";
+
 // ========================================
 declare type User = {
   id: string;
@@ -182,7 +184,9 @@ declare interface PlaidLinkProps {
     | "outline"
     | "secondary"
     | "link";
+  title?: string;
   icon?: string;
+  accountType?: ConnectAccountType;
   dwollaCustomerId?: string;
   className?: string;
   handleSuccess?: () => void;
@@ -211,6 +215,8 @@ declare interface GoalsBoxProps {
 
 declare interface EmptyGoalsBoxProps {
   title: string;
+  message?: string;
+  selectedAccounts?: boolean;
   date: Date;
   className?: string;
 }
@@ -311,6 +317,7 @@ declare interface CreateTransactionProps {
 declare interface exchangePublicTokenProps {
   publicToken: string;
   user: User;
+  accountType: ConnectAccountType;
 }
 
 declare interface createBankAccountProps {

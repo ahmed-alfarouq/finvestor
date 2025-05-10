@@ -16,7 +16,7 @@ const BalancesPage = () => {
   return (
     <section className="flex w-full flex-1 flex-col gap-3 px-5 sm:px-8 py-7 lg:py-12">
       <h1 className="card-title">Balances</h1>
-      <section className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-4">
+      <section className="grid sm:grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-4">
         {accounts.data.map((account) => (
           <BalanceCard
             key={account.id}
@@ -29,8 +29,9 @@ const BalancesPage = () => {
             totalAmount={account.availableBalance || account.currentBalance}
           />
         ))}
-        <section className="min-h-72 flex items-center justify-center rounded-xl border bg-default dark:bg-default-dark card-shadow p-4 sm:px-7 sm:py-5">
+        <section className="min-h-72 flex flex-col items-center justify-center gap-3 rounded-xl border bg-default dark:bg-default-dark card-shadow p-4 sm:px-7 sm:py-5">
           <PlaidLink user={user} />
+          <PlaidLink user={user} accountType="liability" title="Connect Liability Accounts" />
         </section>
       </section>
     </section>

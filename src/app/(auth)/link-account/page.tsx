@@ -7,6 +7,8 @@ import CardWrapper from "@/components/auth/CardWrapper";
 import PlaidLink from "@/components/ui/plaid-link";
 import Loading from "@/app/loading";
 
+import { cn } from "@/lib/utils";
+
 const LinkAccount = () => {
   const [collectingData, setCollectingData] = useState(false);
   const { session } = UseSessionContext();
@@ -22,11 +24,7 @@ const LinkAccount = () => {
 
   const handleSuccess = () => {
     setCollectingData(false);
-    /**
-     * This is a workaround to refresh the page after the user has linked their account
-     * Can't use router because it doesn't refresh the entire session
-     */
-    window.location.href = "/overview";
+    router.push("/overview");
   };
 
   const handleExit = () => {
@@ -47,6 +45,23 @@ const LinkAccount = () => {
           handleSuccess={handleSuccess}
           handleExit={handleExit}
           onClick={handleClick}
+        />
+        <p
+          className={cn(
+            "flex justify-center items-center gap-2",
+            "before:block before:border before:border-primary before:after:border-primary-dark before:w-32 before:max-w-[30%]",
+            "after:block after:border after:border-primary dark:after:border-primary-dark after:w-32 after:max-w-[30%]"
+          )}
+        >
+          Or
+        </p>
+        <PlaidLink
+          user={session.user}
+          handleSuccess={handleSuccess}
+          handleExit={handleExit}
+          onClick={handleClick}
+          accountType="liability"
+          title="Connect Liability Accounts"
         />
         <p className="font-medium text-default-black dark:text-gray-7">
           {collectingData && (

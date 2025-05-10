@@ -6,25 +6,37 @@ import { plaidClient } from "@/plaid";
 import { createBankAccount } from "@/actions/user/updateUser";
 
 import {
+  AccountBase,
   CountryCode,
-  ProcessorTokenCreateRequest,
+  CreditAccountSubtype,
+  DepositoryAccountSubtype,
+  LinkTokenAccountFilters,
+  LinkTokenCreateRequest,
+  LoanAccountSubtype,
   ProcessorTokenCreateRequestProcessorEnum,
   Products,
 } from "plaid";
 import { addFundingSource } from "./dwolla";
 
-import { exchangePublicTokenProps, User } from "@/types";
+import { ConnectAccountType, exchangePublicTokenProps, User } from "@/types";
 
-export const createLinkToken = async (user: User) => {
+export const createLinkToken = async (
+  user: User,
+  accountType: ConnectAccountType
+) => {
   try {
-    const tokenParams = {
+    const accountFilters = getAccountFilters(accountType);
+    const products = getAccountProducts(accountType);
+
+    const tokenParams: LinkTokenCreateRequest = {
       user: {
         client_user_id: user.id,
       },
       client_name: `${user.firstName} ${user.lastName}`,
-      products: ["auth", "transactions", "liabilities"] as Products[],
+      products,
       language: "en",
       country_codes: ["US"] as CountryCode[],
+      account_filters: accountFilters,
     };
     const res = await plaidClient.linkTokenCreate(tokenParams);
     return { linkToken: res.data.link_token };
@@ -37,90 +49,22 @@ export const createLinkToken = async (user: User) => {
 export const exchangePublicToken = async ({
   publicToken,
   user,
+  accountType,
 }: exchangePublicTokenProps) => {
   try {
-    const res = await plaidClient.itemPublicTokenExchange({
-      public_token: publicToken,
-    });
+    const { accessToken, itemId } = await exchangePlaidToken(publicToken);
 
-    const accessToken = res.data.access_token;
-    const bankId = res.data.item_id;
+    const allAccounts = await getPlaidAccountsSafely(accessToken, accountType);
 
-    const accountsResponse = await plaidClient.liabilitiesGet({
-      access_token: accessToken,
-    });
-
-    const allAccounts = accountsResponse.data.accounts;
-
-    // Filter accounts to only those that can be used for processor tokens
     /**
      ** Dwolla only supports checking and savings accounts for processor tokens
      */
-    const dwollaEligibleAccounts = allAccounts.filter(
-      (account) =>
-        account.type === "depository" &&
-        (account.subtype === "checking" || account.subtype === "savings")
-    );
-
-    if (dwollaEligibleAccounts.length) {
-      for (const accountData of dwollaEligibleAccounts) {
-        try {
-          const request: ProcessorTokenCreateRequest = {
-            access_token: accessToken,
-            account_id: accountData.account_id,
-            processor: "dwolla" as ProcessorTokenCreateRequestProcessorEnum,
-          };
-
-          const processorTokenResponse = await plaidClient.processorTokenCreate(
-            request
-          );
-          const processorToken = processorTokenResponse.data.processor_token;
-
-          const fundingSourceUrl: string | null | undefined =
-            await addFundingSource({
-              dwollaCustomerId: user.dwollaCustomerId,
-              processorToken,
-              bankName: accountData.name,
-            });
-
-          if (!fundingSourceUrl) {
-            throw new Error("Failed to create funding source");
-          }
-
-          await createBankAccount({
-            userId: user.id,
-            bankId,
-            accountId: accountData.account_id,
-            accessToken,
-            fundingSourceUrl,
-            sharableId: encryptId(accountData.account_id),
-          });
-        } catch (error) {
-          console.error("Error processing account:", accountData.name, error);
-          // Continue with next account even if one fails
-          continue;
-        }
-      }
-    }
+    await processDwollaEligibleAccounts(allAccounts, accessToken, itemId, user);
 
     // Handle the case of liabilities accounts
-    const liabilitiesAccounts = allAccounts.filter(
-      (account) =>
-        account.subtype !== "checking" && account.subtype !== "savings"
-    );
+    await processLiabilityAccounts(allAccounts, accessToken, itemId, user);
 
-    for (const account of liabilitiesAccounts) {
-      await createBankAccount({
-        userId: user.id,
-        bankId,
-        accountId: account.account_id,
-        accessToken,
-        fundingSourceUrl: "",
-        sharableId: encryptId(account.account_id),
-      });
-    }
-
-    // Revalidate path to show the new bank accounts
+    // Remove cache to show the new bank accounts
     revalidatePath("/");
 
     return {
@@ -130,4 +74,131 @@ export const exchangePublicToken = async ({
     console.error("Error in exchangePublicToken:", err);
     throw err; // Re-throw to handle in the UI
   }
+};
+
+const exchangePlaidToken = async (publicToken: string) => {
+  const res = await plaidClient.itemPublicTokenExchange({
+    public_token: publicToken,
+  });
+  return {
+    accessToken: res.data.access_token,
+    itemId: res.data.item_id,
+  };
+};
+
+const getPlaidAccountsSafely = async (
+  accessToken: string,
+  type: ConnectAccountType
+): Promise<AccountBase[]> => {
+  try {
+    if (type === "liability") {
+      const response = await plaidClient.liabilitiesGet({
+        access_token: accessToken,
+      });
+      return response.data.accounts;
+    }
+    const response = await plaidClient.accountsGet({
+      access_token: accessToken,
+    });
+    return response.data.accounts;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+const processDwollaEligibleAccounts = async (
+  accounts: AccountBase[],
+  accessToken: string,
+  bankId: string,
+  user: User
+) => {
+  const eligibleAccounts = accounts.filter(
+    (a) => a.subtype === "checking" || a.subtype === "savings"
+  );
+
+  for (const account of eligibleAccounts) {
+    try {
+      const processorToken = await plaidClient.processorTokenCreate({
+        access_token: accessToken,
+        account_id: account.account_id,
+        processor: "dwolla" as ProcessorTokenCreateRequestProcessorEnum,
+      });
+
+      const fundingSourceUrl = await addFundingSource({
+        dwollaCustomerId: user.dwollaCustomerId,
+        processorToken: processorToken.data.processor_token,
+        bankName: account.name,
+      });
+
+      if (!fundingSourceUrl) throw new Error("Funding source creation failed");
+
+      await createBankAccount({
+        userId: user.id,
+        bankId,
+        accountId: account.account_id,
+        accessToken,
+        fundingSourceUrl,
+        sharableId: encryptId(account.account_id),
+      });
+    } catch (error) {
+      console.error(`Failed Dwolla setup for account ${account.name}`, error);
+    }
+  }
+};
+
+const processLiabilityAccounts = async (
+  accounts: AccountBase[],
+  accessToken: string,
+  bankId: string,
+  user: User
+) => {
+  const liabilities = accounts.filter(
+    (a) => a.subtype !== "checking" && a.subtype !== "savings"
+  );
+
+  for (const account of liabilities) {
+    await createBankAccount({
+      userId: user.id,
+      bankId,
+      accountId: account.account_id,
+      accessToken,
+      fundingSourceUrl: "",
+      sharableId: encryptId(account.account_id),
+    });
+  }
+};
+
+const getAccountFilters = (accountType: ConnectAccountType) => {
+  if (accountType === "liability") {
+    const liabilitiesFilter: LinkTokenAccountFilters = {
+      credit: {
+        account_subtypes: [CreditAccountSubtype.CreditCard],
+      },
+      loan: {
+        account_subtypes: [
+          LoanAccountSubtype.Loan,
+          LoanAccountSubtype.Mortgage,
+        ],
+      },
+    };
+    return liabilitiesFilter;
+  }
+
+  const depositoryFilter: LinkTokenAccountFilters = {
+    depository: {
+      account_subtypes: [
+        DepositoryAccountSubtype.Checking,
+        DepositoryAccountSubtype.Savings,
+      ],
+    },
+  };
+  return depositoryFilter;
+};
+
+const getAccountProducts = (accounType: ConnectAccountType) => {
+  if (accounType === "liability") {
+    return ["auth", "transactions", "liabilities"] as Products[];
+  }
+  return ["auth", "transactions"] as Products[];
 };
