@@ -37,7 +37,7 @@ const EmptyGoalsBox = ({
         </div>
 
         <div className="flex flex-col justify-center items-center gap-3 w-full h-full">
-          <p className="text-lg text-gray-2 dark:text-gray-7 font-semibold">
+          <p className="text-lg text-gray-2 dark:text-gray-7 font-semibold text-center">
             {message ? message : "You didn't add a goal yet."}
           </p>
           {selectedAccounts ? (
