@@ -5,8 +5,7 @@ import { useBanksDataContext } from "@/context/BanksDataContext";
 import ExpenseGoal from "./components/expense-goal";
 
 import { splitTransactionsByCategory } from "@/lib/transactions";
-
-import { dummyTransactions } from "@/constants";
+import NotAvailable from "@/components/not-available";
 
 const ExpensesGoals = () => {
   const user = useCurrentUser();
@@ -18,7 +17,6 @@ const ExpensesGoals = () => {
 
   const transactionsByCategories = splitTransactionsByCategory([
     ...transactions,
-    ...dummyTransactions,
   ]);
   const categories = Object.keys(transactionsByCategories);
 
@@ -27,15 +25,22 @@ const ExpensesGoals = () => {
       <h2 className="card-title">Expenses Goals By Category</h2>
 
       <div className="w-full grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4">
-        {categories.map((category) => (
-          <ExpenseGoal
-            key={category}
-            icon={transactionsByCategories[category][0].category_icon}
-            category={category}
-            categoryTransactions={transactionsByCategories[category]}
-            goal={getCategoryGoal(category) || "0"}
+        {!!categories.length ? (
+          categories.map((category) => (
+            <ExpenseGoal
+              key={category}
+              icon={transactionsByCategories[category][0].category_icon}
+              category={category}
+              categoryTransactions={transactionsByCategories[category]}
+              goal={getCategoryGoal(category) || "0"}
+            />
+          ))
+        ) : (
+          <NotAvailable
+            title=""
+            message="Oops! No transactions to show. Try connecting a checking or savings account."
           />
-        ))}
+        )}
       </div>
     </section>
   );
