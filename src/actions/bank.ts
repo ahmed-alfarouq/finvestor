@@ -129,7 +129,7 @@ export const getAccountWithTransactions = async (account: BankAccount) => {
 
       const account = {
         id: accountData.account_id,
-        bankId: bank.id,
+        bankId: bank.bankId,
         availableBalance: accountData.balances.available!,
         currentBalance: accountData.balances.current!,
         institutionId: institution?.institution_id,
