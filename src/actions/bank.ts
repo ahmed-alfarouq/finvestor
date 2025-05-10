@@ -32,50 +32,48 @@ export const getAccounts = async (userId: string) => {
     // Get accounts from plaid
     const nestedAccounts = await Promise.all(
       uniqueBanks.map(async (bank: BankAccountProps) => {
-        const accountResponse = await plaidClient.liabilitiesGet({
-          access_token: bank.accessToken,
-        });
+        try {
+          const data = await getPlaidDataSafly(
+            !!bank.fundingSourceUrl.length,
+            bank.accessToken
+          );
 
-        const accounts = accountResponse.data.accounts;
+          const { accounts, item } = data;
+          if (!accounts || !accounts.length) {
+            return []; // skip if no accounts returned
+          }
 
-        if (!accounts) {
-          throw Error("Accounts not found");
-        }
+          const institution = await getInstitution(item.institution_id ?? "");
 
-        const institution = await getInstitution(
-          accountResponse.data.item.institution_id!
-        );
+          if (!institution) {
+            throw new Error("Failed to fetch institution info.");
+          }
 
-        if (!institution)
-          throw Error("An error occurred while getting the accounts: Line 23");
-
-        const returnedAccounts: BankAccount[] = [];
-
-        for (const accountData of accounts) {
-          const account: BankAccount = {
+          return accounts.map((accountData) => ({
             bankId: bank.bankId,
             id: accountData.account_id!,
             availableBalance: accountData.balances.available!,
             currentBalance: accountData.balances.current!,
-            institutionId: institution?.institution_id,
-            institutionName: institution?.name,
+            institutionId: institution.institution_id,
+            institutionName: institution.name,
             name: accountData.name!,
             officialName: accountData.official_name!,
             mask: accountData.mask!,
-            type: accountData.type! as string,
-            subtype: accountData.subtype! as string,
+            type: accountData.type!,
+            subtype: accountData.subtype!,
             sharableId: bank.sharableId!,
-          };
-          returnedAccounts.push(account);
+          }));
+        } catch (err) {
+          console.error("Error fetching accounts for bank:", bank.bankId, err);
+          return [];
         }
-
-        return returnedAccounts;
       })
     );
 
     const accounts = nestedAccounts.flat();
 
-    if (!accounts) return { error: "No accounts found" };
+    if (!accounts)
+      return { error: "No accounts found for the connected banks." };
 
     const totalBanks = accounts.length || 0;
     const totalAvailableBalance =
@@ -86,8 +84,10 @@ export const getAccounts = async (userId: string) => {
         0
       ) || 0;
     return { data: accounts, totalBanks, totalAvailableBalance };
-  } catch {
-    throw Error("Error happened while getting bank accounts");
+  } catch (err) {
+    throw new Error("Error happened while getting bank accounts:", {
+      cause: err,
+    });
   }
 };
 
@@ -285,4 +285,21 @@ export const removeBankAccount = async (bankId: string) => {
   } catch (error) {
     console.error("An error occurred while removing the account:", error);
   }
+};
+
+const getPlaidDataSafly = async (
+  hasFundingSource: boolean,
+  accessToken: string
+) => {
+  if (!hasFundingSource) {
+    const res = await plaidClient.liabilitiesGet({
+      access_token: accessToken,
+    });
+    return res.data;
+  }
+
+  const res = await plaidClient.accountsGet({
+    access_token: accessToken,
+  });
+  return res.data;
 };
