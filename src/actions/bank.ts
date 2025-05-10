@@ -93,10 +93,7 @@ export const getAccounts = async (userId: string) => {
 
 export const getAccountWithTransactions = async (account: BankAccount) => {
   // Dwolla and Plaid only supports checking and savings accounts for transactions
-  if (
-    account.type !== "depository" ||
-    (account.subtype !== "savings" && account.subtype !== "checking")
-  ) {
+  if (account.subtype !== "savings" && account.subtype !== "checking") {
     return {
       error:
         "Transactions are not available for this account type. valid types 'savings', and 'checking'",
@@ -108,7 +105,7 @@ export const getAccountWithTransactions = async (account: BankAccount) => {
     const bank = await getBank(accountId);
 
     if (bank) {
-      const accountsResponse = await plaidClient.liabilitiesGet({
+      const accountsResponse = await plaidClient.accountsGet({
         access_token: bank.accessToken,
       });
       const accountData = accountsResponse.data.accounts.find(
@@ -203,6 +200,7 @@ export const getBankLoans = async (account: BankAccount) => {
     console.error("An error occured while getting loans", error);
   }
 };
+
 export const getInstitution = async (institutionId: string) => {
   try {
     const institutionResponse = await plaidClient.institutionsGetById({
