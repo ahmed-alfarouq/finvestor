@@ -12,50 +12,64 @@ import RefreshSession from "@/components/features/RefreshSession";
 import DashboardHeader from "@/components/features/DashboardHeader";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
-import { BankAccount, Transaction } from "@/types";
+import { Transaction } from "@/types";
 import BanksDataProviderWrapper from "@/components/wrappers/BanksDataProviderWrapper";
 
 const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
   const session = await auth();
+  if (!session?.user?.id) return <Loading />;
 
-  if (!session || !session.user.id) return <Loading />;
-
-  // Get all accounts
-  const accounts = await getAccounts(session.user.id);
-
-  // If no accounts, refresh session maybe something went wrong
-  if (!accounts || !accounts.data?.length) return <RefreshSession />;
-  const accountsData = accounts.data;
-
-  // Get liabilities for banks, we only want one instance of each bank
-  const uniqueAccounts = accountsData.reduce((acc, account) => {
-    const bankExists = acc.find((a) => a.bankId === account.bankId);
-    if (!bankExists) {
-      acc.push(account);
-    }
-    return acc;
-  }, [] as BankAccount[]);
-
-  const loans = (await getBankLoans(uniqueAccounts[0])) || [];
-
-  // Get transactions for all accounts
-  const transactions: Transaction[] = [];
-
+  const userId = session.user.id;
   const savingsGoalAccounts = session.user.savingsGoalAccounts;
-  let achievedAmount: number = 0;
+  const liabilitiesTypes = ["checking", "savings"];
 
-  for (const account of accountsData) {
-    const accountDetails = await getAccountWithTransactions(account);
-    if (accountDetails?.transactions) {
-      transactions.push(...accountDetails.transactions);
+  // Fetch all bank accounts
+  const accountResponse = await getAccounts(userId);
+  const allAccounts = accountResponse?.data ?? [];
 
-      // Getting amount from accounts with transactions only (Savings, Checking)
-      achievedAmount += savingsGoalAccounts.includes(accountDetails.data.id)
-        ? accountDetails.data.availableBalance
-        : 0;
-    }
+  // Handle empty or failed account fetch
+  if (!accountResponse || !accountResponse.data?.length) {
+    return (
+      <section className="h-full w-full flex items-center justify-center">
+        <RefreshSession />
+      </section>
+    );
   }
 
+  // Filter liability (loan/credit) accounts and transaction-supported accounts
+  const liabilityAccounts = allAccounts.filter(
+    (acc) => !liabilitiesTypes.includes(acc.subtype)
+  );
+
+  const transactionAccounts = allAccounts.filter((acc) =>
+    liabilitiesTypes.includes(acc.subtype)
+  );
+
+  // Fetch loans for first liability account, if any
+  const loans = liabilityAccounts.length
+    ? (await getBankLoans(liabilityAccounts[0])) || []
+    : [];
+
+  // Calculate total achieved savings goal
+  const savingsAchievedAmount = allAccounts.reduce((total, acc) => {
+    return savingsGoalAccounts.includes(acc.id)
+      ? total + (acc.availableBalance ?? 0)
+      : total;
+  }, 0);
+
+  // Fetch transactions for distinct banks only once
+  const fetchedBanks = new Set<string>();
+  const transactions: Transaction[] = [];
+
+  for (const account of transactionAccounts) {
+    if (!fetchedBanks.has(account.bankId)) {
+      const accountDetails = await getAccountWithTransactions(account);
+      if (accountDetails?.transactions?.length) {
+        transactions.push(...accountDetails.transactions);
+      }
+      fetchedBanks.add(account.bankId);
+    }
+  }
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -65,8 +79,8 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
           data={{
             transactions,
             loans: loans,
-            accounts,
-            savingsAchievedAmount: achievedAmount,
+            accounts: accountResponse,
+            savingsAchievedAmount,
           }}
         >
           {children}
