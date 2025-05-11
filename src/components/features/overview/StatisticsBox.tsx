@@ -19,9 +19,16 @@ import {
   lastYearTransactions,
 } from "@/constants";
 
+import { cn } from "@/lib/utils";
 import { Transaction } from "@/types";
 
-const StatisticsBox = ({ transactions }: { transactions: Transaction[] }) => {
+const StatisticsBox = ({
+  transactions,
+  className,
+}: {
+  transactions: Transaction[];
+  className?: string;
+}) => {
   const [comparedExpenses, setComparedExpenses] = useState<{
     currentPeriod: number[];
     lastPeriod: number[];
@@ -49,7 +56,7 @@ const StatisticsBox = ({ transactions }: { transactions: Transaction[] }) => {
   }, [transactions, statisticsType]);
 
   return (
-    <section className="h-full flex flex-col gap-2">
+    <section className={cn("h-full flex flex-col gap-2", className)}>
       <header className="flex items-center justify-between gap-4">
         <h2 className="card-title">Statistics</h2>
         <span className="text-sm text-gray-3 dark:text-gray-5 font-medium truncate">
