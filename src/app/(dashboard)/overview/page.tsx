@@ -1,4 +1,5 @@
 "use client";
+import PageContainer from "@/components/page-container";
 import GoalsBox from "@/components/features/overview/GoalsBox";
 import LoansBox from "@/components/features/overview/LoansBox";
 import EmptyGoalsBox from "@/components/features/EmptyGoalsBox";
@@ -15,9 +16,9 @@ const OverviewPage = () => {
   const user = useCurrentUser();
   const { transactions, loans, accounts, savingsAchievedAmount } =
     useBanksDataContext();
-  
+
   return (
-    <section className="flex w-full flex-1 flex-col gap-8 px-5 sm:px-8 py-7 lg:py-12">
+    <PageContainer>
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-3">
         <TotalBalanceBox
           accounts={accounts.data}
@@ -50,7 +51,7 @@ const OverviewPage = () => {
           <ExpensesBox transactions={transactions} />
         </div>
       </section>
-    </section>
+    </PageContainer>
   );
 };
 

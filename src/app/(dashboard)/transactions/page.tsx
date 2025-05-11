@@ -1,10 +1,9 @@
 "use client";
 import { useBanksDataContext } from "@/context/BanksDataContext";
 
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-import { TabsContent } from "@radix-ui/react-tabs";
+import PageContainer from "@/components/page-container";
 import TransactionsTable from "@/components/features/TransactionsTable";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const TransactionsPage = () => {
   const { transactions } = useBanksDataContext();
@@ -14,7 +13,7 @@ const TransactionsPage = () => {
   const expenses = transactions.filter((t) => t.amount > 0);
 
   return (
-    <section className="flex w-full flex-1 flex-col gap-8 px-5 sm:px-8 py-7 lg:py-12">
+    <PageContainer>
       <h2 className="card-title">Recent Transactions</h2>
       {!!transactions.length ? (
         <Tabs defaultValue="all">
@@ -47,7 +46,7 @@ const TransactionsPage = () => {
           </p>
         </section>
       )}
-    </section>
+    </PageContainer>
   );
 };
 

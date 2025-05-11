@@ -2,6 +2,7 @@ import { getTransactions } from "@/actions/bank";
 import { getBank } from "@/actions/user/getUserData";
 
 import NotAvailable from "@/components/not-available";
+import PageContainer from "@/components/page-container";
 import TransactionsTable from "@/components/features/TransactionsTable";
 import AccountDetailsBox from "@/components/features/balances/AccountDetailsBox";
 
@@ -32,7 +33,7 @@ const AccountDetails = async ({
   );
 
   return (
-    <section className="flex w-full flex-1 flex-col gap-8 px-5 sm:px-8 py-7 lg:py-12">
+    <PageContainer>
       <AccountDetailsBox accountId={account.accountId} />
       {filteredTransactions?.length ? (
         <section>
@@ -45,7 +46,7 @@ const AccountDetails = async ({
           message="No transactions available."
         />
       )}
-    </section>
+    </PageContainer>
   );
 };
 
