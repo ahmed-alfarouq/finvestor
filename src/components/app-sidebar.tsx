@@ -1,12 +1,9 @@
 "use client";
-
-import React from "react";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import useCurrentUser from "@/hooks/use-current-user";
 
-import Image from "next/image";
 import NavLink from "./nav-link";
-import PlaidLink from "./ui/plaid-link";
-import { usePathname } from "next/navigation";
 
 import { NavUser } from "@/components/nav-user";
 import {
@@ -19,15 +16,15 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
-import { ArrowLeftRight, Wallet } from "lucide-react";
-import { AiOutlineWindows } from "react-icons/ai";
-import { FaMoneyBills } from "react-icons/fa6";
-import { BiMoneyWithdraw, BiTargetLock } from "react-icons/bi";
 import { CiSettings } from "react-icons/ci";
+import { AiOutlineWindows } from "react-icons/ai";
+import { FaMoneyBillTransfer } from "react-icons/fa6";
+import { ArrowLeftRight, Wallet } from "lucide-react";
+import { BiMoneyWithdraw, BiTargetLock } from "react-icons/bi";
 
 const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
-  const user = useCurrentUser();
   const { toggleSidebar } = useSidebar();
+  const user = useCurrentUser();
   const pathname = usePathname();
 
   return (
@@ -57,19 +54,19 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
           </SidebarMenuItem>
           <SidebarMenuItem>
             <NavLink
-              to="/transactions"
-              active={pathname === "/transactions"}
-              text="Transactions"
-              beforeIcon={<ArrowLeftRight size={24} />}
+              to="/transfer"
+              active={pathname === "/transfer"}
+              text="Transfer"
+              beforeIcon={<FaMoneyBillTransfer size={24} />}
               handleClick={toggleSidebar}
             />
           </SidebarMenuItem>
           <SidebarMenuItem>
             <NavLink
-              to="/bills"
-              active={pathname === "/bills"}
-              text="Bills"
-              beforeIcon={<FaMoneyBills size={24} />}
+              to="/transactions"
+              active={pathname === "/transactions"}
+              text="Transactions"
+              beforeIcon={<ArrowLeftRight size={24} />}
               handleClick={toggleSidebar}
             />
           </SidebarMenuItem>
@@ -100,16 +97,6 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
               handleClick={toggleSidebar}
             />
           </SidebarMenuItem>
-          {user && (
-            <SidebarMenuItem>
-              <PlaidLink
-                user={user}
-                icon="/icons/connect-bank.svg"
-                variant="ghost"
-                className="w-full justify-start text-white hover:text-white hover:bg-primary dark:hover:bg-primary-dark"
-              />
-            </SidebarMenuItem>
-          )}
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter className="text-white">
