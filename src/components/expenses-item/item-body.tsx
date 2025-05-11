@@ -1,10 +1,30 @@
-import React from "react";
+"use client";
 
-const ItemBody = () => {
+import { formatDateTime } from "@/lib/utils";
+import AnimatedCounter from "../animated-counter";
+
+const ItemBody = ({
+  name,
+  amount,
+  date,
+}: {
+  name: string;
+  amount: number;
+  date: string;
+}) => {
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-2">
-        <div className="w-10 h-10 rounded-full bg-gray-2 dark:bg-gray-8"></div>
+    <div className="flex justify-between pl-4 xl:pl-6 pt-3 pr-5 pb-5 border-b last:border-b-0 border-special-1 dark:border-gray-5">
+      <h3 className="text-base font-semibold text-secondary-color dark:text-secondary-color-dark">
+        {name}
+      </h3>
+      <div className="flex flex-col gap-1 text-right">
+        <AnimatedCounter
+          amount={amount}
+          className="text-base font-semibold text-secondary-color dark:text-secondary-color-dark"
+        />
+        <span className="text-sm text-gray-3 dark:text-gray-5">
+          {formatDateTime(new Date(date)).dateOnly}
+        </span>
       </div>
     </div>
   );

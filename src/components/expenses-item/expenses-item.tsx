@@ -16,10 +16,12 @@ const ExpenseItem = ({
   currentMonthTransactions,
   lastMonthTransactions,
   expanded,
+  className,
 }: {
   currentMonthTransactions: Transaction[];
   lastMonthTransactions: Transaction[];
   expanded: boolean;
+  className?: string;
 }) => {
   const categoryName = currentMonthTransactions[0].category.primary;
   const categoryIcon = currentMonthTransactions[0].category_icon;
@@ -29,11 +31,12 @@ const ExpenseItem = ({
     lastMonthTransactions
   );
   return (
-    <section className={cn(expanded && "rounded-xl")}>
+    <section className={cn(expanded && "bg-default dark:bg-default-dark rounded-xl", className)}>
       <header
         className={cn(
           "flex gap-3 sm:pl-2 xl:pl-4 pr-5 pb-5 pt-2",
-          expanded && "bg-gray-5"
+          expanded &&
+            "pl-4 xl:pl-6 pt-3 bg-gray-5 dark:bg-default-black rounded-tl-lg rounded-tr-lg"
         )}
       >
         <CategoryIcon
@@ -56,7 +59,7 @@ const ExpenseItem = ({
             <p
               className={cn(
                 "text-sm text-default-black dark:text-white",
-                expanded ? "text-md font-extrabold" : "text-base font-bold"
+                expanded ? "text-lg font-extrabold" : "text-base font-bold"
               )}
             >
               {formatAmount(currentExpenses)}
@@ -69,11 +72,19 @@ const ExpenseItem = ({
                 <FiArrowRight />
               </Link>
             )}
+            {expanded && (
+              <IncreaseDecreaseIndicator
+                percentage={percentage}
+                textClassName="font-semibold text-gray-1"
+              />
+            )}
           </div>
-          <IncreaseDecreaseIndicator percentage={percentage} />
+          {!expanded && <IncreaseDecreaseIndicator percentage={percentage} />}
         </div>
       </header>
-      {expanded && <ItemBody />}
+      {expanded && currentMonthTransactions.map((t) => (
+        <ItemBody key={t.id} name={t.name} amount={t.amount} date={t.date} />
+      ))}
     </section>
   );
 };

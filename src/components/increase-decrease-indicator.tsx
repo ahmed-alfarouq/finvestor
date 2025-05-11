@@ -1,9 +1,24 @@
+"use client";
+import { cn } from "@/lib/utils";
+
 import { MdArrowUpward, MdArrowDownward } from "react-icons/md";
 import { GoDash } from "react-icons/go";
-const IncreaseDecreaseIndicator = ({ percentage }: { percentage: number }) => {
+
+const IncreaseDecreaseIndicator = ({
+  percentage,
+  textClassName,
+}: {
+  percentage: number;
+  textClassName?: string;
+}) => {
   return (
     <div className="flex items-center gap-2">
-      <span className="text-base font-medium text-gray-3 dark:text-gray-5">
+      <span
+        className={cn(
+          "text-base font-medium text-gray-3 dark:text-gray-5",
+          textClassName
+        )}
+      >
         {percentage}%
       </span>
       {percentage > 0 ? (
