@@ -12,7 +12,7 @@ const TransactionsList = ({
   transactions: Transaction[];
 }) => {
   return (
-    <ul className="flex flex-col gap-4">
+    <ul className="w-full flex flex-col gap-4">
       {transactions.map((t) => (
         <li
           key={t.id}
