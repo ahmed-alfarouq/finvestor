@@ -139,9 +139,9 @@ export const dummyTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category_icon: "https://plaid-category-icons.plaid.com/PFC_GROCERIES.png",
+    category_icon: "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
     category: {
-      primary: "GROCERIES",
+      primary: "FOOD_AND_DRINK",
       confidence_level: "",
       detailed: "",
     },
@@ -186,9 +186,9 @@ export const dummyTransactions = [
     paymentChannel: "Debit Card",
     accountId: "1",
     pending: false,
-    category_icon: "https://plaid-category-icons.plaid.com/PFC_SHOPPING.png",
+    category_icon: "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
     category: {
-      primary: "SHOPPING",
+      primary: "TRANSPORTATION",
       confidence_level: "",
       detailed: "",
     },
@@ -201,7 +201,7 @@ export const dummyTransactions = [
     paymentChannel: "Credit Card",
     accountId: "1",
     pending: false,
-    category_icon: "https://plaid-category-icons.plaid.com/PFC_HEALTHCARE.png",
+    category_icon: "https://plaid-category-icons.plaid.com/PFC_MEDICAL.png",
     category: {
       primary: "HEALTHCARE",
       confidence_level: "",
