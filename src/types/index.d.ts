@@ -248,7 +248,6 @@ declare interface RecentTransactionsProps {
 declare interface TransactionsTabProps {
   transactions: Transaction[];
   value: string;
-  detailed?: boolean;
   itemsToLoad?: number;
   loadMore?: boolean;
   className?: string;

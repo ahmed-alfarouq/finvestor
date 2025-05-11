@@ -8,12 +8,10 @@ import TransactionsList from "@/components/features/TransactionsList";
 import { cn } from "@/lib/utils";
 
 import { TransactionsTabProps } from "@/types";
-import DetailedTransactionsList from "./features/DetailedTransactionsList";
 
 const TransactionsTab = ({
   transactions,
   value,
-  detailed = false,
   itemsToLoad = 6,
   loadMore = false,
   className,
@@ -46,11 +44,8 @@ const TransactionsTab = ({
       value={value}
       className={cn("flex flex-col gap-4 items-center", className)}
     >
-      {detailed ? (
-        <DetailedTransactionsList transactions={transactions} />
-      ) : (
-        <TransactionsList transactions={visibleTransactions} />
-      )}
+      <TransactionsList transactions={visibleTransactions} />
+
       {loadMore && hasMore && (
         <Button size="lg" onClick={handleLoadMore}>
           Load More
