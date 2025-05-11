@@ -245,6 +245,15 @@ declare interface RecentTransactionsProps {
   id: string;
 }
 
+declare interface TransactionsTabProps {
+  transactions: Transaction[];
+  value: string;
+  detailed?: boolean;
+  itemsToLoad?: number;
+  loadMore?: boolean;
+  className?: string;
+}
+
 declare interface TransactionHistoryTableProps {
   transactions: Transaction[];
   page: number;

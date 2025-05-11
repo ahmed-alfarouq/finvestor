@@ -1,11 +1,11 @@
 import React from "react";
 import Link from "next/link";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import TransactionsList from "../TransactionsList";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { ArrowRight } from "lucide-react";
 import { Transaction } from "@/types";
+import TransactionsTab from "@/components/transactions-tab";
 
 const RecentTransactions = ({
   transactions,
@@ -29,10 +29,13 @@ const RecentTransactions = ({
       </header>
       {!!transactions.length ? (
         <Tabs
-          defaultValue="revenue"
+          defaultValue="all"
           className="w-full h-full bg-default dark:bg-default-dark rounded-lg py-4 px-6 card-shadow"
         >
-          <TabsList className="mb-4 w-full flex flex-nowrap gap-8 p-0 overflow-x-auto overflow-y-hidden">
+          <TabsList className="mb-4 w-full bg-default dark:bg-default-dark flex flex-nowrap gap-8 p-0 overflow-x-auto overflow-y-hidden">
+            <TabsTrigger value="all" className="px-0 text-base font-bold">
+              All
+            </TabsTrigger>
             <TabsTrigger value="revenue" className="px-0 text-base font-bold">
               Revenue
             </TabsTrigger>
@@ -41,12 +44,9 @@ const RecentTransactions = ({
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="revenue" className="space-y-4">
-            <TransactionsList transactions={revenue} />
-          </TabsContent>
-          <TabsContent value="expenses" className="space-y-4">
-            <TransactionsList transactions={expenses} />
-          </TabsContent>
+          <TransactionsTab transactions={transactions} value="all" />
+          <TransactionsTab transactions={revenue} value="revenue" />
+          <TransactionsTab transactions={expenses} value="expenses" />
         </Tabs>
       ) : (
         <section className="w-full h-full flex items-center justify-center bg-default dark:bg-default-dark rounded-lg py-4 px-6 card-shadow">
