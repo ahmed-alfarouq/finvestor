@@ -1,10 +1,7 @@
 "use client";
-
 import * as React from "react";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+
 import { differenceInCalendarDays } from "date-fns";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
   DayPicker,
   labelNext,
@@ -13,8 +10,13 @@ import {
   type DayPickerProps,
 } from "react-day-picker";
 
-import CaptionLabel from "./caption-label";
 import MonthGrid from "./month-grid";
+import CaptionLabel from "./caption-label";
+import { Button, buttonVariants } from "@/components/ui/button";
+
+import { cn } from "@/lib/utils";
+
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export type CalendarProps = DayPickerProps & {
   /**

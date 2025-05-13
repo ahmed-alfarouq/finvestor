@@ -1,18 +1,19 @@
 "use client";
-import React, { useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { RegisterSchema } from "@/schemas/auth";
-import { z } from "zod";
-
 import Link from "next/link";
-import CardWrapper from "@/components/auth/CardWrapper";
+import { useState, useTransition } from "react";
+
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { RegisterSchema } from "@/schemas/auth";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { Form } from "@/components/ui/form";
+import FormError from "@/components/form-error";
+import { Button } from "@/components/ui/button";
 import FormSuccess from "@/components/form-success";
 import DateInput from "@/components/auth/DateInput";
 import FormInput from "@/components/auth/FormInput";
-import FormError from "@/components/form-error";
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
+import CardWrapper from "@/components/auth/CardWrapper";
 
 import { register } from "@/actions/auth/register";
 

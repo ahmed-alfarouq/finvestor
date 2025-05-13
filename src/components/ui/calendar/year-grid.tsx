@@ -1,8 +1,10 @@
-import React from "react";
-import { cn } from "@/lib/utils";
+"use client";
 import { useDayPicker } from "react-day-picker";
+
 import { Button } from "../button";
 import { NavView } from "./calendar";
+
+import { cn } from "@/lib/utils";
 
 function YearGrid({
   className,

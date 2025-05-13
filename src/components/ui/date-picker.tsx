@@ -44,6 +44,7 @@ const DatePicker = ({
           selected={selectedDate}
           onSelect={onDateChange}
           endMonth={endMonth}
+          className="bg-default dark:bg-default-dark border-default dark:border-default-dark"
         />
       </PopoverContent>
     </Popover>
