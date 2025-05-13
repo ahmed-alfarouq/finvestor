@@ -128,6 +128,7 @@ declare interface FormInputProps {
   type?: string;
   control: Control<FormValues>;
   disabled?: boolean;
+  className?: string;
 }
 
 declare interface DateInputProps {
@@ -262,6 +263,26 @@ declare interface TransactionTableProps {
   transactions: Transaction[];
 }
 
+declare interface TransferFormInputProps {
+  name: string;
+  title: string;
+  label: string;
+  type?: string;
+  placeholder: string;
+  control: Control<FormValues>;
+  disabled: boolean;
+}
+
+declare interface TransferFormSelectProps {
+  accounts: BankAccount[];
+  name: string;
+  title: string;
+  description: string;
+  placeholder: string;
+  control: Control<FormValues>;
+  disabled: boolean;
+}
+
 declare interface CategoryProps {
   category: CategoryCount;
 }
@@ -283,10 +304,6 @@ interface BarChartProps {
 }
 
 declare interface DoughnutChartProps {
-  accounts: BankAccount[];
-}
-
-declare interface PaymentTransferFormProps {
   accounts: BankAccount[];
 }
 
