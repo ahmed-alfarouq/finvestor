@@ -1,8 +1,13 @@
-import React from "react";
-
+"use client";
 import Link from "next/link";
 import Image from "next/image";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 
 import { FormCardWrapperProps } from "@/types";
 
@@ -28,7 +33,9 @@ const CardWrapper = ({
         <h1 className="text-primary-color dark:text-primary-color-dark font-bold text-2xl text-center">
           {headerLabel}
         </h1>
-        <p className="text-lg text-gray-1 dark:text-gray-4 text-center">{headerText}</p>
+        <p className="text-lg text-gray-1 dark:text-gray-4 text-center">
+          {headerText}
+        </p>
       </CardHeader>
       <CardContent>{children}</CardContent>
 
