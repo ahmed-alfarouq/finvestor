@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import {
   FormControl,
   FormField,
@@ -11,21 +10,21 @@ import { Input } from "@/components/ui/input";
 
 import { FormInputProps } from "@/types";
 
-
-const FormInput: React.FC<FormInputProps> = ({
+const FormInput = ({
   name,
   label,
   placeholder,
   type = "text",
   control,
   disabled = false,
-}) => {
+  className,
+}: FormInputProps) => {
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className={className}>
           <FormLabel>{label}</FormLabel>
           <FormControl>
             <Input
@@ -34,6 +33,7 @@ const FormInput: React.FC<FormInputProps> = ({
               placeholder={placeholder}
               {...field}
               autoComplete="off"
+              className="bg-default dark:bg-default-dark"
             />
           </FormControl>
           <FormMessage />
