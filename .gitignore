@@ -53,3 +53,7 @@ docker-compose*.yml
 *.tar.gz
 # Sentry Config File
 .env.sentry-build-plugin
+
+
+# unstable features
+future-features/transfer-funds
