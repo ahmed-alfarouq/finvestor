@@ -52,7 +52,7 @@ export const register = async (data: z.infer<typeof RegisterSchema>) => {
     ssn,
     type: "personal",
   });
-  
+
   if (!dwollaCustomerUrl) return { error: "Error creating dwolla customer" };
 
   const dwollaCustomerId = extractCustomerIdFromUrl(dwollaCustomerUrl);
@@ -62,7 +62,7 @@ export const register = async (data: z.infer<typeof RegisterSchema>) => {
       firstName,
       lastName,
       email,
-      address,
+      address1: address,
       city,
       state,
       postalCode,
