@@ -1,12 +1,14 @@
+"use client";
+import Image from "next/image";
+import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import { PlaidLinkOptions, usePlaidLink } from "react-plaid-link";
-import Image from "next/image";
+
+import { Button } from "@/components/ui/button";
 
 import { createLinkToken, exchangePublicToken } from "@/actions/plaid";
 
-import { Button } from "./button";
 import { PlaidLinkProps } from "@/types";
-import { useSession } from "next-auth/react";
 
 const PlaidLink = ({
   user,
@@ -17,11 +19,12 @@ const PlaidLink = ({
   handleSuccess = () => {},
   handleExit = () => {},
   onClick = () => {},
+  disableLink = false,
   className,
 }: PlaidLinkProps) => {
   const { update } = useSession();
   const [token, setToken] = useState("");
-  const [disabled, setDisabled] = useState(false);
+  const [disabled, setDisabled] = useState(disableLink);
 
   useEffect(() => {
     const getLinkToken = async () => {
@@ -64,7 +67,7 @@ const PlaidLink = ({
     <Button
       variant={variant}
       onClick={handleClick}
-      disabled={!ready || disabled}
+      disabled={!ready || disabled || disableLink}
       className={className}
     >
       {icon && (

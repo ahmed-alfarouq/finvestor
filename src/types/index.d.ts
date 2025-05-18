@@ -225,6 +225,7 @@ declare interface PlaidLinkProps {
   icon?: string;
   accountType?: ConnectAccountType;
   dwollaCustomerId?: string;
+  disableLink: boolean;
   className?: string;
   handleSuccess?: () => void;
   handleExit?: () => void;

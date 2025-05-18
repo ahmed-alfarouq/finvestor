@@ -10,9 +10,11 @@ import Loading from "@/app/loading";
 import { cn } from "@/lib/utils";
 
 const LinkAccount = () => {
-  const [collectingData, setCollectingData] = useState(false);
-  const { session } = UseSessionContext();
   const router = useRouter();
+  const { session } = UseSessionContext();
+
+  const [collectingData, setCollectingData] = useState(false);
+  const [disableLinks, setDisableLinks] = useState(false);
 
   useEffect(() => {
     if (!session) return;
@@ -29,10 +31,12 @@ const LinkAccount = () => {
 
   const handleExit = () => {
     setCollectingData(false);
+    setDisableLinks(false);
   };
 
   const handleClick = () => {
     setCollectingData(true);
+    setDisableLinks(true);
   };
 
   return !session ? (
@@ -45,6 +49,7 @@ const LinkAccount = () => {
           handleSuccess={handleSuccess}
           handleExit={handleExit}
           onClick={handleClick}
+          disableLink={disableLinks}
         />
         <p
           className={cn(
@@ -62,6 +67,7 @@ const LinkAccount = () => {
           onClick={handleClick}
           accountType="liability"
           title="Connect Liability Accounts"
+          disableLink={disableLinks}
         />
         <p className="font-medium text-default-black dark:text-gray-7">
           {collectingData && (
