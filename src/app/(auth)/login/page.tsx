@@ -40,25 +40,24 @@ const LoginPage = () => {
   const onSubmit = (data: LoginFields) => {
     setFormError("");
     startTransition(() => {
-      login(data)
-        .then((data) => {
-          if (data?.error) {
-            form.reset();
-            setFormError(data.error);
-          }
-          if (data?.twoFactor) {
-            setShowTwoFactor(true);
-            setFormError("");
-          }
-        })
+      login(data).then((data) => {
+        if (data?.error) {
+          form.reset();
+          setFormError(data.error);
+        }
+        if (data?.twoFactor) {
+          setShowTwoFactor(true);
+          setFormError("");
+        }
+      });
     });
   };
 
   return (
     <CardWrapper
       logo="/img/logo.webp"
-      backLinkText="Create an account"
-      backLinkHref="/register"
+      backLinkText={!showTwoFactor ? "Create an account" : ""}
+      backLinkHref={!showTwoFactor ? "/register" : ""}
       showSocial
     >
       <Form {...form}>
