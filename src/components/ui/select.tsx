@@ -12,9 +12,17 @@ const SelectGroup = SelectPrimitive.Group;
 
 const SelectValue = SelectPrimitive.Value;
 
+type PrimitiveTriggerProps = React.ComponentPropsWithoutRef<
+  typeof SelectPrimitive.Trigger
+>;
+
+interface SelectTriggerProps extends PrimitiveTriggerProps {
+  beforeIcon?: React.ReactNode;
+}
+
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
+  SelectTriggerProps
 >(({ className, beforeIcon, children, ...props }, ref) => (
   <SelectPrimitive.Trigger
     ref={ref}
