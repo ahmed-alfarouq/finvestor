@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FieldError } from "react-hook-form";
 import { Control } from "react-hook-form";
 
@@ -22,6 +23,7 @@ declare type User = {
   savingsGoal: string;
   expensesGoals: ExpensesGoal[];
   savingsGoalAccounts: string[];
+  isTwoFactorEnabled: boolean;
 };
 
 declare type BankAccount = {
@@ -74,6 +76,12 @@ declare type Receiver = {
   lastName: string;
 };
 
+declare type UpdateUserPasswordParams = {
+  userId: string;
+  oldPassword: string;
+  newPassword: string;
+};
+
 declare type TransferParams = {
   sourceFundingSourceUrl: string;
   destinationFundingSourceUrl: string;
@@ -84,6 +92,15 @@ declare type AddFundingSourceParams = {
   dwollaCustomerId: string;
   processorToken: string;
   bankName: string;
+};
+
+declare type DwollaError = {
+  status?: number;
+  message?: string;
+  code?: string;
+  _embedded?: any;
+  _links?: any;
+  [key: string]: any;
 };
 
 declare type NewDwollaCustomerParams = {
@@ -97,6 +114,25 @@ declare type NewDwollaCustomerParams = {
   postalCode: string;
   dateOfBirth: string;
   ssn: string;
+};
+
+declare type UpdateDwollaCutomerInfoParams = {
+  dwollaCustomerId: string;
+  updateFields: UpdateUserInfoProps;
+};
+
+declare type UpdateUser2FAParams = {
+  userId: string;
+  password: string;
+  isTwoFactorEnabled: boolean;
+};
+
+declare type UpdateUserInfoProps = {
+  email: string;
+  address1: string;
+  city: string;
+  state: string;
+  postalCode: string;
 };
 
 declare interface CarouselProps {

@@ -24,5 +24,6 @@ declare module "next-auth/jwt" {
     dwollaCustomerUrl: string;
     dwollaCustomerId: string;
     bankAccounts: BankAccountProps[];
+    isTwoFactorEnabled: boolean;
   }
 }

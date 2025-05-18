@@ -1,10 +1,18 @@
 "use server";
+
 import bcrypt from "bcryptjs";
 import { prisma } from "@/prisma";
 import { v4 as uuidv4 } from "uuid";
-
-import { createBankAccountProps } from "@/types";
 import { revalidatePath } from "next/cache";
+
+import {
+  UpdateUser2FAParams,
+  UpdateUserInfoProps,
+  createBankAccountProps,
+  UpdateUserPasswordParams,
+} from "@/types";
+
+import { updateDwollaCustomerInfo } from "../dwolla";
 
 export const updateEmailVerification = async (id: string) => {
   await prisma.user.update({
@@ -144,5 +152,113 @@ export const updateExpensesGoal = async (
     return {
       error: "Something went wrong while updating expenses goal!",
     };
+  }
+};
+
+export const updateUserInfo = async ({
+  userId,
+  dwollaCustomerId,
+  updateFields,
+}: {
+  userId: string;
+  dwollaCustomerId: string;
+  updateFields: UpdateUserInfoProps;
+}) => {
+  try {
+    await updateDwollaCustomerInfo({
+      dwollaCustomerId,
+      updateFields,
+    });
+    await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        ...updateFields,
+      },
+    });
+    return { success: "User info updated successfully." };
+  } catch (error) {
+    console.error("Something went wrong while updateing user info: ", error);
+    return { error: "Failed to update user info: " + error };
+  }
+};
+
+export const updateUserPassword = async ({
+  userId,
+  oldPassword,
+  newPassword,
+}: UpdateUserPasswordParams) => {
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      return { error: "User not found!" };
+    }
+
+    const oldPasswordCorrect = await bcrypt.compare(oldPassword, user.password);
+
+    if (!oldPasswordCorrect) {
+      return { error: "Old Password is wrong!" };
+    }
+
+    const sameAsOld = await bcrypt.compare(newPassword, user.password);
+
+    if (sameAsOld) {
+      return {
+        error: " Your new password must be different from the current one.",
+      };
+    }
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+    await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        password: hashedNewPassword,
+      },
+    });
+    return { success: "Password updated successfully." };
+  } catch (error) {
+    console.error("Something went wrong while updating password: ", error);
+    return { error: "Failed to update password: " + error };
+  }
+};
+
+export const updateUser2FA = async ({
+  userId,
+  password,
+  isTwoFactorEnabled,
+}: UpdateUser2FAParams) => {
+  const user = await prisma.user.findFirst({ where: { id: userId } });
+
+  if (!user) {
+    return { error: "User not found!" };
+  }
+
+  const validCredentials = await bcrypt.compare(password, user.password);
+
+  if (!validCredentials) {
+    return { error: "Password is wrong!" };
+  }
+
+  try {
+    await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        isTwoFactorEnabled,
+      },
+    });
+    return { success: "2FA updated successfully." };
+  } catch (error) {
+    console.error("Something went wrong while updating 2FA: ", error);
+    return { error: "Failed to update 2FA: " + error };
   }
 };

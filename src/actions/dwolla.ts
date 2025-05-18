@@ -6,6 +6,8 @@ import {
   NewDwollaCustomerParams,
   TransferParams,
   BankAccountProps,
+  UpdateDwollaCutomerInfoParams,
+  DwollaError,
 } from "@/types";
 import { Client } from "dwolla-v2";
 
@@ -139,5 +141,19 @@ export const removeFundingSources = async (
   } catch (error) {
     console.error("Error removing funding source:", error);
     return { error: "Failed to remove funding source" };
+  }
+};
+
+export const updateDwollaCustomerInfo = async ({
+  dwollaCustomerId,
+  updateFields,
+}: UpdateDwollaCutomerInfoParams) => {
+  try {
+    await dwollaClient.post(`customers/${dwollaCustomerId}`, updateFields);
+    return { success: "Dwolla customer info updated successfully" };
+  } catch (error: unknown) {
+    const dwollaError = error as DwollaError;
+    console.error("Failed to update customer info: ", dwollaError.message);
+    throw new Error("Failed to update customer info: " + dwollaError.message);
   }
 };

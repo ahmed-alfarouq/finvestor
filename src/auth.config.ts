@@ -71,23 +71,35 @@ export default {
       const {
         firstName,
         lastName,
+        ssn,
+        postalCode,
+        address1,
+        city,
+        state,
         dwollaCustomerId,
         dwollaCustomerUrl,
         bankAccounts,
         savingsGoal,
         expensesGoals,
         savingsGoalAccounts,
+        isTwoFactorEnabled
       } = token;
 
       Object.assign(session.user, {
         firstName,
         lastName,
+        postalCode,
+        address1,
+        city,
+        state,
+        ssn,
         dwollaCustomerId,
         dwollaCustomerUrl,
         bankAccounts,
         savingsGoal,
         expensesGoals,
         savingsGoalAccounts,
+        isTwoFactorEnabled
       });
       return session;
     },
