@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 import {
   getAccounts,
@@ -29,6 +30,10 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 
   // Handle empty or failed account fetch
   if (!accountResponse || !accountResponse.data?.length) {
+    if (accountResponse.data?.length === 0) {
+      redirect("/link-account");
+    }
+
     return (
       <section className="h-svh w-full flex items-center justify-center px-2">
         <RefreshSession />
