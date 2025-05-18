@@ -30,7 +30,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
   // Handle empty or failed account fetch
   if (!accountResponse || !accountResponse.data?.length) {
     return (
-      <section className="h-full w-full flex items-center justify-center">
+      <section className="h-svh w-full flex items-center justify-center px-2">
         <RefreshSession />
       </section>
     );
