@@ -21,6 +21,8 @@ import CardWrapper from "@/components/auth/CardWrapper";
 import { login } from "@/actions/auth/login";
 import Link from "next/link";
 
+import { cn } from "@/lib/utils";
+
 type LoginFields = z.infer<typeof LoginSchema>;
 
 const LoginPage = () => {
@@ -57,7 +59,7 @@ const LoginPage = () => {
     <CardWrapper
       logo="/img/logo.webp"
       backLinkText={!showTwoFactor ? "Create an account" : ""}
-      backLinkHref={!showTwoFactor ? "/register" : ""}
+      backLinkHref={!showTwoFactor && !isPending ? "/register" : ""}
       showSocial
     >
       <Form {...form}>
@@ -95,7 +97,11 @@ const LoginPage = () => {
                       <FormLabel>Password</FormLabel>
                       <Link
                         href="/forgot-password"
-                        className="text-xs m-0 float-right text-primary dark:text-primary-dark"
+                        className={cn(
+                          "text-xs m-0 float-right text-primary dark:text-primary-dark",
+                          isPending && "pointer-events-none"
+                        )}
+                        aria-disabled={isPending}
                       >
                         Forgot Password?
                       </Link>

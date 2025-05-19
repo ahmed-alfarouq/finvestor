@@ -16,6 +16,7 @@ import FormInput from "@/components/auth/FormInput";
 import CardWrapper from "@/components/auth/CardWrapper";
 
 import { register } from "@/actions/auth/register";
+import { cn } from "@/lib/utils";
 
 type RegisterFields = z.infer<typeof RegisterSchema>;
 
@@ -160,7 +161,11 @@ const RegisterPage = () => {
             By continuing, you agree to our{" "}
             <Link
               href="/terms-of-service"
-              className="text-primary dark:text-primary-dark"
+              className={cn(
+                "text-primary dark:text-primary-dark",
+                isPending && "pointer-events-none"
+              )}
+              aria-disabled={isPending}
             >
               terms of service.
             </Link>
