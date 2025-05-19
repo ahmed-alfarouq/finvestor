@@ -22,7 +22,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 
   const userId = session.user.id;
   const savingsGoalAccounts = session.user.savingsGoalAccounts;
-  const liabilitiesTypes = ["checking", "savings"];
+  const normalTypes = ["checking", "savings"];
 
   // Fetch all bank accounts
   const accountResponse = await getAccounts(userId);
@@ -43,11 +43,11 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 
   // Filter liability (loan/credit) accounts and transaction-supported accounts
   const liabilityAccounts = allAccounts.filter(
-    (acc) => !liabilitiesTypes.includes(acc.subtype)
+    (acc) => !normalTypes.includes(acc.subtype)
   );
 
   const transactionAccounts = allAccounts.filter((acc) =>
-    liabilitiesTypes.includes(acc.subtype)
+    normalTypes.includes(acc.subtype)
   );
 
   // Fetch loans for first liability account, if any
