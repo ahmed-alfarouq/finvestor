@@ -197,6 +197,7 @@ const getAccountFilters = (accountType: ConnectAccountType) => {
       },
       loan: {
         account_subtypes: [
+          LoanAccountSubtype.Student,
           LoanAccountSubtype.Loan,
           LoanAccountSubtype.Mortgage,
         ],
