@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 
 import NavLink from "./nav-link";
@@ -7,20 +8,31 @@ import NavLink from "./nav-link";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
 
+import { CgLogOut } from "react-icons/cg";
 import { CiSettings } from "react-icons/ci";
 import { AiOutlineWindows } from "react-icons/ai";
 import { ArrowLeftRight, Wallet } from "lucide-react";
 import { BiMoneyWithdraw, BiTargetLock } from "react-icons/bi";
 
+import { logout } from "@/actions/auth/logout";
+
 const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
   const { toggleSidebar } = useSidebar();
+  const [logoutDisabled, setLogoutDisabled] = useState(false);
   const pathname = usePathname();
+
+  const handleLogout = () => {
+    setLogoutDisabled(true);
+    logout();
+  };
 
   return (
     <Sidebar side="left" {...props}>
@@ -85,6 +97,17 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarContent>
+      <SidebarFooter className="pb-20">
+        <Button
+          size="lg"
+          className="justify-start gap-2 bg-special-3 font-semibold"
+          onClick={handleLogout}
+          disabled={logoutDisabled}
+        >
+          <CgLogOut size={22} className="rotate-180" />
+          Logout
+        </Button>
+      </SidebarFooter>
     </Sidebar>
   );
 };
