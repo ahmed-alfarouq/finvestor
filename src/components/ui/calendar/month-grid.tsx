@@ -8,8 +8,6 @@ function MonthGrid({
   className,
   children,
   displayYears,
-  startMonth,
-  endMonth,
   navView,
   setNavView,
   ...props
@@ -17,8 +15,7 @@ function MonthGrid({
   className?: string;
   children: React.ReactNode;
   displayYears: { from: number; to: number };
-  startMonth?: Date;
-  endMonth?: Date;
+
   navView: NavView;
   setNavView: React.Dispatch<React.SetStateAction<NavView>>;
 } & React.TableHTMLAttributes<HTMLTableElement>) {
@@ -26,10 +23,7 @@ function MonthGrid({
     return (
       <YearGrid
         displayYears={displayYears}
-        startMonth={startMonth}
-        endMonth={endMonth}
         setNavView={setNavView}
-        navView={navView}
         className={className}
         {...props}
       />

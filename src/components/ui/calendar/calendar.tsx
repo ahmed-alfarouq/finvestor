@@ -230,8 +230,6 @@ function Calendar({
           <MonthGrid
             className={className}
             displayYears={displayYears}
-            startMonth={startMonth}
-            endMonth={endMonth}
             navView={navView}
             setNavView={setNavView}
             {...props}
@@ -331,8 +329,8 @@ function Nav({
   const handleNextClick = React.useCallback(() => {
     if (navView === "years") {
       setDisplayYears((prev) => ({
-        from: prev.from + (prev.to - prev.from + 1),
-        to: prev.to + (prev.to - prev.from + 1),
+        from: prev.from + (prev.to - prev.from),
+        to: prev.to + (prev.to - prev.from),
       }));
       onNextClick?.(
         new Date(
@@ -359,7 +357,7 @@ function Nav({
         aria-label={
           navView === "years"
             ? `Go to the previous ${
-                displayYears.to - displayYears.from + 1
+                displayYears.to - displayYears.from
               } years`
             : labelPrevious(previousMonth)
         }
@@ -376,7 +374,7 @@ function Nav({
         disabled={isNextDisabled}
         aria-label={
           navView === "years"
-            ? `Go to the next ${displayYears.to - displayYears.from + 1} years`
+            ? `Go to the next ${displayYears.to - displayYears.from} years`
             : labelNext(nextMonth)
         }
         onClick={handleNextClick}

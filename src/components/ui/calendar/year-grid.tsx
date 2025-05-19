@@ -14,10 +14,7 @@ function YearGrid({
 }: {
   className?: string;
   displayYears: { from: number; to: number };
-  startMonth?: Date;
-  endMonth?: Date;
   setNavView: React.Dispatch<React.SetStateAction<NavView>>;
-  navView: NavView;
 } & React.HTMLAttributes<HTMLDivElement>) {
   const { goToMonth, selected } = useDayPicker();
 
