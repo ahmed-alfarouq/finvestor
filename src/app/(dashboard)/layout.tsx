@@ -1,20 +1,20 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
+import Loading from "./loading";
+import AppSidebar from "@/components/app-sidebar";
+import RefreshSession from "@/components/features/RefreshSession";
+import DashboardHeader from "@/components/features/DashboardHeader";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import BanksDataProviderWrapper from "@/components/wrappers/BanksDataProviderWrapper";
+
 import {
   getAccounts,
   getAccountWithTransactions,
   getBankLoans,
 } from "@/actions/bank";
 
-import Loading from "./loading";
-import AppSidebar from "@/components/app-sidebar";
-import RefreshSession from "@/components/features/RefreshSession";
-import DashboardHeader from "@/components/features/DashboardHeader";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-
-import { Transaction } from "@/types";
-import BanksDataProviderWrapper from "@/components/wrappers/BanksDataProviderWrapper";
+import { BankAccount, Transaction } from "@/types";
 
 const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
   const session = await auth();
@@ -50,10 +50,31 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
     normalTypes.includes(acc.subtype)
   );
 
+  // Get one instance from each bank
+  const uniqueLiabilityAccounts = (() => {
+    const unique = new Set<string>();
+    const result: BankAccount[] = [];
+
+    for (const account of liabilityAccounts) {
+      if (!unique.has(account.bankId)) {
+        unique.add(account.bankId);
+        result.push(account);
+      }
+    }
+
+    return result;
+  })();
+
   // Fetch loans for first liability account, if any
-  const loans = liabilityAccounts.length
-    ? (await getBankLoans(liabilityAccounts[0])) || []
-    : [];
+  const nestedLoans = (
+    await Promise.all(
+      uniqueLiabilityAccounts.map(
+        async (account) => await getBankLoans(account)
+      )
+    )
+  ).filter((loan) => loan !== undefined);
+
+  const loans = nestedLoans && nestedLoans.flat();
 
   // Calculate total achieved savings goal
   const savingsAchievedAmount = allAccounts.reduce((total, acc) => {
@@ -83,7 +104,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
         <BanksDataProviderWrapper
           data={{
             transactions,
-            loans: loans,
+            loans,
             accounts: accountResponse,
             savingsAchievedAmount,
           }}
