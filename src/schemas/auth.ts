@@ -33,12 +33,18 @@ export const RegisterSchema = z
     state: z
       .string()
       .min(1, "State is required!")
-      .regex(/^[A-Z]{2}$/, "State must be a capital 2-letter abbreviation 'EX: NY'."),
-    postalCode: z.string().min(1, "Code is required!"),
+      .regex(
+        /^[A-Z]{2}$/,
+        "State must be a capital 2-letter abbreviation 'EX: NY'."
+      ),
+    postalCode: z
+      .string()
+      .min(1, "Code is required!")
+      .length(5, "Postal code must be exactly 5 digits."),
     dateOfBirth: z.date().refine((date) => !isNaN(date.getTime()), {
       message: "Date is required!",
     }),
-    ssn: z.string().min(1, "SSN is required!").max(4, "SSN is not valid!"),
+    ssn: z.string().min(1, "SSN is required!").length(9, "SSN must be exactly 9 digits."),
     password: z
       .string()
       .min(1, "Password is required!")

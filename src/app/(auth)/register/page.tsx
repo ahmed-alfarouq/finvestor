@@ -124,7 +124,7 @@ const RegisterPage = () => {
             <FormInput
               name="ssn"
               label="SSN"
-              placeholder="Example: 1234"
+              placeholder="Example: 123456789"
               control={form.control}
               disabled={isPending}
             />
