@@ -1,15 +1,12 @@
 "use client";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import useCurrentUser from "@/hooks/use-current-user";
 
 import NavLink from "./nav-link";
 
-import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuItem,
@@ -23,7 +20,6 @@ import { BiMoneyWithdraw, BiTargetLock } from "react-icons/bi";
 
 const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
   const { toggleSidebar } = useSidebar();
-  const user = useCurrentUser();
   const pathname = usePathname();
 
   return (
@@ -89,13 +85,6 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter className="text-white">
-        <NavUser
-          name={user?.firstName || ""}
-          email={user?.email || ""}
-          avatar={user?.image || ""}
-        />
-      </SidebarFooter>
     </Sidebar>
   );
 };
