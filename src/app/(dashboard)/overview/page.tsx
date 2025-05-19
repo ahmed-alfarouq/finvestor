@@ -42,7 +42,7 @@ const OverviewPage = () => {
         ) : (
           <EmptyGoalsBox title="Goals" date={new Date()} />
         )}
-        <LoansBox loans={loans} />
+        <LoansBox loans={loans} show={3} />
       </section>
       <section className="h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-3">
         <RecentTransactions transactions={transactions} />
