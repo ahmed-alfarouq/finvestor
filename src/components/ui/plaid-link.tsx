@@ -2,7 +2,11 @@
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
-import { PlaidLinkOptions, usePlaidLink } from "react-plaid-link";
+import {
+  PlaidLinkError,
+  PlaidLinkOptions,
+  usePlaidLink,
+} from "react-plaid-link";
 
 import { Button } from "@/components/ui/button";
 
@@ -19,12 +23,12 @@ const PlaidLink = ({
   handleSuccess = () => {},
   handleExit = () => {},
   onClick = () => {},
-  disableLink = false,
+  onError = () => {},
+  disabled = false,
   className,
 }: PlaidLinkProps) => {
   const { update } = useSession();
   const [token, setToken] = useState("");
-  const [disabled, setDisabled] = useState(disableLink);
 
   useEffect(() => {
     const getLinkToken = async () => {
@@ -36,15 +40,34 @@ const PlaidLink = ({
 
   const onSuccess = useCallback(
     async (public_token: string) => {
-      setDisabled(true);
-      const res = await exchangePublicToken({
-        publicToken: public_token,
-        user,
-        accountType,
-      });
-      await update();
-      if (res && res.publicTokenExchange === "complete") {
-        handleSuccess();
+      try {
+        const res = await exchangePublicToken({
+          publicToken: public_token,
+          user,
+          accountType,
+        });
+
+        if (res.error) {
+          onError(res.error);
+          return;
+        }
+
+        await update();
+        if (res && res.publicTokenExchange === "complete") {
+          handleSuccess();
+        }
+      } catch (error) {
+        if (typeof error === "string") {
+          onError(error);
+          return;
+        }
+
+        if (error instanceof Error) {
+          onError(error.message);
+          return;
+        }
+
+        onError("An unkown error ocuured while connecting your bank!");
       }
     },
     [user]
@@ -53,7 +76,7 @@ const PlaidLink = ({
   const config: PlaidLinkOptions = {
     token,
     onSuccess,
-    onExit: () => handleExit(),
+    onExit: (error: null | PlaidLinkError) => handleExit(error),
   };
 
   const { open, ready } = usePlaidLink(config);
@@ -67,7 +90,7 @@ const PlaidLink = ({
     <Button
       variant={variant}
       onClick={handleClick}
-      disabled={!ready || disabled || disableLink}
+      disabled={!ready || disabled}
       className={className}
     >
       {icon && (

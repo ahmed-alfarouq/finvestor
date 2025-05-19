@@ -42,7 +42,7 @@ export const createLinkToken = async (
     return { linkToken: res.data.link_token };
   } catch (err) {
     console.error("Error creating link token:", err);
-    throw Error("Error creating link token");
+    throw new Error("Error creating link token");
   }
 };
 
@@ -59,13 +59,17 @@ export const exchangePublicToken = async ({
       accountType
     );
 
-    await processDwollaEligibleAccounts(
+    const res = await processDwollaEligibleAccounts(
       allAccounts,
       accessToken,
       itemId,
       item.institution_name!,
       user
     );
+
+    if (res?.error) {
+      return { error: res.error };
+    }
 
     // Handle the case of liabilities accounts
     await processLiabilityAccounts(allAccounts, accessToken, itemId, user);
@@ -141,7 +145,8 @@ const processDwollaEligibleAccounts = async (
         bankName: bankName || account.name,
       });
 
-      if (!fundingSourceUrl) throw new Error("Funding source creation failed");
+      if (!fundingSourceUrl)
+        return { error: "Funding source creation failed!" };
 
       await createBankAccount({
         userId: user.id,
@@ -152,7 +157,12 @@ const processDwollaEligibleAccounts = async (
         sharableId: encryptId(account.account_id),
       });
     } catch (error) {
-      console.error(`Failed Dwolla setup for account ${account.name}`, error);
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+
+      // Fallback for unknown error types
+      throw new Error(`Failed Dwolla setup for account ${account.name}`);
     }
   }
 };

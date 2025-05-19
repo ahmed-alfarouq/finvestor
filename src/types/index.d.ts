@@ -5,6 +5,31 @@ import { Control } from "react-hook-form";
 declare type ConnectAccountType = "normal" | "liability";
 
 // ========================================
+// Errors
+declare type DwollaApiError = {
+  body: {
+    code: string;
+    message: string;
+    _links?: {
+      about?: {
+        href: string;
+        type: string;
+        "resource-type": string;
+      };
+    };
+    _embedded?: {
+      errors: Array<{
+        code: string;
+        message: string;
+        path: string;
+        _links?: object;
+      }>;
+    };
+  };
+  status: number;
+  message: string;
+};
+
 declare type User = {
   id: string;
   email: string;
@@ -225,10 +250,11 @@ declare interface PlaidLinkProps {
   icon?: string;
   accountType?: ConnectAccountType;
   dwollaCustomerId?: string;
-  disableLink: boolean;
+  disabled: boolean;
   className?: string;
   handleSuccess?: () => void;
-  handleExit?: () => void;
+  handleExit?: (error: null | PlaidLinkError) => void;
+  onError?: (error: string) => void;
   onClick?: () => void;
 }
 

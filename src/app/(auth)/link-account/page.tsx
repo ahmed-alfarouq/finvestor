@@ -49,7 +49,7 @@ const LinkAccount = () => {
           handleSuccess={handleSuccess}
           handleExit={handleExit}
           onClick={handleClick}
-          disableLink={disableLinks}
+          disabled={disableLinks}
         />
         <p
           className={cn(
@@ -67,7 +67,7 @@ const LinkAccount = () => {
           onClick={handleClick}
           accountType="liability"
           title="Connect Liability Accounts"
-          disableLink={disableLinks}
+          disabled={disableLinks}
         />
         <p className="font-medium text-default-black dark:text-gray-7">
           {collectingData && (
