@@ -1,11 +1,15 @@
 "use client";
-import React, { useState, useTransition } from "react";
 import { z } from "zod";
-import { useSearchParams } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { NewPasswordSchema } from "@/schemas/auth";
+import { useState, useTransition } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter, useSearchParams } from "next/navigation";
 
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import FormError from "@/components/form-error";
+import FormSuccess from "@/components/form-success";
+import CardWrapper from "@/components/auth/CardWrapper";
 import {
   Form,
   FormControl,
@@ -14,19 +18,18 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import FormError from "@/components/form-error";
-import CardWrapper from "@/components/auth/CardWrapper";
 
-import { getResetTokenByToken, removeResetToken } from "@/actions/auth/tokens";
-import { getUserByEmail } from "@/actions/user/getUserFromDb";
 import { updatePassword } from "@/actions/user/updateUser";
-import FormSuccess from "@/components/form-success";
+import { getUserByEmail } from "@/actions/user/getUserFromDb";
+import { getResetTokenByToken, removeResetToken } from "@/actions/auth/tokens";
+
+import { NewPasswordSchema } from "@/schemas/auth";
+import Timer from "@/components/timer";
 
 type NewPasswordFields = z.infer<typeof NewPasswordSchema>;
 
 const NewPassword = () => {
+  const router = useRouter();
   const [formError, setFormError] = useState<string | undefined>("");
   const [passwordUpdated, setPasswordUpdated] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
@@ -78,6 +81,7 @@ const NewPassword = () => {
     });
   };
 
+  const redirectUser = () => router.push("/login");
   return (
     <CardWrapper
       logo="/img/logo.webp"
@@ -132,6 +136,13 @@ const NewPassword = () => {
           <FormSuccess
             message={passwordUpdated ? "Password updated successfully" : ""}
           />
+
+          {passwordUpdated && (
+            <p>
+              You will be redirected to login page in{" "}
+              <Timer duration={5} onComplete={redirectUser} />
+            </p>
+          )}
           <Button
             disabled={isPending || passwordUpdated}
             type="submit"
