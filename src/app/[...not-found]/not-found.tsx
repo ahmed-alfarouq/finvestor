@@ -3,18 +3,23 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
+import { AiOutlineWindows } from "react-icons/ai";
+
 const NotFound = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
+    <div className="min-h-screen flex items-center justify-center bg-background px-3">
       <div className="text-center max-w-md w-full">
-        <span className="border-4 border-destructive rounded-full px-4 py-10 text-6xl font-black text-destructive">
+        <span className="text-8xl sm:text-9xl font-black text-default-black dark:text-gray-6">
           404
         </span>
-        <h1 className="text-3xl font-bold text-foregroun mt-14 mb-4">Not Found!</h1>
-        <p className="text-muted-foreground mb-4">Please, go back to home page.</p>
-        <Link href="/" className="block">
-          <Button variant="default" size="lg" className="w-full">
-            Home Page
+        <h1 className="text-2xl sm:text-3xl font-bold text-foregroun mt-8 mb-4">
+          Not Found!
+        </h1>
+        <p className="text-muted-foreground mb-4">Oops something went wrong</p>
+
+        <Link href="/overview" className="block">
+          <Button size="lg" className="w-full">
+            Back to Overview <AiOutlineWindows size={24} />
           </Button>
         </Link>
       </div>
