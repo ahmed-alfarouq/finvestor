@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# **Finvestor – Smart Expense/Income & Loans Tracker**
 
-## Getting Started
+> **Finvestor** is a modern **expense/income tracking and Loans app** built to help users manage their money, track loans, and grow wealth—intuitively and securely.
 
-First, run the development server:
+---
+
+## **📸 Screenshots**
+
+| **Dashboard View**                        | **Mobile View**                               |
+| ----------------------------------------- | --------------------------------------------- |
+| ![screenshot](./screenshot-dashboard.png) | ![screenshot-mobile](./screenshot-mobile.png) |
+
+---
+
+## **🚀 Live Demo**
+
+🔗 **[Visit Finvestor Live](https://finvestor.vercel.app)**
+
+---
+
+## **🛠️ Tech Stack**
+
+### **Frontend**
+
+* **Next.js 15** (App Router)
+* **React 18+** (Hooks, Server Components)
+* **TypeScript** (Static Typing)
+* **Tailwind CSS** (Utility-First Styling)
+* **React Hook Form + Zod** (Form Handling & Validation)
+* **Chart.js** (Data Visualization)
+* **next-themes** (Dark/Light Mode Toggle)
+
+### **Backend**
+
+* **MongoDB + Mongoose**
+* **Prisma** (Data Modeling)
+* **NextAuth (Credentials Provider)**
+* **Plaid API** (Bank Integration)
+
+---
+
+## **🔒 Features**
+
+* ✅ **Dark / Light Mode Support**
+* ✅ **Bank Connection via Plaid**
+* ✅ **Expense + Income Tracking**
+* ✅ **Loans Tracking**
+* ✅ **Graph Reports & Visualization**
+* ✅ **User Profile Management**
+* ✅ **Secure API Routes**
+* ✅ **JWT Auth with Refresh Tokens**
+* ✅ **Form Validation with Zod**
+
+---
+
+## **🖥️ Installation Guide**
+
+### 🔹 Prerequisites
+
+* [Node.js](https://nodejs.org/)
+* [Docker](https://www.docker.com/)
+* [MongoDB (locally or Atlas)](https://www.mongodb.com/)
+
+### 🔹 Clone & Setup
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/ahmed-alfarouq/finvestor.git
+cd finvestor
+cp .env.example .env
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 🔹 Run
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+npm run dev
+```
 
-## Learn More
+### 🔹 Run with Docker
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+docker-compose up --build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## **👨‍💻 Author**
 
-## Deploy on Vercel
+🧑‍💻 **Ahmed Al-Farouq**
+* GitHub: [@ahmed-alfarouq](https://github.com/ahmed-alfarouq)
+* LinkedIn: [ahmed-alfarouq](https://linkedin.com/in/ahmed-alfarouq)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## **🤝 Contributing**
+
+Pull requests, issues, and feature ideas are welcome!
+Check the [issues page](../../issues/) for open tasks.
+
+---
+
+## **⭐ Show Your Support**
+
+If you find **Finvestor** helpful, **please star the repo**! ⭐
+Let’s empower financial literacy with clean, modern tools. 💰📊
+
+---
+
+Let me know if you want help integrating the Plaid API section into the docs.
