@@ -1,118 +1,3 @@
-// good_user / good_password - Bank of America
-export const TEST_USER_ID = "6627ed3d00267aa6fa3e";
-
-// custom_user -> Chase Bank
-// export const TEST_ACCESS_TOKEN =
-//   "access-sandbox-da44dac8-7d31-4f66-ab36-2238d63a3017";
-
-// custom_user -> Chase Bank
-export const TEST_ACCESS_TOKEN =
-  "access-sandbox-229476cf-25bc-46d2-9ed5-fba9df7a5d63";
-
-export const ITEMS = [
-  {
-    id: "6624c02e00367128945e", // appwrite item Id
-    accessToken: "access-sandbox-83fd9200-0165-4ef8-afde-65744b9d1548",
-    itemId: "VPMQJKG5vASvpX8B6JK3HmXkZlAyplhW3r9xm",
-    userId: "6627ed3d00267aa6fa3e",
-    accountId: "X7LMJkE5vnskJBxwPeXaUWDBxAyZXwi9DNEWJ",
-  },
-  {
-    id: "6627f07b00348f242ea9", // appwrite item Id
-    accessToken: "access-sandbox-74d49e15-fc3b-4d10-a5e7-be4ddae05b30",
-    itemId: "Wv7P6vNXRXiMkoKWPzeZS9Zm5JGWdXulLRNBq",
-    userId: "6627ed3d00267aa6fa3e",
-    accountId: "x1GQb1lDrDHWX4BwkqQbI4qpQP1lL6tJ3VVo9",
-  },
-];
-
-export const topCategoryStyles = {
-  "FOOD_AND_DRINK and Drink": {
-    bg: "bg-blue-25",
-    circleBg: "bg-blue-100",
-    text: {
-      main: "text-blue-900",
-      count: "text-blue-700",
-    },
-    progress: {
-      bg: "bg-blue-100",
-      indicator: "bg-blue-700",
-    },
-    icon: "/icons/monitor.svg",
-  },
-  Travel: {
-    bg: "bg-success-25",
-    circleBg: "bg-success-100",
-    text: {
-      main: "text-success-900",
-      count: "text-success-700",
-    },
-    progress: {
-      bg: "bg-success-100",
-      indicator: "bg-success-700",
-    },
-    icon: "/icons/coins.svg",
-  },
-  default: {
-    bg: "bg-pink-25",
-    circleBg: "bg-pink-100",
-    text: {
-      main: "text-pink-900",
-      count: "text-pink-700",
-    },
-    progress: {
-      bg: "bg-pink-100",
-      indicator: "bg-pink-700",
-    },
-    icon: "/icons/GENERAL_MERCHANDISE-bag.svg",
-  },
-};
-
-export const transactionCategoryStyles = {
-  "FOOD_AND_DRINK and Drink": {
-    borderColor: "border-pink-600",
-    backgroundColor: "bg-pink-500",
-    textColor: "text-pink-700",
-    chipBackgroundColor: "bg-inherit",
-  },
-  Payment: {
-    borderColor: "border-success-600",
-    backgroundColor: "bg-green-600",
-    textColor: "text-success-700",
-    chipBackgroundColor: "bg-inherit",
-  },
-  "Bank Fees": {
-    borderColor: "border-success-600",
-    backgroundColor: "bg-green-600",
-    textColor: "text-success-700",
-    chipBackgroundColor: "bg-inherit",
-  },
-  Transfer: {
-    borderColor: "border-red-700",
-    backgroundColor: "bg-red-700",
-    textColor: "text-red-700",
-    chipBackgroundColor: "bg-inherit",
-  },
-  Processing: {
-    borderColor: "border-[#F2F4F7]",
-    backgroundColor: "bg-gray-500",
-    textColor: "text-[#344054]",
-    chipBackgroundColor: "bg-[#F2F4F7]",
-  },
-  Success: {
-    borderColor: "border-[#12B76A]",
-    backgroundColor: "bg-[#12B76A]",
-    textColor: "text-[#027A48]",
-    chipBackgroundColor: "bg-[#ECFDF3]",
-  },
-  default: {
-    borderColor: "",
-    backgroundColor: "bg-blue-500",
-    textColor: "text-blue-700",
-    chipBackgroundColor: "bg-inherit",
-  },
-};
-
 export const daysNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 export const monthsNames = [
   "Jan",
@@ -129,389 +14,85 @@ export const monthsNames = [
   "Dec",
 ];
 
-// Dummy transactions for testing
-export const dummyTransactions = [
-  {
-    id: "current_20250504_1",
-    amount: 150,
-    date: "2025-05-04",
-    name: "Starbucks",
-    paymentChannel: "Debit Card",
-    accountId: "1",
-    pending: false,
-    category_icon:
-      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
-    category: {
-      primary: "FOOD_AND_DRINK",
-      confidence_level: "",
-      detailed: "",
+function generateMockTransactions(accountId = "1") {
+  const categories = [
+    {
+      name: "Starbucks",
+      category: "FOOD_AND_DRINK",
+      icon: "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
     },
-  },
-  {
-    id: "current_20250506_1",
-    amount: 75,
-    date: "2025-05-06",
-    name: "Netflix",
-    paymentChannel: "Credit Card",
-    accountId: "1",
-    pending: false,
-    category_icon:
-      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
-    category: {
-      primary: "ENTERTAINMENT",
-      confidence_level: "",
-      detailed: "",
+    {
+      name: "Netflix",
+      category: "ENTERTAINMENT",
+      icon: "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
     },
-  },
-  {
-    id: "current_20250511_1",
-    amount: 300,
-    date: "2025-05-11",
-    name: "Uber",
-    paymentChannel: "Credit Card",
-    accountId: "1",
-    pending: false,
-    category_icon:
-      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
-    category: {
-      primary: "TRANSPORTATION",
-      confidence_level: "",
-      detailed: "",
+    {
+      name: "Uber",
+      category: "TRANSPORTATION",
+      icon: "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
     },
-  },
-  {
-    id: "current_20250512_1",
-    amount: 90,
-    date: "2025-05-12",
-    name: "Lyft",
-    paymentChannel: "Debit Card",
-    accountId: "1",
-    pending: false,
-    category_icon:
-      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
-    category: {
-      primary: "TRANSPORTATION",
-      confidence_level: "",
-      detailed: "",
+    {
+      name: "CVS",
+      category: "HEALTHCARE",
+      icon: "https://plaid-category-icons.plaid.com/PFC_MEDICAL.png",
     },
-  },
-  {
-    id: "current_20250518_1",
-    amount: 60,
-    date: "2025-05-18",
-    name: "CVS Pharmacy",
-    paymentChannel: "Credit Card",
-    accountId: "1",
-    pending: false,
-    category_icon: "https://plaid-category-icons.plaid.com/PFC_MEDICAL.png",
-    category: {
-      primary: "HEALTHCARE",
-      confidence_level: "",
-      detailed: "",
+    {
+      name: "Subway",
+      category: "FOOD_AND_DRINK",
+      icon: "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
     },
-  },
-  {
-    id: "current_20250520_1",
-    amount: 120,
-    date: "2025-05-20",
-    name: "McDonald's",
-    paymentChannel: "Debit Card",
-    accountId: "1",
-    pending: false,
-    category_icon:
-      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
-    category: {
-      primary: "FOOD_AND_DRINK",
-      confidence_level: "",
-      detailed: "",
+    {
+      name: "Sephora",
+      category: "PERSONAL_CARE",
+      icon: "https://plaid-category-icons.plaid.com/PFC_PERSONAL_CARE.png",
     },
-  },
-  {
-    id: "current_20250525_1",
-    amount: 250,
-    date: "2025-05-25",
-    name: "Delta Airlines",
-    paymentChannel: "Credit Card",
-    accountId: "1",
-    pending: false,
-    category_icon: "https://plaid-category-icons.plaid.com/PFC_TRAVEL.png",
-    category: {
-      primary: "TRAVEL",
-      confidence_level: "",
-      detailed: "",
+    {
+      name: "Amazon",
+      category: "OTHER",
+      icon: "https://plaid-category-icons.plaid.com/PFC_OTHER.png",
     },
-  },
-  {
-    id: "current_20250527_1",
-    amount: 35,
-    date: "2025-05-27",
-    name: "Sephora",
-    paymentChannel: "Debit Card",
-    accountId: "1",
-    pending: false,
-    category_icon:
-      "https://plaid-category-icons.plaid.com/PFC_PERSONAL_CARE.png",
-    category: {
-      primary: "PERSONAL_CARE",
-      confidence_level: "",
-      detailed: "",
-    },
-  },
-  {
-    id: "current_20250601_1",
-    amount: 180,
-    date: "2025-06-01",
-    name: "Coursera",
-    paymentChannel: "Credit Card",
-    accountId: "1",
-    pending: false,
-    category_icon: "https://plaid-category-icons.plaid.com/PFC_EDUCATION.png",
-    category: {
-      primary: "EDUCATION",
-      confidence_level: "",
-      detailed: "",
-    },
-  },
-  {
-    id: "current_20250603_1",
-    amount: 210,
-    date: "2025-06-03",
-    name: "Con Edison",
-    paymentChannel: "Debit Card",
-    accountId: "1",
-    pending: false,
-    category_icon:
-      "https://plaid-category-icons.plaid.com/PFC_RENT_AND_UTILITIES.png",
-    category: {
-      primary: "RENT_AND_UTILITIES",
-      confidence_level: "",
-      detailed: "",
-    },
-  },
-  {
-    id: "current_20250608_1",
-    amount: 95,
-    date: "2025-06-08",
-    name: "Spotify",
-    paymentChannel: "Credit Card",
-    accountId: "1",
-    pending: false,
-    category_icon:
-      "https://plaid-category-icons.plaid.com/PFC_SUBSCRIPTIONS.png",
-    category: {
-      primary: "SUBSCRIPTIONS",
-      confidence_level: "",
-      detailed: "",
-    },
-  },
-  {
-    id: "current_20250612_1",
-    amount: 400,
-    date: "2025-06-12",
-    name: "Amazon",
-    paymentChannel: "Debit Card",
-    accountId: "1",
-    pending: false,
-    category_icon: "https://plaid-category-icons.plaid.com/PFC_OTHER.png",
-    category: {
-      primary: "OTHER",
-      confidence_level: "",
-      detailed: "",
-    },
-  },
-  {
-    id: "current_20250430_1",
-    amount: 145,
-    date: "2025-04-30",
-    name: "Starbucks",
-    paymentChannel: "Debit Card",
-    accountId: "1",
-    pending: false,
-    category_icon:
-      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
-    category: {
-      primary: "FOOD_AND_DRINK",
-      confidence_level: "",
-      detailed: "",
-    },
-  },
-  {
-    id: "current_20250428_1",
-    amount: 70,
-    date: "2025-04-28",
-    name: "Netflix",
-    paymentChannel: "Credit Card",
-    accountId: "1",
-    pending: false,
-    category_icon:
-      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
-    category: {
-      primary: "ENTERTAINMENT",
-      confidence_level: "",
-      detailed: "",
-    },
-  },
-  {
-    id: "current_20250426_1",
-    amount: 290,
-    date: "2025-04-26",
-    name: "Uber",
-    paymentChannel: "Credit Card",
-    accountId: "1",
-    pending: false,
-    category_icon:
-      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
-    category: {
-      primary: "TRANSPORTATION",
-      confidence_level: "",
-      detailed: "",
-    },
-  },
-  {
-    id: "current_20250410_1",
-    amount: 160,
-    date: "2025-04-10",
-    name: "Starbucks",
-    paymentChannel: "Debit Card",
-    accountId: "1",
-    pending: false,
-    category_icon:
-      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
-    category: {
-      primary: "FOOD_AND_DRINK",
-      confidence_level: "",
-      detailed: "",
-    },
-  },
-  {
-    id: "current_20250315_1",
-    amount: 80,
-    date: "2025-03-15",
-    name: "Netflix",
-    paymentChannel: "Credit Card",
-    accountId: "1",
-    pending: false,
-    category_icon:
-      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
-    category: {
-      primary: "ENTERTAINMENT",
-      confidence_level: "",
-      detailed: "",
-    },
-  },
-  {
-    id: "current_20250218_1",
-    amount: 305,
-    date: "2025-02-18",
-    name: "Uber",
-    paymentChannel: "Credit Card",
-    accountId: "1",
-    pending: false,
-    category_icon:
-      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
-    category: {
-      primary: "TRANSPORTATION",
-      confidence_level: "",
-      detailed: "",
-    },
-  },
-  {
-    id: "current_20250401_1",
-    amount: 135,
-    date: "2025-04-01",
-    name: "Starbucks",
-    paymentChannel: "Debit Card",
-    accountId: "1",
-    pending: false,
-    category_icon:
-      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
-    category: {
-      primary: "FOOD_AND_DRINK",
-      confidence_level: "",
-      detailed: "",
-    },
-  },
-  {
-    id: "current_20250329_1",
-    amount: 77,
-    date: "2025-03-29",
-    name: "Netflix",
-    paymentChannel: "Credit Card",
-    accountId: "1",
-    pending: false,
-    category_icon:
-      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
-    category: {
-      primary: "ENTERTAINMENT",
-      confidence_level: "",
-      detailed: "",
-    },
-  },
-  {
-    id: "current_20250321_1",
-    amount: 310,
-    date: "2025-03-21",
-    name: "Uber",
-    paymentChannel: "Credit Card",
-    accountId: "1",
-    pending: false,
-    category_icon:
-      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
-    category: {
-      primary: "TRANSPORTATION",
-      confidence_level: "",
-      detailed: "",
-    },
-  },
-  {
-    id: "current_20250205_1",
-    amount: 142,
-    date: "2025-02-05",
-    name: "Starbucks",
-    paymentChannel: "Debit Card",
-    accountId: "1",
-    pending: false,
-    category_icon:
-      "https://plaid-category-icons.plaid.com/PFC_FOOD_AND_DRINK.png",
-    category: {
-      primary: "FOOD_AND_DRINK",
-      confidence_level: "",
-      detailed: "",
-    },
-  },
-  {
-    id: "current_20250120_1",
-    amount: 72,
-    date: "2025-01-20",
-    name: "Netflix",
-    paymentChannel: "Credit Card",
-    accountId: "1",
-    pending: false,
-    category_icon:
-      "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
-    category: {
-      primary: "ENTERTAINMENT",
-      confidence_level: "",
-      detailed: "",
-    },
-  },
-  {
-    id: "current_20250108_1",
-    amount: 275,
-    date: "2025-01-08",
-    name: "Uber",
-    paymentChannel: "Credit Card",
-    accountId: "1",
-    pending: false,
-    category_icon:
-      "https://plaid-category-icons.plaid.com/PFC_TRANSPORTATION.png",
-    category: {
-      primary: "TRANSPORTATION",
-      confidence_level: "",
-      detailed: "",
-    },
-  },
-];
+  ];
+
+  const paymentChannels = ["Debit Card", "Credit Card"];
+  const transactions = [];
+
+  const today = new Date();
+  const startDate = new Date(
+    today.getFullYear(),
+    today.getMonth() - 2,
+    today.getDate()
+  );
+
+  for (let d = new Date(today); d >= startDate; d.setDate(d.getDate() - 1)) {
+    const dateStr = d.toISOString().split("T")[0];
+
+    for (let i = 1; i <= 2; i++) {
+      const entry = categories[Math.floor(Math.random() * categories.length)];
+      const amount = Math.floor(Math.random() * 200) + 10;
+
+      transactions.push({
+        id: `current_${dateStr.replace(/-/g, "")}_${i}`,
+        amount,
+        date: dateStr,
+        name: entry.name,
+        paymentChannel:
+          paymentChannels[Math.floor(Math.random() * paymentChannels.length)],
+        accountId,
+        pending: false,
+        category_icon: entry.icon,
+        category: {
+          primary: entry.category,
+          confidence_level: "",
+          detailed: "",
+        },
+      });
+    }
+  }
+
+  return transactions;
+}
+
+export const dummyTransactions = generateMockTransactions();
 
 // Dummy transactions for testing, because plaid doesn't provide last year transactions
 export const lastYearTransactions = [
