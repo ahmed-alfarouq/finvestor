@@ -17,7 +17,7 @@ const LoansBox = ({ loans, show }: LoansBoxProps) => {
   const displayedLoans = loans.slice(0, show);
 
   return (
-    <section>
+    <section className="box">
       <header className="flex items-center justify-between">
         <h2 className="card-title">Loans</h2>
         {hasLoans && (
@@ -32,7 +32,7 @@ const LoansBox = ({ loans, show }: LoansBoxProps) => {
 
       <div
         className={cn(
-          "sm:h-72 flex flex-col gap-4 sm:gap-6 rounded-xl border bg-default dark:bg-default-dark card-shadow p-4 sm:px-7 sm:py-5 overflow-y-auto",
+          "card",
           hasLoans ? "items-start" : "items-center justify-center"
         )}
       >

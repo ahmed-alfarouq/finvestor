@@ -3,8 +3,8 @@ import React from "react";
 const VisaIcon = ({ className }: { className?: string }) => {
   return (
     <svg
-      width="780"
-      height="500"
+      width="32"
+      height="32"
       viewBox="0 0 780 500"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

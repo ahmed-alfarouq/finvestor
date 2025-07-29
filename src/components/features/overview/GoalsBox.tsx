@@ -17,15 +17,16 @@ const GoalsBox = ({
   achievedAmount,
   thisMonthTarget,
   date,
-  className,
 }: GoalsBoxProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleModal = () => setIsOpen((prev) => !prev);
   return (
-    <section className={className}>
-      <h2 className="card-title">{title}</h2>
-      <div className="sm:h-72 flex flex-col items-center gap-4 sm:gap-6 rounded-xl border bg-default dark:bg-default-dark card-shadow p-4 sm:px-7 sm:py-5">
+    <section className="box">
+      <header>
+        <h2 className="card-title">{title}</h2>
+      </header>
+      <section className="card">
         <div className="flex items-center justify-between w-full border-b border-gray-6 pb-4">
           <div className="flex items-center gap-2">
             <h3 className="default-black text-[22px] font-extrabold">
@@ -73,7 +74,7 @@ const GoalsBox = ({
             achievedAmount={achievedAmount}
           />
         </div>
-      </div>
+      </section>
       <ModalWrapper isOpen={isOpen} close={toggleModal}>
         <TargetForm />
       </ModalWrapper>

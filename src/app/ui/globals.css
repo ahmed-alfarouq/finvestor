@@ -141,6 +141,14 @@
   }
 
   /* Card */
+  .box {
+    @apply flex flex-col;
+  }
+  
+  .card {
+    @apply sm:h-[300px] flex flex-col items-center gap-4 sm:gap-6 rounded-xl border bg-default dark:bg-default-dark card-shadow p-4 sm:px-7 sm:py-5;
+  }
+
   .card-title {
     @apply text-xl sm:text-2xl text-gray-2 dark:text-gray-7 mb-2;
   }
