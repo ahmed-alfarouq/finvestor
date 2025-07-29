@@ -33,7 +33,7 @@ const FormInput = ({
               placeholder={placeholder}
               {...field}
               autoComplete="off"
-              className="bg-default dark:bg-default-dark"
+              className="transfer-input"
             />
           </FormControl>
           <FormMessage />

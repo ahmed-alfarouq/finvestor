@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { CgLogOut } from "react-icons/cg";
 import { CiSettings } from "react-icons/ci";
 import { AiOutlineWindows } from "react-icons/ai";
+import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { ArrowLeftRight, Wallet } from "lucide-react";
 import { BiMoneyWithdraw, BiTargetLock } from "react-icons/bi";
 
@@ -56,6 +57,15 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
               active={pathname === "/balances"}
               text="Balances"
               beforeIcon={<Wallet size={24} />}
+              handleClick={toggleSidebar}
+            />
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <NavLink
+              to="/transfer"
+              active={pathname === "/transfer"}
+              text="Transfer"
+              beforeIcon={<FaMoneyBillTransfer size={24} />}
               handleClick={toggleSidebar}
             />
           </SidebarMenuItem>
