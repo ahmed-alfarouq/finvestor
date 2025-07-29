@@ -44,8 +44,12 @@ const GoalsBox = ({
           </span>
         </div>
 
-        <div className="flex justify-between items-center sm:items-start flex-col-reverse sm:flex-row w-full ">
-          <div className="w-full flex flex-wrap sm:flex-col justify-center gap-4 sm:gap-0 xs:justify-evenly items-center sm:items-start xs:space-y-0 sm:space-y-8">
+        <div className="flex flex-col justify-between items-center sm:items-start w-full 3xl:flex-row-reverse mt-2">
+          <CircledProgressBar
+            targetAmount={targetAmount}
+            achievedAmount={achievedAmount}
+          />
+          <div className="w-full flex flex-wrap justify-center gap-4 xs:justify-evenly items-center 3xl:flex-col 3xl:space-y-8 3xl:w-fit">
             <div className="flex gap-2">
               <CheckIcon className="w-6 h-6 p-1 rounded-full dark:bg-green-100 bg-green-900" />
               <div>
@@ -69,10 +73,6 @@ const GoalsBox = ({
               </div>
             </div>
           </div>
-          <CircledProgressBar
-            targetAmount={targetAmount}
-            achievedAmount={achievedAmount}
-          />
         </div>
       </section>
       <ModalWrapper isOpen={isOpen} close={toggleModal}>

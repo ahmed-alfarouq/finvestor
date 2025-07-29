@@ -17,6 +17,8 @@ export default {
       lg: "1024px",
       xl: "1280px",
       "2xl": "1400px",
+      "3xl": "1800px",
+      "4xl": "2400px",
     },
     extend: {
       container: {

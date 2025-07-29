@@ -1,9 +1,13 @@
 "use client";
 import React from "react";
 import { useTheme } from "next-themes";
+
 import { CircularProgressbar } from "react-circular-progressbar";
+
 import "react-circular-progressbar/dist/styles.css";
+
 import { formatAmount } from "@/lib/utils";
+
 import { CircledProgressBarProps } from "@/types";
 
 const CircledProgressBar = ({
@@ -16,7 +20,7 @@ const CircledProgressBar = ({
   const progress = (achievedAmount / targetAmount) * 100;
 
   return (
-    <div className="relative w-2/3 xs:w-[60%] sm:w-fit">
+    <div className="relative w-2/3 xs:w-[60%] md:w-[38%] lg:w-5/12 xl:w-5/12 2xl:w-[29%] 3xl:w-4/12 4xl:w-2/12 mx-auto 3xl:mx-1">
       <CircularProgressbar
         value={progress}
         strokeWidth={8}
@@ -42,11 +46,11 @@ const CircledProgressBar = ({
       </span>
 
       <div className="absolute top-2/3 left-1/2 transform -translate-x-1/2 -translate-y-2/3 text-center">
-        <div className="text-base font-semibold text-default-black dark:text-gray-7">
+        <p className="font-semibold text-default-black dark:text-gray-7">
           {formatAmount(achievedAmount, true)}
-        </div>
+        </p>
       </div>
-      <p className="absolute top-3/4 left-1/2 transform -translate-x-1/2 -translate-y-2/3 w-full text-xs font-medium text-default-black dark:text-gray-7 mt-2 text-center">
+      <p className="absolute top-3/4 left-1/2 transform -translate-x-1/2 -translate-y-2/3 w-full text-xs font-medium text-default-black dark:text-gray-7 mt-2 text-center whitespace-nowrap">
         Target vs Achievement
       </p>
     </div>
