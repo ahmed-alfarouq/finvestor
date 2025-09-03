@@ -12,7 +12,7 @@ const successStories = [
     id: 1,
     name: "Ahmed Al-Farouq",
     job: "Owner of Finvestor",
-    avatar: "/img/avatar1.png",
+    avatar: "/img/avatar1.webp",
     description:
       "Finvestor helped me organize my expenses and gain clearer insights into where my money goes.",
   },
@@ -20,7 +20,7 @@ const successStories = [
     id: 2,
     name: "Ashley Davis",
     job: "Entrepreneur",
-    avatar: "/img/avatar2.png",
+    avatar: "/img/avatar2.webp",
     description:
       "Finvestor helped me secure my financial future with expert advice!",
   },
@@ -28,7 +28,7 @@ const successStories = [
     id: 3,
     name: "Robert Wilson",
     job: "Freelancer",
-    avatar: "/img/avatar1.png",
+    avatar: "/img/avatar1.webp",
     description:
       "Trustworthy, knowledgeable, and dedicated financial advisors at Finvestor!",
   },
@@ -36,7 +36,7 @@ const successStories = [
     id: 4,
     name: "Mike Anderson",
     job: "Startup Founder",
-    avatar: "/img/avatar2.png",
+    avatar: "/img/avatar2.webp",
     description:
       "Thanks to Finvestor, I’m on track to achieve my financial goals!",
   },
