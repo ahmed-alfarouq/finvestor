@@ -1,6 +1,5 @@
 "use server";
 import axios from "axios";
-import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
 import { plaidClient } from "@/plaid";
