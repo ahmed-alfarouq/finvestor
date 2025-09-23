@@ -47,11 +47,6 @@ const PlaidLink = ({
           accountType,
         });
 
-        if (res.error) {
-          onError(res.error);
-          return;
-        }
-
         await update();
         if (res && res.publicTokenExchange === "complete") {
           handleSuccess();

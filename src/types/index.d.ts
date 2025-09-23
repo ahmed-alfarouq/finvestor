@@ -1,40 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FieldError } from "react-hook-form";
 import { Control } from "react-hook-form";
 
 declare type ConnectAccountType = "normal" | "liability";
 
-// ========================================
-// Errors
-declare type DwollaApiError = {
-  body: {
-    code: string;
-    message: string;
-    _links?: {
-      about?: {
-        href: string;
-        type: string;
-        "resource-type": string;
-      };
-    };
-    _embedded?: {
-      errors: Array<{
-        code: string;
-        message: string;
-        path: string;
-        _links?: object;
-      }>;
-    };
-  };
-  status: number;
-  message: string;
-};
-
 declare type User = {
   id: string;
   email: string;
-  dwollaCustomerUrl: string;
-  dwollaCustomerId: string;
   firstName: string;
   lastName: string;
   address1: string;
@@ -85,8 +56,8 @@ declare type BankAccountProps = {
   bankId: string;
   accountId: string;
   accessToken: string;
-  fundingSourceUrl: string;
   sharableId: string;
+  isLiabilityAccount: boolean;
 };
 
 declare type AccountTypes =
@@ -105,45 +76,6 @@ declare type UpdateUserPasswordParams = {
   userId: string;
   oldPassword: string;
   newPassword: string;
-};
-
-declare type TransferParams = {
-  sourceFundingSourceUrl: string;
-  destinationFundingSourceUrl: string;
-  amount: string;
-};
-
-declare type AddFundingSourceParams = {
-  dwollaCustomerId: string;
-  processorToken: string;
-  bankName: string;
-};
-
-declare type DwollaError = {
-  status?: number;
-  message?: string;
-  code?: string;
-  _embedded?: any;
-  _links?: any;
-  [key: string]: any;
-};
-
-declare type NewDwollaCustomerParams = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  type: string;
-  address1: string;
-  city: string;
-  state: string;
-  postalCode: string;
-  dateOfBirth: string;
-  ssn: string;
-};
-
-declare type UpdateDwollaCutomerInfoParams = {
-  dwollaCustomerId: string;
-  updateFields: UpdateUserInfoProps;
 };
 
 declare type UpdateUser2FAParams = {
@@ -249,7 +181,6 @@ declare interface PlaidLinkProps {
   title?: string;
   icon?: string;
   accountType?: ConnectAccountType;
-  dwollaCustomerId?: string;
   disabled: boolean;
   className?: string;
   handleSuccess?: () => void;
@@ -386,13 +317,6 @@ declare interface Loan {
 }
 
 // Actions
-declare interface CreateFundingSourceOptions {
-  customerId: string; // Dwolla Customer ID
-  fundingSourceName: string; // Dwolla Funding Source Name
-  plaidToken: string; // Plaid Account Processor Token
-  _links: object; // Dwolla On Demand Authorization Link
-}
-
 declare interface CreateTransactionProps {
   name: string;
   amount: string;
@@ -413,8 +337,8 @@ declare interface createBankAccountProps {
   userId: string;
   accountId: string;
   bankId: string;
-  fundingSourceUrl: string;
   sharableId: string;
+  isLiabilityAccount: boolean;
 }
 
 declare interface BankTabItemProps {

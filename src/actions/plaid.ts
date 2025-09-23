@@ -13,10 +13,8 @@ import {
   LinkTokenAccountFilters,
   LinkTokenCreateRequest,
   LoanAccountSubtype,
-  ProcessorTokenCreateRequestProcessorEnum,
   Products,
 } from "plaid";
-import { addFundingSource } from "./dwolla";
 
 import { ConnectAccountType, exchangePublicTokenProps, User } from "@/types";
 
@@ -54,25 +52,12 @@ export const exchangePublicToken = async ({
   try {
     const { accessToken, itemId } = await exchangePlaidToken(publicToken);
 
-    const { accounts: allAccounts, item } = await getPlaidAccountsSafely(
+    const { accounts: allAccounts } = await getPlaidAccountsSafely(
       accessToken,
       accountType
     );
 
-    const res = await processDwollaEligibleAccounts(
-      allAccounts,
-      accessToken,
-      itemId,
-      item.institution_name!,
-      user
-    );
-
-    if (res?.error) {
-      return { error: res.error };
-    }
-
-    // Handle the case of liabilities accounts
-    await processLiabilityAccounts(allAccounts, accessToken, itemId, user);
+    await processAccounts(allAccounts, accountType, accessToken, itemId, user);
 
     // Remove cache to show the new bank accounts
     revalidatePath("/");
@@ -82,7 +67,7 @@ export const exchangePublicToken = async ({
     };
   } catch (err) {
     console.error("Error in exchangePublicToken:", err);
-    throw err; // Re-throw to handle in the UI
+    throw err;
   }
 };
 
@@ -117,74 +102,21 @@ const getPlaidAccountsSafely = async (
   }
 };
 
-const processDwollaEligibleAccounts = async (
+const processAccounts = async (
   accounts: AccountBase[],
-  accessToken: string,
-  bankId: string,
-  bankName: string,
-  user: User
-) => {
-  /**
-   ** Dwolla only supports checking and savings accounts for processor tokens
-   */
-  const eligibleAccounts = accounts.filter(
-    (a) => a.subtype === "checking" || a.subtype === "savings"
-  );
-
-  for (const account of eligibleAccounts) {
-    try {
-      const processorToken = await plaidClient.processorTokenCreate({
-        access_token: accessToken,
-        account_id: account.account_id,
-        processor: "dwolla" as ProcessorTokenCreateRequestProcessorEnum,
-      });
-
-      const fundingSourceUrl = await addFundingSource({
-        dwollaCustomerId: user.dwollaCustomerId,
-        processorToken: processorToken.data.processor_token,
-        bankName: bankName || account.name,
-      });
-
-      if (!fundingSourceUrl)
-        return { error: "Funding source creation failed!" };
-
-      await createBankAccount({
-        userId: user.id,
-        bankId,
-        accountId: account.account_id,
-        accessToken,
-        fundingSourceUrl,
-        sharableId: encryptId(account.account_id),
-      });
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-
-      // Fallback for unknown error types
-      throw new Error(`Failed Dwolla setup for account ${account.name}`);
-    }
-  }
-};
-
-const processLiabilityAccounts = async (
-  accounts: AccountBase[],
+  accountType: ConnectAccountType,
   accessToken: string,
   bankId: string,
   user: User
 ) => {
-  const liabilities = accounts.filter(
-    (a) => a.subtype !== "checking" && a.subtype !== "savings"
-  );
-
-  for (const account of liabilities) {
+  for (const account of accounts) {
     await createBankAccount({
       userId: user.id,
       bankId,
       accountId: account.account_id,
       accessToken,
-      fundingSourceUrl: "",
       sharableId: encryptId(account.account_id),
+      isLiabilityAccount: accountType === "liability",
     });
   }
 };

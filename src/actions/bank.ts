@@ -11,15 +11,14 @@ import {
   getBankAccountsByBankId,
 } from "@/actions/user/getUserData";
 import { removeBanksByBankId } from "@/actions/user/updateUser";
-import { removeFundingSources } from "@/actions/dwolla";
 
 import { BankAccount, BankAccountProps, Transaction, Loan } from "@/types";
 
 const getPlaidDataSafly = async (
-  hasFundingSource: boolean,
+  isLiabilityAccount: boolean,
   accessToken: string
 ) => {
-  if (!hasFundingSource) {
+  if (isLiabilityAccount) {
     const res = await plaidClient.liabilitiesGet({
       access_token: accessToken,
     });
@@ -37,7 +36,7 @@ const fetchingAllBanksDetails = async (banks: BankAccountProps[]) =>
     banks.map(async (bank) => {
       try {
         const data = await getPlaidDataSafly(
-          !!bank.fundingSourceUrl.length,
+          bank.isLiabilityAccount,
           bank.accessToken
         );
 
@@ -287,13 +286,6 @@ export const removeBankAccount = async (bankId: string) => {
     const removeBanksRes = await removeBanksByBankId(bankId);
 
     if (removeBanksRes.error) return { error: removeBanksRes.error };
-
-    const removeFundingSourcesRes = await removeFundingSources(bankAccounts);
-
-    if (removeFundingSourcesRes.error)
-      return {
-        error: removeFundingSourcesRes.error,
-      };
 
     // all accounts from the same bank are removed
     const plaidRemoveRes = await plaidClient.itemRemove({
