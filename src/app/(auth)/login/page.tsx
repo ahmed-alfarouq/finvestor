@@ -41,17 +41,22 @@ const LoginPage = () => {
 
   const onSubmit = (data: LoginFields) => {
     setFormError("");
-    startTransition(() => {
-      login(data).then((data) => {
-        if (data?.error) {
-          form.reset();
-          setFormError(data.error);
-        }
-        if (data?.twoFactor) {
-          setShowTwoFactor(true);
-          setFormError("");
-        }
-      });
+
+    startTransition(async () => {
+      try {
+        await login(data).then((data) => {
+          if (data?.error) {
+            form.reset();
+            setFormError(data.error);
+          }
+          if (data?.twoFactor) {
+            setShowTwoFactor(true);
+            setFormError("");
+          }
+        });
+      } catch (error) {
+        setFormError((error as Error).message);
+      }
     });
   };
 
