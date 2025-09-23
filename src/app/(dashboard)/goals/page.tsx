@@ -30,6 +30,7 @@ const Goals = () => {
             title="Goals"
             message="Select an account to continue setting up your goal."
             date={new Date()}
+            showButton={false}
             selectedAccounts={false}
             className="md:col-span-1"
           />

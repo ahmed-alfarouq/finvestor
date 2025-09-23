@@ -225,6 +225,7 @@ declare interface EmptyGoalsBoxProps {
   selectedAccounts?: boolean;
   date: Date;
   className?: string;
+  showButton?: boolean;
 }
 
 declare interface BalanceCardProps {

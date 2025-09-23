@@ -104,7 +104,7 @@ const SelectedAccountsForm = ({
         <Button
           type="submit"
           size="lg"
-          className="mt-3 sm:mt-auto"
+          className="mt-3 sm:mt-5"
           disabled={pending}
         >
           Save Selection
