@@ -1,8 +1,21 @@
-import { FieldError } from "react-hook-form";
-import { Control } from "react-hook-form";
+import { Control, FieldError } from "react-hook-form";
+import { ChartOptions } from "chart.js";
 
-declare type ConnectAccountType = "normal" | "liability";
+// ------------------------------
+// Core Enums & Simple Types
+// ------------------------------
+export type ConnectAccountType = "normal" | "liability";
+export type AccountType =
+  | "depository"
+  | "credit"
+  | "loan"
+  | "investment"
+  | "other";
+export type NotificationStatus = "success" | "warning" | "error" | "info";
 
+// ------------------------------
+// User & Accounts
+// ------------------------------
 declare type User = {
   id: string;
   email: string;
@@ -60,13 +73,6 @@ declare type BankAccountProps = {
   isLiabilityAccount: boolean;
 };
 
-declare type AccountTypes =
-  | "depository"
-  | "credit"
-  | "loan"
-  | "investment"
-  | "other";
-
 declare type Receiver = {
   firstName: string;
   lastName: string;
@@ -92,6 +98,10 @@ declare type UpdateUserInfoProps = {
   postalCode: string;
 };
 
+// ------------------------------
+// UI Components Props
+// ------------------------------
+
 declare interface CarouselProps {
   children: React.ReactNode[];
   className?: string;
@@ -106,6 +116,7 @@ declare interface CarouselProps {
     };
   };
 }
+
 declare interface BankCardProps {
   accountNumber: string;
   type: string;
@@ -301,6 +312,20 @@ declare interface DoughnutChartProps {
   accounts: BankAccount[];
 }
 
+declare interface BankTabItemProps {
+  account: BankAccount;
+  id: string;
+  className?: string;
+}
+
+declare interface NotificationAlertProps {
+  onClose?: () => void;
+  title: string;
+  message: string;
+  status?: NotificationStatus;
+  duration?: number;
+}
+
 declare interface Loan {
   name: string;
   accountId: string;
@@ -316,7 +341,9 @@ declare interface Loan {
   ytdTotalPaid: number;
 }
 
+// ------------------------------
 // Actions
+// ------------------------------
 declare interface CreateTransactionProps {
   name: string;
   amount: string;
@@ -339,20 +366,4 @@ declare interface createBankAccountProps {
   bankId: string;
   sharableId: string;
   isLiabilityAccount: boolean;
-}
-
-declare interface BankTabItemProps {
-  account: BankAccount;
-  id: string;
-  className?: string;
-}
-
-export type NotificationStatus = "success" | "warning" | "error" | "info";
-
-declare interface NotificationAlertProps {
-  onClose?: () => void;
-  title: string;
-  message: string;
-  status?: NotificationStatus;
-  duration?: number;
 }
