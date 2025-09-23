@@ -16,6 +16,7 @@ export default auth((req) => {
 
   const session = req.auth;
   const isLoggedIn = !!session;
+  const isLinkAccountPage = pathname === "/link-account";
 
   const isApiRoute = pathname.startsWith(API_AUTH_PREFIX);
   const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
@@ -28,24 +29,22 @@ export default auth((req) => {
 
   // Auth routes: redirect logged-in users to overiew page
   if (isAuthRoute && isLoggedIn) {
-    return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.nextUrl));
+    return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.url));
   }
 
   if (!isLoggedIn && !isAuthRoute) {
-    return NextResponse.redirect(new URL("/login", req.nextUrl));
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 
   if (isLoggedIn) {
-    const isLinkAccountPage = pathname === "/link-account";
-
     // User has bank accounts → prevent going to link page again
     if (hasBankAccounts && isLinkAccountPage) {
-      return NextResponse.redirect(new URL("/overview", req.nextUrl));
+      return NextResponse.redirect(new URL("/overview", req.url));
     }
 
     // User has no bank accounts → force them to link account first
     if (!hasBankAccounts && !isLinkAccountPage) {
-      return NextResponse.redirect(new URL("/link-account", req.nextUrl));
+      return NextResponse.redirect(new URL("/link-account", req.url));
     }
   }
 
