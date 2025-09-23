@@ -1,11 +1,12 @@
 "use client";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+
 import { UseSessionContext } from "@/context/SessionContext";
 
-import CardWrapper from "@/components/auth/CardWrapper";
-import PlaidLink from "@/components/ui/plaid-link";
 import Loading from "@/app/loading";
+import PlaidLink from "@/components/ui/plaid-link";
+import CardWrapper from "@/components/auth/CardWrapper";
 
 import { cn } from "@/lib/utils";
 
@@ -15,14 +16,6 @@ const LinkAccount = () => {
 
   const [collectingData, setCollectingData] = useState(false);
   const [disableLinks, setDisableLinks] = useState(false);
-
-  useEffect(() => {
-    if (!session) return;
-
-    if (session.user.bankAccounts.length > 0) {
-      router.push("/overview");
-    }
-  }, [session?.user.bankAccounts, router]);
 
   const handleSuccess = () => {
     setCollectingData(false);

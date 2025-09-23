@@ -14,12 +14,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum UserRole {
-  OWNER
-  ADMIN
-  USER
-}
-
 model User {
   id                    String                 @id @default(auto()) @map("_id") @db.ObjectId
   firstName             String
@@ -34,12 +28,9 @@ model User {
   emailVerified         DateTime?
   image                 String?
   password              String
-  dwollaCustomerUrl     String
-  dwollaCustomerId      String
   savingsGoal           String?
   savingsGoalAccounts   String[]
   expensesGoals         ExpensesGoal[]
-  role                  UserRole               @default(USER)
   isTwoFactorEnabled    Boolean                @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
   bankAccounts          BankAccount[]
@@ -84,14 +75,14 @@ model TwoFactorConfirmation {
 }
 
 model BankAccount {
-  id               String @id @default(cuid()) @map("_id")
-  userId           String @db.ObjectId
-  user             User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  bankId           String
-  accountId        String
-  accessToken      String
-  fundingSourceUrl String
-  sharableId       String
+  id                 String  @id @default(cuid()) @map("_id")
+  userId             String  @db.ObjectId
+  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bankId             String
+  accountId          String
+  accessToken        String
+  sharableId         String
+  isLiabilityAccount Boolean
 }
 
 model ExpensesGoal {

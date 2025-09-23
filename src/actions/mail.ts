@@ -10,7 +10,8 @@ export const sendVerificationEmail = async ({
   email: string;
   token: string;
 }) => {
-  const html = `
+  try {
+    const html = `
       <div style="max-width: 600px; margin: auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); text-align: center;">
       <h1 style="color: #299D91; font-size: 24px; font-weight: bold;">Welcome to Finvestor, ${username}!</h1>
       <p style="color: #4b5563; font-size: 16px; margin-top: 16px;">
@@ -29,11 +30,14 @@ export const sendVerificationEmail = async ({
       </p>
       </div>
     `;
-  await sendEmail({
-    to: email,
-    subject: `${username}, Activate Your Finvestor Account Today`,
-    html,
-  });
+    await sendEmail({
+      to: email,
+      subject: `${username}, Activate Your Finvestor Account Today`,
+      html,
+    });
+  } catch {
+    throw new Error("We couldn’t send the verification email. Please try again.");
+  }
 };
 
 export const sendResetEmail = async ({

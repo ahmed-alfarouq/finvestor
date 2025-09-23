@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-import type { AccountTypes } from "@/types";
+import type { AccountType } from "@/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -148,7 +148,7 @@ export const removeSpecialCharacters = (value: string) => {
   return value.replace(/[^\w\s]/gi, "");
 };
 
-export function getAccountTypeColors(type: AccountTypes) {
+export function getAccountTypeColors(type: AccountType) {
   switch (type) {
     case "depository":
       return {
@@ -174,16 +174,6 @@ export function getAccountTypeColors(type: AccountTypes) {
         subText: "text-green-700",
       };
   }
-}
-
-export function extractCustomerIdFromUrl(url: string) {
-  // Split the URL string by '/'
-  const parts = url.split("/");
-
-  // Extract the last part, which represents the customer ID
-  const customerId = parts[parts.length - 1];
-
-  return customerId;
 }
 
 export function encryptId(id: string) {

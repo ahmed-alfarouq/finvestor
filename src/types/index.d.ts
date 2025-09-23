@@ -1,40 +1,24 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { FieldError } from "react-hook-form";
-import { Control } from "react-hook-form";
+import { Control, FieldError } from "react-hook-form";
+import { ChartOptions } from "chart.js";
 
-declare type ConnectAccountType = "normal" | "liability";
+// ------------------------------
+// Core Enums & Simple Types
+// ------------------------------
+export type ConnectAccountType = "normal" | "liability";
+export type AccountType =
+  | "depository"
+  | "credit"
+  | "loan"
+  | "investment"
+  | "other";
+export type NotificationStatus = "success" | "warning" | "error" | "info";
 
-// ========================================
-// Errors
-declare type DwollaApiError = {
-  body: {
-    code: string;
-    message: string;
-    _links?: {
-      about?: {
-        href: string;
-        type: string;
-        "resource-type": string;
-      };
-    };
-    _embedded?: {
-      errors: Array<{
-        code: string;
-        message: string;
-        path: string;
-        _links?: object;
-      }>;
-    };
-  };
-  status: number;
-  message: string;
-};
-
+// ------------------------------
+// User & Accounts
+// ------------------------------
 declare type User = {
   id: string;
   email: string;
-  dwollaCustomerUrl: string;
-  dwollaCustomerId: string;
   firstName: string;
   lastName: string;
   address1: string;
@@ -85,16 +69,9 @@ declare type BankAccountProps = {
   bankId: string;
   accountId: string;
   accessToken: string;
-  fundingSourceUrl: string;
   sharableId: string;
+  isLiabilityAccount: boolean;
 };
-
-declare type AccountTypes =
-  | "depository"
-  | "credit"
-  | "loan"
-  | "investment"
-  | "other";
 
 declare type Receiver = {
   firstName: string;
@@ -105,45 +82,6 @@ declare type UpdateUserPasswordParams = {
   userId: string;
   oldPassword: string;
   newPassword: string;
-};
-
-declare type TransferParams = {
-  sourceFundingSourceUrl: string;
-  destinationFundingSourceUrl: string;
-  amount: string;
-};
-
-declare type AddFundingSourceParams = {
-  dwollaCustomerId: string;
-  processorToken: string;
-  bankName: string;
-};
-
-declare type DwollaError = {
-  status?: number;
-  message?: string;
-  code?: string;
-  _embedded?: any;
-  _links?: any;
-  [key: string]: any;
-};
-
-declare type NewDwollaCustomerParams = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  type: string;
-  address1: string;
-  city: string;
-  state: string;
-  postalCode: string;
-  dateOfBirth: string;
-  ssn: string;
-};
-
-declare type UpdateDwollaCutomerInfoParams = {
-  dwollaCustomerId: string;
-  updateFields: UpdateUserInfoProps;
 };
 
 declare type UpdateUser2FAParams = {
@@ -160,6 +98,10 @@ declare type UpdateUserInfoProps = {
   postalCode: string;
 };
 
+// ------------------------------
+// UI Components Props
+// ------------------------------
+
 declare interface CarouselProps {
   children: React.ReactNode[];
   className?: string;
@@ -174,6 +116,7 @@ declare interface CarouselProps {
     };
   };
 }
+
 declare interface BankCardProps {
   accountNumber: string;
   type: string;
@@ -249,7 +192,6 @@ declare interface PlaidLinkProps {
   title?: string;
   icon?: string;
   accountType?: ConnectAccountType;
-  dwollaCustomerId?: string;
   disabled: boolean;
   className?: string;
   handleSuccess?: () => void;
@@ -283,6 +225,7 @@ declare interface EmptyGoalsBoxProps {
   selectedAccounts?: boolean;
   date: Date;
   className?: string;
+  showButton?: boolean;
 }
 
 declare interface BalanceCardProps {
@@ -370,6 +313,20 @@ declare interface DoughnutChartProps {
   accounts: BankAccount[];
 }
 
+declare interface BankTabItemProps {
+  account: BankAccount;
+  id: string;
+  className?: string;
+}
+
+declare interface NotificationAlertProps {
+  onClose?: () => void;
+  title: string;
+  message: string;
+  status?: NotificationStatus;
+  duration?: number;
+}
+
 declare interface Loan {
   name: string;
   accountId: string;
@@ -385,14 +342,9 @@ declare interface Loan {
   ytdTotalPaid: number;
 }
 
+// ------------------------------
 // Actions
-declare interface CreateFundingSourceOptions {
-  customerId: string; // Dwolla Customer ID
-  fundingSourceName: string; // Dwolla Funding Source Name
-  plaidToken: string; // Plaid Account Processor Token
-  _links: object; // Dwolla On Demand Authorization Link
-}
-
+// ------------------------------
 declare interface CreateTransactionProps {
   name: string;
   amount: string;
@@ -413,22 +365,6 @@ declare interface createBankAccountProps {
   userId: string;
   accountId: string;
   bankId: string;
-  fundingSourceUrl: string;
   sharableId: string;
-}
-
-declare interface BankTabItemProps {
-  account: BankAccount;
-  id: string;
-  className?: string;
-}
-
-export type NotificationStatus = "success" | "warning" | "error" | "info";
-
-declare interface NotificationAlertProps {
-  onClose?: () => void;
-  title: string;
-  message: string;
-  status?: NotificationStatus;
-  duration?: number;
+  isLiabilityAccount: boolean;
 }

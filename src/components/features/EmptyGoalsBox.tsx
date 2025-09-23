@@ -15,6 +15,7 @@ const EmptyGoalsBox = ({
   message,
   date,
   selectedAccounts = true,
+  showButton = true,
 }: EmptyGoalsBoxProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -45,11 +46,11 @@ const EmptyGoalsBox = ({
             <Button size="lg" onClick={toggleModal}>
               Add Goal
             </Button>
-          ) : (
+          ) : showButton ? (
             <Button size="lg" asChild>
               <Link href="/goals">Select Accounts</Link>
             </Button>
-          )}
+          ) : null}
         </div>
       </section>
       <ModalWrapper isOpen={isOpen} close={toggleModal}>

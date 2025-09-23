@@ -48,7 +48,6 @@ const UserForm = () => {
     startTransition(async () => {
       const res = await updateUserInfo({
         userId: user.id,
-        dwollaCustomerId: user.dwollaCustomerId,
         updateFields: data,
       });
       if (res.error) {

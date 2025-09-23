@@ -12,8 +12,6 @@ import {
   UpdateUserPasswordParams,
 } from "@/types";
 
-import { updateDwollaCustomerInfo } from "../dwolla";
-
 export const updateEmailVerification = async (id: string) => {
   await prisma.user.update({
     where: { id },
@@ -45,8 +43,8 @@ export const createBankAccount = async ({
   bankId,
   accountId,
   accessToken,
-  fundingSourceUrl,
   sharableId,
+  isLiabilityAccount,
 }: createBankAccountProps) => {
   try {
     await prisma.bankAccount.create({
@@ -56,8 +54,8 @@ export const createBankAccount = async ({
         bankId,
         accountId,
         accessToken,
-        fundingSourceUrl,
         sharableId,
+        isLiabilityAccount
       },
     });
   } catch (err) {
@@ -157,18 +155,12 @@ export const updateExpensesGoal = async (
 
 export const updateUserInfo = async ({
   userId,
-  dwollaCustomerId,
   updateFields,
 }: {
   userId: string;
-  dwollaCustomerId: string;
   updateFields: UpdateUserInfoProps;
 }) => {
   try {
-    await updateDwollaCustomerInfo({
-      dwollaCustomerId,
-      updateFields,
-    });
     await prisma.user.update({
       where: {
         id: userId,

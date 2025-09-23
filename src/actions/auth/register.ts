@@ -6,11 +6,8 @@ import { prisma } from "@/prisma";
 
 import { RegisterSchema } from "@/schemas/auth";
 import { sendVerificationEmail } from "@/actions/mail";
-import { createDwollaCustomer } from "@/actions/dwolla";
 import { getUserByEmail } from "@/actions/user/getUserFromDb";
 import { generateVerificationToken } from "@/actions/auth/tokens";
-
-import { extractCustomerIdFromUrl } from "@/lib/utils";
 
 export const register = async (data: z.infer<typeof RegisterSchema>) => {
   const validatedFields = RegisterSchema.safeParse(data);
@@ -40,23 +37,6 @@ export const register = async (data: z.infer<typeof RegisterSchema>) => {
     "yyyy-MM-dd"
   );
 
-  const dwollaCustomerUrl = await createDwollaCustomer({
-    firstName,
-    lastName,
-    email,
-    address1: address,
-    city,
-    state,
-    postalCode,
-    dateOfBirth: stringfiedDateOfBirth,
-    ssn,
-    type: "personal",
-  });
-
-  if (!dwollaCustomerUrl) return { error: "Error creating dwolla customer" };
-
-  const dwollaCustomerId = extractCustomerIdFromUrl(dwollaCustomerUrl);
-
   await prisma.user.create({
     data: {
       firstName,
@@ -69,8 +49,6 @@ export const register = async (data: z.infer<typeof RegisterSchema>) => {
       dateOfBirth: stringfiedDateOfBirth,
       ssn,
       password: hashedPassowrd,
-      dwollaCustomerUrl,
-      dwollaCustomerId,
     },
   });
 

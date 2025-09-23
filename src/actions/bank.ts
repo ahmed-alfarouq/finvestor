@@ -1,7 +1,10 @@
 "use server";
+import axios from "axios";
 import { revalidatePath } from "next/cache";
 
 import { plaidClient } from "@/plaid";
+import { CountryCode, LiabilitiesObject } from "plaid";
+
 import {
   getBanksByUserId,
   getBank,
@@ -9,10 +12,70 @@ import {
 } from "@/actions/user/getUserData";
 import { removeBanksByBankId } from "@/actions/user/updateUser";
 
-import { removeFundingSources } from "@/actions/dwolla";
-
 import { BankAccount, BankAccountProps, Transaction, Loan } from "@/types";
-import { CountryCode, LiabilitiesObject } from "plaid";
+
+const getPlaidDataSafly = async (
+  isLiabilityAccount: boolean,
+  accessToken: string
+) => {
+  if (isLiabilityAccount) {
+    const res = await plaidClient.liabilitiesGet({
+      access_token: accessToken,
+    });
+    return res.data;
+  }
+
+  const res = await plaidClient.accountsGet({
+    access_token: accessToken,
+  });
+  return res.data;
+};
+
+const fetchingAllBanksDetails = async (banks: BankAccountProps[]) =>
+  await Promise.all(
+    banks.map(async (bank) => {
+      try {
+        const data = await getPlaidDataSafly(
+          bank.isLiabilityAccount,
+          bank.accessToken
+        );
+
+        const { accounts, item } = data;
+        if (!accounts || !accounts.length) {
+          return []; // skip if no accounts returned
+        }
+
+        const institution = await getInstitution(item.institution_id ?? "");
+
+        if (!institution) {
+          throw new Error("Failed to fetch institution info.");
+        }
+
+        return accounts.map((accountData) => ({
+          bankId: bank.bankId,
+          id: accountData.account_id!,
+          availableBalance: accountData.balances.available!,
+          currentBalance: accountData.balances.current!,
+          institutionId: institution.institution_id,
+          institutionName: institution.name,
+          name: accountData.name!,
+          officialName: accountData.official_name!,
+          mask: accountData.mask!,
+          type: accountData.type!,
+          subtype: accountData.subtype!,
+          sharableId: bank.sharableId!,
+        }));
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          if (err.response?.data.error_code === "ITEM_LOGIN_REQUIRED") {
+            await removeBankAccount(bank.bankId);
+          }
+        }
+
+        return [];
+      }
+    })
+  );
 
 export const getAccounts = async (userId: string) => {
   try {
@@ -30,45 +93,7 @@ export const getAccounts = async (userId: string) => {
     }, [] as BankAccountProps[]);
 
     // Get accounts from plaid
-    const nestedAccounts = await Promise.all(
-      uniqueBanks.map(async (bank: BankAccountProps) => {
-        try {
-          const data = await getPlaidDataSafly(
-            !!bank.fundingSourceUrl.length,
-            bank.accessToken
-          );
-
-          const { accounts, item } = data;
-          if (!accounts || !accounts.length) {
-            return []; // skip if no accounts returned
-          }
-
-          const institution = await getInstitution(item.institution_id ?? "");
-
-          if (!institution) {
-            throw new Error("Failed to fetch institution info.");
-          }
-
-          return accounts.map((accountData) => ({
-            bankId: bank.bankId,
-            id: accountData.account_id!,
-            availableBalance: accountData.balances.available!,
-            currentBalance: accountData.balances.current!,
-            institutionId: institution.institution_id,
-            institutionName: institution.name,
-            name: accountData.name!,
-            officialName: accountData.official_name!,
-            mask: accountData.mask!,
-            type: accountData.type!,
-            subtype: accountData.subtype!,
-            sharableId: bank.sharableId!,
-          }));
-        } catch (err) {
-          console.error("Error fetching accounts for bank:", bank.bankId, err);
-          return [];
-        }
-      })
-    );
+    const nestedAccounts = await fetchingAllBanksDetails(uniqueBanks);
 
     const accounts = nestedAccounts.flat();
 
@@ -85,6 +110,10 @@ export const getAccounts = async (userId: string) => {
       ) || 0;
     return { data: accounts, totalBanks, totalAvailableBalance };
   } catch (err) {
+    if (err instanceof Error && err.message === "NEXT_REDIRECT") {
+      throw err;
+    }
+
     throw new Error("Error happened while getting bank accounts:", {
       cause: err,
     });
@@ -258,13 +287,6 @@ export const removeBankAccount = async (bankId: string) => {
 
     if (removeBanksRes.error) return { error: removeBanksRes.error };
 
-    const removeFundingSourcesRes = await removeFundingSources(bankAccounts);
-
-    if (removeFundingSourcesRes.error)
-      return {
-        error: removeFundingSourcesRes.error,
-      };
-
     // all accounts from the same bank are removed
     const plaidRemoveRes = await plaidClient.itemRemove({
       access_token: bankAccounts[0].accessToken,
@@ -283,21 +305,4 @@ export const removeBankAccount = async (bankId: string) => {
   } catch (error) {
     console.error("An error occurred while removing the account:", error);
   }
-};
-
-const getPlaidDataSafly = async (
-  hasFundingSource: boolean,
-  accessToken: string
-) => {
-  if (!hasFundingSource) {
-    const res = await plaidClient.liabilitiesGet({
-      access_token: accessToken,
-    });
-    return res.data;
-  }
-
-  const res = await plaidClient.accountsGet({
-    access_token: accessToken,
-  });
-  return res.data;
 };
