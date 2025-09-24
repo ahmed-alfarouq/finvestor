@@ -1,4 +1,3 @@
-"use client";
 import PageContainer from "@/components/page-container";
 import UserForm from "@/components/features/settings/UserForm";
 import PasswordForm from "@/components/features/settings/PasswordForm";

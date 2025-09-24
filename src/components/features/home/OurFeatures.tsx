@@ -1,44 +1,7 @@
 import Image from "next/image";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import { TrendingUp, Sparkles, ShieldCheck } from "lucide-react";
-
-const whyFinvestor = [
-  {
-    id: 1,
-    icon: (
-      <TrendingUp
-        size={70}
-        className="text-primary dark:text-primary-dark mx-auto"
-      />
-    ),
-    description:
-      "Effortlessly track your expenses and investments with clear financial insights.",
-  },
-  {
-    id: 2,
-    icon: (
-      <Sparkles
-        size={70}
-        className="text-primary dark:text-primary-dark mx-auto"
-      />
-    ),
-    description:
-      "Get AI-driven recommendations tailored to your financial goals.",
-  },
-  {
-    id: 3,
-    icon: (
-      <ShieldCheck
-        size={70}
-        className="text-primary dark:text-primary-dark mx-auto"
-      />
-    ),
-    description:
-      " Your data is encrypted and protected for complete peace of mind.",
-  },
-];
+import { whyFinvestor } from "@/constants";
 
 const OurFeatures = () => {
   return (
@@ -66,7 +29,14 @@ const OurFeatures = () => {
             {whyFinvestor.map((reason) => (
               <Card key={reason.id} className="text-center">
                 <CardHeader>
-                  <CardTitle>{reason.icon}</CardTitle>
+                  <CardTitle>
+                    {
+                      <reason.icon
+                        size={70}
+                        className="text-primary dark:text-primary-dark mx-auto"
+                      />
+                    }
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>{reason.description}</CardContent>
               </Card>

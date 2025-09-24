@@ -13,7 +13,7 @@ import { useBanksDataContext } from "@/context/BanksDataContext";
 import useCurrentUser from "@/hooks/use-current-user";
 
 const OverviewPage = () => {
-  const user = useCurrentUser();
+  const { user } = useCurrentUser();
   const { transactions, loans, accounts, savingsAchievedAmount } =
     useBanksDataContext();
 

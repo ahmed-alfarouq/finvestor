@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { PlaidError } from "plaid";
 
 import Loading from "@/app/loading";
 import FormError from "@/components/form-error";
@@ -8,11 +9,11 @@ import PageContainer from "@/components/page-container";
 import BalanceCard from "@/components/features/balances/BalanceCard";
 
 import { useBanksDataContext } from "@/context/BanksDataContext";
+
 import useCurrentUser from "@/hooks/use-current-user";
-import { PlaidError } from "plaid";
 
 const BalancesPage = () => {
-  const user = useCurrentUser();
+  const { user } = useCurrentUser();
   const { accounts } = useBanksDataContext();
 
   const [linksDisabled, setLinksDisabled] = useState(false);

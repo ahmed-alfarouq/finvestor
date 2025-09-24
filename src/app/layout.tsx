@@ -2,12 +2,10 @@ import "@/app/ui/globals.css";
 import { inter } from "@/app/ui/fonts";
 
 import Head from "next/head";
-import { auth } from "@/auth";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
 import { ThemeProvider } from "next-themes";
 
-import SessionProviderWrapper from "@/components/auth/SessionProviderWrapper";
 import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
@@ -23,7 +21,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const theme = (await cookies()).get("theme")?.value || "light";
-  const session = await auth();
+
   return (
     <html lang="en" className={theme} suppressHydrationWarning>
       <Head>
@@ -50,9 +48,7 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <SessionProviderWrapper session={session}>
-              {children}
-            </SessionProviderWrapper>
+            {children}
           </ThemeProvider>
         </SessionProvider>
       </body>

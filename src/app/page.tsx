@@ -1,13 +1,13 @@
-import AboutUs from "@/components/features/AboutUs";
-import HomeHeader from "@/components/features/HomeHeader";
-import MainBanner from "@/components/features/MainBanner";
-import OurFeatures from "@/components/features/OurFeatures";
-import SuccessStories from "@/components/features/SuccessStories";
+import AboutUs from "@/components/features/home/AboutUs";
+import HomeNavbar from "@/components/features/home/HomeNavbar";
+import MainBanner from "@/components/features/home/MainBanner";
+import OurFeatures from "@/components/features/home/OurFeatures";
+import SuccessStories from "@/components/features/home/SuccessStories";
 
 const HomePage = () => {
   return (
     <>
-      <HomeHeader />
+      <HomeNavbar />
       <MainBanner />
       <OurFeatures />
       <AboutUs />

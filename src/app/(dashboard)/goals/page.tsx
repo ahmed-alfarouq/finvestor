@@ -10,7 +10,7 @@ import SelectedAccounts from "@/components/features/goals/SelectedAccounts";
 import { useBanksDataContext } from "@/context/BanksDataContext";
 
 const Goals = () => {
-  const user = useCurrentUser();
+  const { user } = useCurrentUser();
   const { savingsAchievedAmount } = useBanksDataContext();
 
   return (

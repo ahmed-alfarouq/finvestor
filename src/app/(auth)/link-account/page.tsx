@@ -1,8 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-
-import { UseSessionContext } from "@/context/SessionContext";
+import { useSession } from "next-auth/react";
 
 import Loading from "@/app/loading";
 import PlaidLink from "@/components/ui/plaid-link";
@@ -12,7 +11,7 @@ import { cn } from "@/lib/utils";
 
 const LinkAccount = () => {
   const router = useRouter();
-  const { session } = UseSessionContext();
+  const { data: session } = useSession();
 
   const [collectingData, setCollectingData] = useState(false);
   const [disableLinks, setDisableLinks] = useState(false);
@@ -32,7 +31,7 @@ const LinkAccount = () => {
     setDisableLinks(true);
   };
 
-  return !session ? (
+  return !session?.user ? (
     <Loading />
   ) : (
     <CardWrapper logo="/img/logo.webp" backLinkText="" backLinkHref="">

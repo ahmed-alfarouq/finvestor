@@ -10,7 +10,7 @@ import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { cn, formatDateTime } from "@/lib/utils";
 
 const DashboardHeader = () => {
-  const user = useCurrentUser();
+  const { user } = useCurrentUser();
   const isMobile = useIsMobile();
   return (
     <header
