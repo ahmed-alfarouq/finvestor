@@ -1,11 +1,9 @@
 "use client";
-import React, { useState, useTransition } from "react";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { LoginSchema } from "@/schemas/auth";
-
-import { Button } from "@/components/ui/button";
+import { useState, useTransition } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
   Form,
@@ -17,12 +15,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import FormError from "@/components/form-error";
+import { Button } from "@/components/ui/button";
 import CardWrapper from "@/components/auth/CardWrapper";
+
 import { login } from "@/actions/auth/login";
-import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 
+import { LoginSchema } from "@/schemas/auth";
 type LoginFields = z.infer<typeof LoginSchema>;
 
 const LoginPage = () => {
