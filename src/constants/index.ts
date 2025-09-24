@@ -1,3 +1,5 @@
+import { TrendingUp, Sparkles, ShieldCheck, LucideIcon } from "lucide-react";
+
 export const successStories = [
   {
     id: 1,
@@ -30,6 +32,31 @@ export const successStories = [
     avatar: "/img/avatar2.webp",
     description:
       "Thanks to Finvestor, I’m on track to achieve my financial goals!",
+  },
+];
+
+export const whyFinvestor: {
+  id: number;
+  icon: LucideIcon;
+  description: string;
+}[] = [
+  {
+    id: 1,
+    icon: TrendingUp,
+    description:
+      "Effortlessly track your expenses and investments with clear financial insights.",
+  },
+  {
+    id: 2,
+    icon: Sparkles,
+    description:
+      "Get AI-driven recommendations tailored to your financial goals.",
+  },
+  {
+    id: 3,
+    icon: ShieldCheck,
+    description:
+      " Your data is encrypted and protected for complete peace of mind.",
   },
 ];
 
