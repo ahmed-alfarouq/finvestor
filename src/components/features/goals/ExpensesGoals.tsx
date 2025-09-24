@@ -8,7 +8,7 @@ import { splitTransactionsByCategory } from "@/lib/transactions";
 import NotAvailable from "@/components/not-available";
 
 const ExpensesGoals = () => {
-  const user = useCurrentUser();
+  const { user } = useCurrentUser();
   const { transactions } = useBanksDataContext();
 
   const expensesGoals = user?.expensesGoals;

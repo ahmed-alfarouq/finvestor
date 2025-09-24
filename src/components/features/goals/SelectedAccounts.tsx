@@ -7,7 +7,7 @@ import SelectedAccountsForm from "@/components/features/goals/selectedAccounts/S
 import { cn } from "@/lib/utils";
 
 const SelectedAccounts = ({ className }: { className?: string }) => {
-  const user = useCurrentUser();
+  const { user } = useCurrentUser();
   const { accounts } = useBanksDataContext();
 
   const hasAccounts = accounts.data.find(

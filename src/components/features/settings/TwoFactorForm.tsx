@@ -24,7 +24,7 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 const TwoFactorForm = () => {
-  const user = useCurrentUser();
+  const {user} = useCurrentUser();
   const { update } = useSession();
 
   const [statusLabel, setStatusLabel] = useState("Enable");

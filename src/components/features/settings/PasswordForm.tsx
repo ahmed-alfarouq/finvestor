@@ -19,7 +19,7 @@ import { updateUserPassword } from "@/actions/user/updateUser";
 import { useSession } from "next-auth/react";
 
 const PasswordForm = () => {
-  const user = useCurrentUser();
+  const {user} = useCurrentUser();
   const { update } = useSession();
 
   const [isPending, startTransition] = useTransition();

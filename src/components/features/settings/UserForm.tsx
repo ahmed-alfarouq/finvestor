@@ -17,7 +17,7 @@ import { updateUserInfo } from "@/actions/user/updateUser";
 import { useSession } from "next-auth/react";
 
 const UserForm = () => {
-  const user = useCurrentUser();
+  const {user} = useCurrentUser();
   const { update } = useSession();
 
   const [errorMessage, setErrorMeesage] = useState<string | undefined>();
