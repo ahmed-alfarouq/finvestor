@@ -1,13 +1,11 @@
-import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-
-import { LoginSchema } from "./schemas/auth";
-
-import { getUserByEmail, getUserById } from "./actions/user/getUserFromDb";
-
 import type { NextAuthConfig } from "next-auth";
-import { getTwoFactorConfirmationByUserId } from "./actions/auth/twoFactorConfirmation";
-import { prisma } from "./prisma";
+import Credentials from "next-auth/providers/credentials";
+
+import { LoginSchema } from "@/schemas/auth";
+
+import { getUserByEmail, getUserById } from "@/actions/user/getUserFromDb";
+import { getTwoFactorConfirmationByUserId } from "@/actions/auth/twoFactorConfirmation";
 
 export default {
   providers: [
@@ -82,7 +80,7 @@ export default {
         savingsGoal,
         expensesGoals,
         savingsGoalAccounts,
-        isTwoFactorEnabled
+        isTwoFactorEnabled,
       } = token;
 
       Object.assign(session.user, {
@@ -99,7 +97,7 @@ export default {
         savingsGoal,
         expensesGoals,
         savingsGoalAccounts,
-        isTwoFactorEnabled
+        isTwoFactorEnabled,
       });
       return session;
     },
