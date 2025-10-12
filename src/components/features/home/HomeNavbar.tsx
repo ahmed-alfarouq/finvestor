@@ -11,6 +11,7 @@ const HomeNavbar = () => {
         alt="Finvestor logo - Smart Investment App"
         width={180}
         height={80}
+        priority
       />
       <div className="flex items-center gap-4">
         <NavbarLinks />

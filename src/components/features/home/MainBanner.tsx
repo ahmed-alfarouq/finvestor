@@ -29,6 +29,7 @@ const MainBanner = () => {
         alt=""
         width={650}
         height={400}
+        priority
         className="lg:w-[600]"
       />
     </main>
