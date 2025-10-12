@@ -1,6 +1,5 @@
 "use server";
 import * as z from "zod";
-import bcrypt from "bcryptjs";
 import { prisma } from "@/prisma";
 import { AuthError } from "next-auth";
 
@@ -8,7 +7,6 @@ import { LoginSchema } from "@/schemas/auth";
 import { signIn } from "@/auth";
 
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
-
 
 import { getUserByEmail } from "@/actions/user/getUserFromDb";
 import {
@@ -31,14 +29,6 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
   const existingUser = await getUserByEmail(email);
 
   if (!existingUser) return { error: "Email doesn't exist!" };
-
-  if (existingUser.password) {
-    const validCredentials = await bcrypt.compare(
-      password,
-      existingUser.password
-    );
-    if (!validCredentials) return { error: "Invalid credentials!" };
-  }
 
   if (!existingUser.emailVerified) {
     const verificationToken = await generateVerificationToken({
@@ -94,6 +84,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
       return { twoFactor: true };
     }
   }
+
   try {
     await signIn("credentials", {
       email,

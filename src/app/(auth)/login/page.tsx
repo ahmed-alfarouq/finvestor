@@ -32,14 +32,14 @@ const LoginPage = () => {
     },
   });
 
-  const onSubmit = (data: LoginFields) => {
+  const onSubmit = ({ email, password, code }: LoginFields) => {
     setFormError("");
 
     startTransition(async () => {
       try {
-        await login(data).then((data) => {
+        await login({ email, password, code }).then((data) => {
           if (data?.error) {
-            form.reset();
+            form.reset({ email, password: "" });
             setFormError(data.error);
           }
           if (data?.twoFactor) {
