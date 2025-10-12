@@ -5,18 +5,11 @@ import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import Timer from "@/components/timer";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import FormError from "@/components/form-error";
+import FormInput from "@/components/auth/FormInput";
 import FormSuccess from "@/components/form-success";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 
 import { reset } from "@/actions/auth/reset";
 
@@ -56,24 +49,15 @@ const ForgotPasswordForm = () => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col justify-center gap-6"
       >
-        <FormField
-          control={form.control}
+        <FormInput
           name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email Address</FormLabel>
-              <FormControl>
-                <Input
-                  type="email"
-                  placeholder="ahmed.omar.alfarouq@gmail.com"
-                  disabled={isPending || !canResend}
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          type="email"
+          label="Email Address"
+          control={form.control}
+          placeholder="ahmed.omar.alfarouq@gmail.com"
+          disabled={isPending || !canResend}
         />
+
         <FormError message={formError} />
         <FormSuccess message={formSuccess} />
         {!canResend && (

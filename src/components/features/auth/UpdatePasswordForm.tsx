@@ -5,18 +5,11 @@ import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import Timer from "@/components/timer";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import FormError from "@/components/form-error";
+import FormInput from "@/components/auth/FormInput";
 import FormSuccess from "@/components/form-success";
 
 import { updatePassword } from "@/actions/user/updateUser";
@@ -87,42 +80,21 @@ const UpdatePasswordForm = () => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col justify-center gap-6"
       >
-        <FormField
-          control={form.control}
+        <FormInput
           name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input
-                  type="password"
-                  placeholder="********"
-                  disabled={isPending || passwordUpdated}
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
+          type="password"
+          label="Password"
           control={form.control}
+          placeholder="********"
+          disabled={isPending || passwordUpdated}
+        />
+        <FormInput
           name="confirmPassword"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Confirm Password</FormLabel>
-              <FormControl>
-                <Input
-                  type="password"
-                  placeholder="********"
-                  disabled={isPending || passwordUpdated}
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          type="password"
+          label="Confirm Password"
+          control={form.control}
+          placeholder="********"
+          disabled={isPending || passwordUpdated}
         />
 
         <FormError message={formError} />
