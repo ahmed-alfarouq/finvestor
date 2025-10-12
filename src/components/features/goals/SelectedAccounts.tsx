@@ -10,9 +10,10 @@ const SelectedAccounts = ({ className }: { className?: string }) => {
   const { user } = useCurrentUser();
   const { accounts } = useBanksDataContext();
 
-  const hasAccounts = accounts.data.find(
+  const hasAccounts = accounts.find(
     (account) => account.subtype === "savings" || account.subtype === "checking"
   );
+
   return (
     <section className={cn("flex flex-col", className)}>
       <h2 className="card-title">Savings Accounts</h2>
@@ -29,7 +30,7 @@ const SelectedAccounts = ({ className }: { className?: string }) => {
           <SelectedAccountsForm
             checkedAccounts={user?.savingsGoalAccounts || []}
             userId={user?.id || ""}
-            accounts={accounts.data}
+            accounts={accounts}
           />
         ) : (
           <div className="text-sm text-muted-foreground italic">

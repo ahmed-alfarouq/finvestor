@@ -1,4 +1,6 @@
 "use client";
+import { useMemo } from "react";
+
 import PageContainer from "@/components/page-container";
 import GoalsBox from "@/components/features/overview/GoalsBox";
 import LoansBox from "@/components/features/overview/LoansBox";
@@ -14,15 +16,25 @@ import useCurrentUser from "@/hooks/use-current-user";
 
 const OverviewPage = () => {
   const { user } = useCurrentUser();
-  const { transactions, loans, accounts, savingsAchievedAmount } =
+  const { transactions, loans, accounts, totalAvailableBalance } =
     useBanksDataContext();
+
+  const savingsAchievedAmount = useMemo(
+    () =>
+      accounts.reduce((total, acc) => {
+        return user?.savingsGoalAccounts.includes(acc.id)
+          ? total + (acc.availableBalance ?? 0)
+          : total;
+      }, 0),
+    []
+  );
 
   return (
     <PageContainer>
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-3">
         <TotalBalanceBox
-          accounts={accounts.data}
-          totalAvailableBalance={accounts.totalAvailableBalance}
+          accounts={accounts}
+          totalAvailableBalance={totalAvailableBalance}
         />
         {user && user.savingsGoal && savingsAchievedAmount ? (
           <GoalsBox

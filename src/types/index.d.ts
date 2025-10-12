@@ -47,7 +47,6 @@ declare type BankAccount = {
   name: string;
   type: string;
   subtype: string;
-  sharableId: string;
 };
 
 declare type Transaction = {
@@ -67,9 +66,7 @@ declare type BankAccountProps = {
   id: string;
   userId: string;
   bankId: string;
-  accountId: string;
   accessToken: string;
-  sharableId: string;
   isLiabilityAccount: boolean;
 };
 
@@ -361,10 +358,8 @@ declare interface exchangePublicTokenProps {
 }
 
 declare interface createBankAccountProps {
-  accessToken: string;
   userId: string;
-  accountId: string;
   bankId: string;
-  sharableId: string;
+  accessToken: string;
   isLiabilityAccount: boolean;
 }

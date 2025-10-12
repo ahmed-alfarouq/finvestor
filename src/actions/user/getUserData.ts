@@ -15,21 +15,12 @@ export const getBanksByUserId = async (userId: string) => {
   }
 };
 
-export const getBank = async (accountId: string) => {
+export const getBank = async (bankId: string) => {
   try {
     const bank = await prisma.bankAccount.findFirst({
-      where: { accountId },
+      where: { bankId },
     });
     return bank;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const getBankAccountsByBankId = async (bankId: string) => {
-  try {
-    const banks = await prisma.bankAccount.findMany({ where: { bankId } });
-    return banks;
   } catch (error) {
     console.log(error);
   }

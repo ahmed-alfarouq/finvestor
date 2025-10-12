@@ -176,14 +176,6 @@ export function getAccountTypeColors(type: AccountType) {
   }
 }
 
-export function encryptId(id: string) {
-  return btoa(id);
-}
-
-export function decryptId(id: string) {
-  return atob(id);
-}
-
 /**
  * Sorts an array of elements by their date values in descending order (newest first)
  * @param array The array to sort

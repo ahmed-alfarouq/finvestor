@@ -2,7 +2,6 @@
 
 import bcrypt from "bcryptjs";
 import { prisma } from "@/prisma";
-import { v4 as uuidv4 } from "uuid";
 import { revalidatePath } from "next/cache";
 
 import {
@@ -41,32 +40,23 @@ export const updatePassword = async ({
 export const createBankAccount = async ({
   userId,
   bankId,
-  accountId,
   accessToken,
-  sharableId,
   isLiabilityAccount,
 }: createBankAccountProps) => {
-  try {
-    await prisma.bankAccount.create({
-      data: {
-        id: uuidv4(),
-        userId,
-        bankId,
-        accountId,
-        accessToken,
-        sharableId,
-        isLiabilityAccount
-      },
-    });
-  } catch (err) {
-    console.log(err);
-  }
+  await prisma.bankAccount.create({
+    data: {
+      userId,
+      bankId,
+      accessToken,
+      isLiabilityAccount,
+    },
+  });
 };
 
-export const removeBanksByBankId = async (bankId: string) => {
+export const removeBank = async (bankId: string) => {
   try {
     await prisma.bankAccount.deleteMany({ where: { bankId } });
-    return { success: "Bank account removed successfully" };
+    return { success: "Bank removed successfully" };
   } catch (error) {
     console.error("An error occurred while removing the bank:", error);
     return { error: "Something went wrong while removing the bank from DB!" };

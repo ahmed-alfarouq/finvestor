@@ -1,15 +1,15 @@
 "use server";
 import { revalidatePath } from "next/cache";
 
-import { encryptId } from "@/lib/utils";
 import { plaidClient } from "@/plaid";
 import { createBankAccount } from "@/actions/user/updateUser";
 
 import {
-  AccountBase,
+  AccountsGetResponse,
   CountryCode,
   CreditAccountSubtype,
   DepositoryAccountSubtype,
+  LiabilitiesGetResponse,
   LinkTokenAccountFilters,
   LinkTokenCreateRequest,
   LoanAccountSubtype,
@@ -52,12 +52,12 @@ export const exchangePublicToken = async ({
   try {
     const { accessToken, itemId } = await exchangePlaidToken(publicToken);
 
-    const { accounts: allAccounts } = await getPlaidAccountsSafely(
+    await createBankAccount({
+      userId: user.id,
+      bankId: itemId,
       accessToken,
-      accountType
-    );
-
-    await processAccounts(allAccounts, accountType, accessToken, itemId, user);
+      isLiabilityAccount: accountType === "liability",
+    });
 
     // Remove cache to show the new bank accounts
     revalidatePath("/");
@@ -81,44 +81,20 @@ const exchangePlaidToken = async (publicToken: string) => {
   };
 };
 
-const getPlaidAccountsSafely = async (
+export const getPlaidAccountsSafely = async (
   accessToken: string,
   type: ConnectAccountType
-) => {
-  try {
-    if (type === "liability") {
-      const response = await plaidClient.liabilitiesGet({
-        access_token: accessToken,
-      });
-      return response.data;
-    }
-    const response = await plaidClient.accountsGet({
+): Promise<LiabilitiesGetResponse | AccountsGetResponse> => {
+  if (type === "liability") {
+    const response = await plaidClient.liabilitiesGet({
       access_token: accessToken,
     });
     return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
   }
-};
-
-const processAccounts = async (
-  accounts: AccountBase[],
-  accountType: ConnectAccountType,
-  accessToken: string,
-  bankId: string,
-  user: User
-) => {
-  for (const account of accounts) {
-    await createBankAccount({
-      userId: user.id,
-      bankId,
-      accountId: account.account_id,
-      accessToken,
-      sharableId: encryptId(account.account_id),
-      isLiabilityAccount: accountType === "liability",
-    });
-  }
+  const response = await plaidClient.accountsGet({
+    access_token: accessToken,
+  });
+  return response.data;
 };
 
 const getAccountFilters = (accountType: ConnectAccountType) => {

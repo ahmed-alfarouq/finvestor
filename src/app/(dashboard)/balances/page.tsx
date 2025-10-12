@@ -41,7 +41,7 @@ const BalancesPage = () => {
     <PageContainer>
       <h1 className="card-title">Balances</h1>
       <section className="grid sm:grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-4">
-        {accounts.data.map((account) => (
+        {accounts.map((account) => (
           <BalanceCard
             key={account.id}
             id={account.id}

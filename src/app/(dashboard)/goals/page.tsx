@@ -1,4 +1,5 @@
 "use client";
+import { useMemo } from "react";
 import useCurrentUser from "@/hooks/use-current-user";
 
 import PageContainer from "@/components/page-container";
@@ -11,7 +12,17 @@ import { useBanksDataContext } from "@/context/BanksDataContext";
 
 const Goals = () => {
   const { user } = useCurrentUser();
-  const { savingsAchievedAmount } = useBanksDataContext();
+  const { accounts } = useBanksDataContext();
+
+  const savingsAchievedAmount = useMemo(
+    () =>
+      accounts.reduce((total, acc) => {
+        return user?.savingsGoalAccounts.includes(acc.id)
+          ? total + (acc.availableBalance ?? 0)
+          : total;
+      }, 0),
+    []
+  );
 
   return (
     <PageContainer>
