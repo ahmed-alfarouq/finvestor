@@ -1,6 +1,4 @@
-import { formatDateTime } from "@/lib/utils";
-
-import AnimatedCounter from "@/components/animated-counter";
+import { formatAmount, formatDateTime } from "@/lib/utils";
 
 import { Loan } from "@/types";
 
@@ -33,11 +31,9 @@ const LoanItem = ({ loan }: { loan: Loan }) => {
           {formatDateTime(new Date(loan.lastPaymentDate)).dateOnly}
         </p>
       </div>
-      <AnimatedCounter
-        amount={loan.nextMonthlyPayment}
-        decimals={0}
-        className="min-w-[65px] xs:min-w-20 w-fit text-xs xs:text-sm font-bold flex justify-center items-center ml-auto text-secondary-color dark:text-secondary-color-dark border border-gray-5 rounded-md p-3"
-      />
+      <span className="min-w-[65px] xs:min-w-20 w-fit text-xs xs:text-sm font-bold flex justify-center items-center ml-auto text-secondary-color dark:text-secondary-color-dark border border-gray-5 rounded-md p-3">
+        {formatAmount(loan.nextMonthlyPayment, true)}
+      </span>
     </div>
   );
 };
