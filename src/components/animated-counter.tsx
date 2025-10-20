@@ -1,8 +1,9 @@
 "use client";
-import React from "react";
 import CountUp from "react-countup";
 
 import { cn } from "@/lib/utils";
+
+import { AnimatedCounterProps } from "@/types";
 
 const AnimatedCounter = ({
   amount,
@@ -10,13 +11,7 @@ const AnimatedCounter = ({
   decimal = ".",
   decimals = 2,
   className,
-}: {
-  amount: number;
-  prefix?: string;
-  decimal?: string;
-  decimals?: number;
-  className?: string;
-}) => {
+}: AnimatedCounterProps) => {
   return (
     <div className={cn("w-full", className)}>
       <CountUp
