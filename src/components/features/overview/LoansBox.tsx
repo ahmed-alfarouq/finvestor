@@ -1,45 +1,39 @@
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { auth } from "@/auth";
 
 import LoanItem from "@/components/loan-item";
 
+import { getCachedLoans } from "@/lib/cache/loans";
+import { getCachedUser } from "@/lib/cache/user";
+
 import { cn } from "@/lib/utils";
 
-import { Loan } from "@/types";
+const LoansBox = async () => {
+  const session = await auth();
+  if (!session) return;
 
-type LoansBoxProps = {
-  loans: Loan[];
-  show: number;
-};
+  const user = await getCachedUser(session.user.id);
+  const liabilityBank = user.banks.find((b) => b.areLiabilityAccounts);
 
-const LoansBox = ({ loans, show }: LoansBoxProps) => {
+  const loans = liabilityBank
+    ? await getCachedLoans(user.id, liabilityBank.accessToken)
+    : [];
+
   const hasLoans = loans.length > 0;
-  const displayedLoans = loans.slice(0, show);
 
   return (
     <section className="box">
       <header className="flex items-center justify-between">
         <h2 className="card-title">Loans</h2>
-        {hasLoans && (
-          <Link
-            href="/loans"
-            className="flex items-center gap-2 text-xs font-medium text-gray-2 dark:text-gray-7"
-          >
-            View All <ArrowRight className="w-4 h-4" />
-          </Link>
-        )}
       </header>
 
       <div
         className={cn(
-          "card",
+          "card overflow-y-auto",
           hasLoans ? "items-start" : "items-center justify-center"
         )}
       >
         {hasLoans ? (
-          displayedLoans.map((loan) => (
-            <LoanItem key={loan.accountId} loan={loan} />
-          ))
+          loans.map((loan) => <LoanItem key={loan.accountId} loan={loan} />)
         ) : (
           <p className="text-center sm:text-xl text-gray-1 dark:text-gray-7">
             No loans found. Please connect your student or mortgage accounts to
