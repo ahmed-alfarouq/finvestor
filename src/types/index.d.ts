@@ -14,6 +14,17 @@ export type AccountType =
 export type NotificationStatus = "success" | "warning" | "error" | "info";
 
 // ------------------------------
+// API Responses
+// ------------------------------
+declare interface FetchAllAccountsResponse {
+  success: boolean;
+  successfulCount: number;
+  failedCount: number;
+  failed: string[];
+  accounts: BankAccount[];
+}
+
+// ------------------------------
 // User & Accounts
 // ------------------------------
 declare type User = {
@@ -27,8 +38,7 @@ declare type User = {
   postalCode: string;
   dateOfBirth: string;
   ssn: string;
-  role: string;
-  bankAccounts: BankAccountProps[];
+  banks: BankProps[];
   savingsGoal: string;
   expensesGoals: ExpensesGoal[];
   savingsGoalAccounts: string[];
@@ -62,12 +72,12 @@ declare type Transaction = {
   category_icon?: string;
 };
 
-declare type BankAccountProps = {
+declare type BankProps = {
   id: string;
   userId: string;
   bankId: string;
   accessToken: string;
-  isLiabilityAccount: boolean;
+  areLiabilityAccounts: boolean;
 };
 
 declare type Receiver = {
@@ -99,6 +109,21 @@ declare type UpdateUserInfoProps = {
 // UI Components Props
 // ------------------------------
 
+declare interface ModalWrapperProps {
+  children: React.ReactNode;
+  close: () => void;
+  isOpen: boolean;
+  className?: string;
+}
+
+declare interface AnimatedCounterProps {
+  amount: number;
+  prefix?: string;
+  decimal?: string;
+  decimals?: number;
+  className?: string;
+}
+
 declare interface CarouselProps {
   children: React.ReactNode[];
   className?: string;
@@ -112,6 +137,12 @@ declare interface CarouselProps {
       spaceBetween: number;
     };
   };
+}
+
+declare interface ConnectBankCardProps {
+  user: Session["user"];
+  redirectTo?: string;
+  className?: string;
 }
 
 declare interface BankCardProps {
@@ -197,11 +228,6 @@ declare interface PlaidLinkProps {
   onClick?: () => void;
 }
 
-declare interface TotlaBalanceBoxProps {
-  accounts: BankAccount[];
-  totalAvailableBalance: number;
-}
-
 declare interface CircledProgressBarProps {
   targetAmount: number;
   achievedAmount: number;
@@ -211,7 +237,6 @@ declare interface GoalsBoxProps {
   title: string;
   targetAmount: number;
   achievedAmount: number;
-  thisMonthTarget: number;
   date: Date;
   className?: string;
 }
@@ -357,9 +382,9 @@ declare interface exchangePublicTokenProps {
   accountType: ConnectAccountType;
 }
 
-declare interface createBankAccountProps {
+declare interface createBankProps {
   userId: string;
   bankId: string;
   accessToken: string;
-  isLiabilityAccount: boolean;
+  areLiabilityAccounts: boolean;
 }
