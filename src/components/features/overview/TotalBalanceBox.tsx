@@ -1,14 +1,27 @@
-"use client";
+import { auth } from "@/auth";
+
 import BankCard from "@/components/bank-card";
-import { Carousel } from "@/components/ui/carousel";
+import Carousel from "@/components/ui/carousel";
 import AnimatedCounter from "@/components/animated-counter";
 
-import { TotlaBalanceBoxProps } from "@/types";
+import { getCachedAccounts } from "@/lib/cache/accounts";
 
-const TotalBalanceBox = ({
-  accounts = [],
-  totalAvailableBalance,
-}: TotlaBalanceBoxProps) => {
+const TotalBalanceBox = async () => {
+  const session = await auth();
+
+  const userId = session?.user?.id;
+
+  if (!userId) return null;
+
+  const accounts = await getCachedAccounts(userId);
+
+  if (!accounts) return;
+
+  const totalAvailableBalance =
+    accounts?.reduce((total, currentValue) => {
+      return total + (currentValue.availableBalance || 0);
+    }, 0) || 0;
+
   return (
     <section className="box">
       <header>
