@@ -1,46 +1,45 @@
-"use client";
-import { useState } from "react";
+import { auth } from "@/auth";
 
-import { formatDateTime, formatAmount } from "@/lib/utils";
-
-import TargetForm from "@/components/target-form";
-import ModalWrapper from "@/components/modal-wrapper";
+import TargetModal from "@/components/target-modal";
 import CircledProgressBar from "@/components/circled-progress-bar";
 
-import { EditIcon, CheckIcon, ClockIcon } from "@/components/icons";
+import { CheckIcon, ClockIcon } from "@/components/icons";
 
-import { GoalsBoxProps } from "@/types";
+import { formatDateTime, formatAmount, cn } from "@/lib/utils";
 
-const GoalsBox = ({
-  title,
-  targetAmount,
-  achievedAmount,
-  thisMonthTarget,
-  date,
-}: GoalsBoxProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+import { getCachedUser } from "@/lib/cache/user";
+import { getCachedAccounts } from "@/lib/cache/accounts";
 
-  const toggleModal = () => setIsOpen((prev) => !prev);
+const GoalsBox = async ({ className }: { className?: string }) => {
+  const session = await auth();
+
+  if (!session) return;
+
+  const user = await getCachedUser(session.user.id);
+  const accounts = await getCachedAccounts(session.user.id);
+
+  const targetAmount = Number(user.savingsGoal);
+  const achievedAmount = accounts.reduce((total, acc) => {
+    return user.savingsGoalAccounts.includes(acc.id)
+      ? total + (acc.availableBalance ?? 0)
+      : total;
+  }, 0);
+
   return (
-    <section className="box">
+    <section className={cn("box", className)}>
       <header>
-        <h2 className="card-title">{title}</h2>
+        <h2 className="card-title">Goals</h2>
       </header>
       <section className="card">
         <div className="flex items-center justify-between w-full border-b border-gray-6 pb-4">
           <div className="flex items-center gap-2">
             <h3 className="default-black text-[22px] font-extrabold">
-              {formatAmount(targetAmount)}
+              {formatAmount(targetAmount, true)}
             </h3>
-            <button
-              className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600"
-              onClick={toggleModal}
-            >
-              <EditIcon />
-            </button>
+            <TargetModal />
           </div>
           <span className="text-sm text-secondary-color dark:text-secondary-color-dark">
-            {formatDateTime(date).dateOnly}
+            {formatDateTime(new Date()).dateOnly}
           </span>
         </div>
 
@@ -68,16 +67,13 @@ const GoalsBox = ({
                   This month Target
                 </h4>
                 <p className="text-base font-bold text-default-black dark:text-gray-7">
-                  {formatAmount(thisMonthTarget)}
+                  {formatAmount(targetAmount)}
                 </p>
               </div>
             </div>
           </div>
         </div>
       </section>
-      <ModalWrapper isOpen={isOpen} close={toggleModal}>
-        <TargetForm />
-      </ModalWrapper>
     </section>
   );
 };
