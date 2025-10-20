@@ -1,20 +1,29 @@
-import React from "react";
+import { auth } from "@/auth";
+
 import Link from "next/link";
 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-import { ArrowRight } from "lucide-react";
-import { Transaction } from "@/types";
 import TransactionsTab from "@/components/transactions-tab";
 
-const RecentTransactions = ({
-  transactions,
-}: {
-  transactions: Transaction[];
-}) => {
-  // Plaid returns negative values for revenue, and positive values for expenses
-  const revenue = transactions.filter((t) => t.amount < 0).slice(0, 6);
-  const expenses = transactions.filter((t) => t.amount > 0).slice(0, 6);
+import { ArrowRight } from "lucide-react";
+
+import { getCachedUser } from "@/lib/cache/user";
+import { getCachedLatestTransactions } from "@/lib/cache/transactions";
+
+const RecentTransactions = async () => {
+  const session = await auth();
+  if (!session) return;
+
+  const user = await getCachedUser(session.user.id);
+
+  const accessToken = user.banks.find(
+    (b) => !b.areLiabilityAccounts
+  )?.accessToken;
+
+  const transactions = accessToken
+    ? await getCachedLatestTransactions(user.id, accessToken, 12)
+    : { all: [], revenue: [], expenses: [] };
 
   return (
     <section className="flex flex-col gap-2">
@@ -27,7 +36,7 @@ const RecentTransactions = ({
           View All <ArrowRight className="w-4 h-4" />
         </Link>
       </header>
-      {!!transactions.length ? (
+      {!!transactions?.all.length ? (
         <Tabs
           defaultValue="all"
           className="w-full h-full bg-default dark:bg-default-dark rounded-lg py-4 px-6 card-shadow"
@@ -44,9 +53,15 @@ const RecentTransactions = ({
             </TabsTrigger>
           </TabsList>
 
-          <TransactionsTab transactions={transactions} value="all" />
-          <TransactionsTab transactions={revenue} value="revenue" />
-          <TransactionsTab transactions={expenses} value="expenses" />
+          <TransactionsTab transactions={transactions.all} value="all" />
+          <TransactionsTab
+            transactions={transactions.revenue}
+            value="revenue"
+          />
+          <TransactionsTab
+            transactions={transactions.expenses}
+            value="expenses"
+          />
         </Tabs>
       ) : (
         <section className="w-full h-full flex items-center justify-center bg-default dark:bg-default-dark rounded-lg py-4 px-6 card-shadow">
