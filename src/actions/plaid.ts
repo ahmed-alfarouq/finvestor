@@ -2,7 +2,7 @@
 import { revalidatePath } from "next/cache";
 
 import { plaidClient } from "@/plaid";
-import { createBankAccount } from "@/actions/user/updateUser";
+import { createBank } from "@/actions/bank";
 
 import {
   AccountsGetResponse,
@@ -52,11 +52,11 @@ export const exchangePublicToken = async ({
   try {
     const { accessToken, itemId } = await exchangePlaidToken(publicToken);
 
-    await createBankAccount({
+    await createBank({
       userId: user.id,
       bankId: itemId,
       accessToken,
-      isLiabilityAccount: accountType === "liability",
+      areLiabilityAccounts: accountType === "liability",
     });
 
     // Remove cache to show the new bank accounts
@@ -79,6 +79,19 @@ const exchangePlaidToken = async (publicToken: string) => {
     accessToken: res.data.access_token,
     itemId: res.data.item_id,
   };
+};
+
+export const getPlaidAccount = async (
+  accessToken: string,
+  accountId: string
+) => {
+  const response = await plaidClient.accountsGet({
+    access_token: accessToken,
+    options: {
+      account_ids: [accountId],
+    },
+  });
+  return response.data;
 };
 
 export const getPlaidAccountsSafely = async (
