@@ -1,8 +1,8 @@
 "use client";
-import React from "react";
+
 import { useTheme } from "next-themes";
 
-import { CircularProgressbar } from "react-circular-progressbar";
+import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 
 import "react-circular-progressbar/dist/styles.css";
 
@@ -20,24 +20,20 @@ const CircledProgressBar = ({
   const progress = (achievedAmount / targetAmount) * 100;
 
   return (
-    <div className="relative w-2/3 xs:w-[60%] md:w-[38%] lg:w-5/12 xl:w-5/12 2xl:w-[29%] 3xl:w-4/12 4xl:w-2/12 mx-auto 3xl:mx-1">
+    <div className="relative w-2/3 xs:w-[60%] md:w-[38%] lg:w-[28%] xl:w-5/12 2xl:w-[29%] 3xl:w-4/12 4xl:w-2/12 mx-auto 3xl:mx-1">
       <CircularProgressbar
         value={progress}
         strokeWidth={8}
         circleRatio={0.5}
-        styles={{
-          root: {
-            transform: "rotate(-90deg)",
-          },
-          path: {
-            stroke: "rgb(45, 182, 163)",
-            transition: "stroke-dashoffset 0.5s ease 0s",
-          },
-          trail: {
-            stroke: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)",
-          },
-        }}
+        styles={buildStyles({
+          rotation: 0.75,
+          pathColor: "rgb(45, 182, 163)",
+          trailColor: isDark
+            ? "rgba(255, 255, 255, 0.1)"
+            : "rgba(0, 0, 0, 0.1)",
+        })}
       />
+
       <span className="absolute top-2/3 -left-1 transform -translate-y-2/3">
         {formatAmount(0, true)}
       </span>
