@@ -1,17 +1,14 @@
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+import { ModalWrapperProps } from "@/types";
+
 const ModalWrapper = ({
   children,
   close,
   isOpen,
   className,
-}: {
-  children: React.ReactNode;
-  close: () => void;
-  isOpen: boolean;
-  className?: string;
-}) => {
+}: ModalWrapperProps) => {
   return (
     <section
       role="dialog"
