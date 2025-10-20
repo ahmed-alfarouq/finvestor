@@ -1,14 +1,18 @@
-"use client";
-import useCurrentUser from "@/hooks/use-current-user";
-import { useBanksDataContext } from "@/context/BanksDataContext";
+import { auth } from "@/auth";
 
 import SelectedAccountsForm from "@/components/features/goals/selectedAccounts/SelectedAccountsForm";
 
 import { cn } from "@/lib/utils";
+import { getCachedUser } from "@/lib/cache/user";
+import { getCachedAccounts } from "@/lib/cache/accounts";
 
-const SelectedAccounts = ({ className }: { className?: string }) => {
-  const { user } = useCurrentUser();
-  const { accounts } = useBanksDataContext();
+const SelectedAccounts = async ({ className }: { className?: string }) => {
+  const session = await auth();
+
+  if (!session) return;
+
+  const user = await getCachedUser(session.user.id);
+  const accounts = await getCachedAccounts(session.user.id);
 
   const hasAccounts = accounts.find(
     (account) => account.subtype === "savings" || account.subtype === "checking"
@@ -18,7 +22,7 @@ const SelectedAccounts = ({ className }: { className?: string }) => {
     <section className={cn("flex flex-col", className)}>
       <h2 className="card-title">Savings Accounts</h2>
 
-      <div className="flex-1 flex flex-col gap-2 rounded-xl border bg-default dark:bg-default-dark card-shadow p-4 sm:px-7 sm:py-5 overflow-hidden">
+      <div className="flex-1 flex flex-col gap-2 rounded-xl bg-default dark:bg-default-dark card-shadow p-4 sm:px-7 sm:py-5 overflow-hidden">
         <h3 className="default-black text-base font-bold mb-1">
           Your Linked Savings Accounts
         </h3>
