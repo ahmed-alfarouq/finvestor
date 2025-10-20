@@ -53,7 +53,7 @@ const ExpensesBox = ({ transactions }: { transactions: Transaction[] }) => {
       </header>
       <div
         className={cn(
-          `flex-1 items-center self-stretch rounded-xl border bg-default dark:bg-default-dark card-shadow p-4 sm:px-7 sm:py-8 overflow-x-auto overflow-y-hidden`,
+          `flex-1 items-center self-stretch rounded-xl bg-default dark:bg-default-dark card-shadow p-4 sm:px-7 sm:py-8 overflow-x-auto overflow-y-hidden`,
           categories.length > 0
             ? "grid grid-rows-2 grid-flow-col auto-cols-[170px] xs:auto-cols-[220px] gap-3"
             : "flex  justify-center h-full"
