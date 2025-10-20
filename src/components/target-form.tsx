@@ -29,7 +29,7 @@ const TargetForm = ({
   category?: string;
   onSuccess?: () => void;
 }) => {
-  const { user } = useCurrentUser();
+  const user = useCurrentUser();
   const { update } = useSession();
   const [pending, startTransition] = useTransition();
 
