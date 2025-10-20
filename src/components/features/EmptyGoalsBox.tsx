@@ -1,12 +1,10 @@
-"use client";
 import Link from "next/link";
-import { useState } from "react";
 
 import { formatDateTime } from "@/lib/utils";
 
+import TargetModal from "../target-modal";
+
 import { Button } from "@/components/ui/button";
-import TargetForm from "@/components/target-form";
-import ModalWrapper from "@/components/modal-wrapper";
 
 import { EmptyGoalsBoxProps } from "@/types";
 
@@ -17,10 +15,6 @@ const EmptyGoalsBox = ({
   selectedAccounts = true,
   showButton = true,
 }: EmptyGoalsBoxProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleModal = () => setIsOpen((prev) => !prev);
-
   return (
     <section className="box">
       <header>
@@ -29,9 +23,7 @@ const EmptyGoalsBox = ({
       <section className="card">
         <div className="flex items-center justify-between w-full border-b border-gray-6 pb-4">
           <div className="flex items-center gap-2">
-            {selectedAccounts && (
-              <Button onClick={toggleModal}>Add Goal</Button>
-            )}
+            {selectedAccounts && <TargetModal />}
           </div>
           <span className="text-sm text-secondary-color dark:text-secondary-color-dark">
             {formatDateTime(date).dateOnly}
@@ -43,9 +35,7 @@ const EmptyGoalsBox = ({
             {message ? message : "You didn't add a goal yet."}
           </p>
           {selectedAccounts ? (
-            <Button size="lg" onClick={toggleModal}>
-              Add Goal
-            </Button>
+            <TargetModal />
           ) : showButton ? (
             <Button size="lg" asChild>
               <Link href="/goals">Select Accounts</Link>
@@ -53,9 +43,6 @@ const EmptyGoalsBox = ({
           ) : null}
         </div>
       </section>
-      <ModalWrapper isOpen={isOpen} close={toggleModal}>
-        <TargetForm />
-      </ModalWrapper>
     </section>
   );
 };
