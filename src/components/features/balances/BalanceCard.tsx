@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import React, { useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 import FormError from "@/components/form-error";
@@ -13,7 +13,7 @@ import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { CreditCardIcon, VisaIcon } from "@/components/icons";
 
 import { BalanceCardProps } from "@/types";
-import { removeBankAccount } from "@/actions/bank";
+import { removeBank } from "@/actions/bank";
 
 const BalanceCard = ({
   id,
@@ -29,10 +29,12 @@ const BalanceCard = ({
   const [pending, startTransation] = useTransition();
 
   const { update } = useSession();
+
   const validTypesForDetails = ["savings", "checking"];
+
   const removeAccount = () => {
     startTransation(async () => {
-      const res = await removeBankAccount(bankId);
+      const res = await removeBank(bankId);
       if (res?.error) {
         setErrorMessage(res.error);
         return;
@@ -43,8 +45,9 @@ const BalanceCard = ({
   };
 
   const toggleModal = () => setShowModal((prev) => !prev);
+
   return (
-    <section className="rounded-xl border bg-default dark:bg-default-dark card-shadow p-4 sm:px-7 sm:py-5">
+    <section className="rounded-xl bg-default dark:bg-default-dark card-shadow p-4 sm:px-7 sm:py-5">
       <header className="h-12 flex justify-between items-center border-b border-special pb-2">
         <h2 className="text-base text-gray-2 font-bold dark:text-gray-6">
           {name}
