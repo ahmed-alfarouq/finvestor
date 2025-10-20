@@ -153,6 +153,12 @@ declare interface BankCardProps {
   className?: string;
 }
 
+declare interface NotAvailableProps {
+  title?: string;
+  message: string;
+  className?: string;
+}
+
 declare interface FormInputProps {
   name: string;
   label: string;
