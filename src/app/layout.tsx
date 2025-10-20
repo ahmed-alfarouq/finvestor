@@ -1,12 +1,11 @@
 import "@/app/ui/globals.css";
 import { inter } from "@/app/ui/fonts";
 
-import Head from "next/head";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
-import { ThemeProvider } from "next-themes";
 
-import { SessionProvider } from "next-auth/react";
+import Providers from "@/components/providers/Providers";
+import ScreenSizeBadge from "@/components/screen-size-badge";
 
 export const metadata: Metadata = {
   title: {
@@ -24,7 +23,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={theme} suppressHydrationWarning>
-      <Head>
+      <head>
         <link
           rel="icon"
           href="/icon?<generated>"
@@ -37,20 +36,12 @@ export default async function RootLayout({
           type="image/<generated>"
           sizes="<generated>"
         />
-      </Head>
+      </head>
       <body
         className={`bg-body text-black dark:bg-body-dark dark:text-white ${inter.className} overflow-x-hidden`}
       >
-        <SessionProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
-        </SessionProvider>
+        <ScreenSizeBadge />
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
