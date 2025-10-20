@@ -2,12 +2,11 @@
 
 import bcrypt from "bcryptjs";
 import { prisma } from "@/prisma";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 import {
   UpdateUser2FAParams,
   UpdateUserInfoProps,
-  createBankAccountProps,
   UpdateUserPasswordParams,
 } from "@/types";
 
@@ -34,32 +33,6 @@ export const updatePassword = async ({
     return { success: "Password update successfully! go to login" };
   } catch {
     return { error: "Something went wrong!" };
-  }
-};
-
-export const createBankAccount = async ({
-  userId,
-  bankId,
-  accessToken,
-  isLiabilityAccount,
-}: createBankAccountProps) => {
-  await prisma.bankAccount.create({
-    data: {
-      userId,
-      bankId,
-      accessToken,
-      isLiabilityAccount,
-    },
-  });
-};
-
-export const removeBank = async (bankId: string) => {
-  try {
-    await prisma.bankAccount.deleteMany({ where: { bankId } });
-    return { success: "Bank removed successfully" };
-  } catch (error) {
-    console.error("An error occurred while removing the bank:", error);
-    return { error: "Something went wrong while removing the bank from DB!" };
   }
 };
 
@@ -96,6 +69,7 @@ export const updateSavingsGoalAccounts = async (
         savingsGoalAccounts: accounts,
       },
     });
+    revalidateTag(`user-${userId}`);
     revalidatePath("/");
     return { success: "Your savings goal accounts were updated successfully!" };
   } catch (error) {
