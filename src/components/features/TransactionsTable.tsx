@@ -1,5 +1,3 @@
-"use client";
-import { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -17,31 +15,14 @@ import {
   removeSpecialCharacters,
 } from "@/lib/utils";
 
-import { Transaction, TransactionTableProps } from "@/types";
+import { TransactionTableProps } from "@/types";
 
-const TransactionsTable = ({ transactions }: TransactionTableProps) => {
-  const [shownTransactions, setShownTransactions] = useState(
-    transactions.length > 7 ? 7 : transactions.length
-  );
-  const [canLoadMore, setCanLoadMore] = useState(false);
-
-  const loadMore = () => {
-    if (canLoadMore) {
-      if (shownTransactions + 7 < transactions.length) {
-        setShownTransactions((prev) => prev + 7);
-        return;
-      }
-      setShownTransactions(transactions.length);
-      setCanLoadMore(false);
-    }
-  };
-
-  useEffect(() => {
-    if (shownTransactions < transactions.length) {
-      setCanLoadMore(true);
-    }
-  }, [transactions]);
-
+const TransactionsTable = ({
+  hasMore,
+  loadMore,
+  transactions,
+  isLoadingMore,
+}: TransactionTableProps) => {
   return (
     <div className="flex flex-col items-center gap-5 pb-3 bg-default dark:bg-default-dark">
       <Table className="bg-default dark:bg-default-dark">
@@ -65,19 +46,23 @@ const TransactionsTable = ({ transactions }: TransactionTableProps) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {transactions.slice(0, shownTransactions).map((t: Transaction) => {
+          {transactions.map((t) => {
             const date = formatDateTime(new Date(t.date)).dateOnly;
             const amount = formatAmount(t.amount);
 
             return (
               <TableRow
-                key={t.id}
+                key={t.transaction_id}
                 className="bg-default dark:bg-default-dark hover:bg-none !border-b-DEFAULT"
               >
                 <TableCell className="min-w-32 text-center">{date}</TableCell>
                 <TableCell className="max-w-[250px] text-center">
                   <h3 className="text-14 truncate font-semibold text-default-black dark:text-gray-6">
-                    {removeSpecialCharacters(t.name)}
+                    {t.merchant_name
+                      ? removeSpecialCharacters(t.merchant_name)
+                      : t.name
+                      ? t.name
+                      : "Unavialable Name"}
                   </h3>
                 </TableCell>
                 <TableCell className="text-center">
@@ -95,21 +80,23 @@ const TransactionsTable = ({ transactions }: TransactionTableProps) => {
                     : amount.slice(1, amount.length)}
                 </TableCell>
                 <TableCell className="text-center capitalize">
-                  {t.paymentChannel}
+                  {t.payment_channel}
                 </TableCell>
               </TableRow>
             );
           })}
         </TableBody>
       </Table>
-      <Button
-        size="lg"
-        onClick={loadMore}
-        className="mx-auto my-3"
-        disabled={!canLoadMore}
-      >
-        Load More
-      </Button>
+      {hasMore && (
+        <Button
+          size="lg"
+          onClick={loadMore}
+          className="mx-auto my-3 transition-all duration-200"
+        >
+          {isLoadingMore ? "Loading" : "Load"} More
+          {isLoadingMore && <div className="loading-spinner !size-5"></div>}
+        </Button>
+      )}
     </div>
   );
 };

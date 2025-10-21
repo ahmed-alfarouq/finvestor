@@ -1,10 +1,10 @@
-import React from "react";
 import Image from "next/image";
 
 import { BiQuestionMark } from "react-icons/bi";
-import { Transaction } from "@/types";
 
 import { formatCategory, formatAmount, formatDateTime } from "@/lib/utils";
+
+import { Transaction } from "plaid";
 
 const TransactionsList = ({
   transactions,
@@ -15,14 +15,14 @@ const TransactionsList = ({
     <ul className="w-full flex flex-col gap-4">
       {transactions.map((t) => (
         <li
-          key={t.id}
+          key={t.transaction_id}
           className="flex items-center justify-between py-4 border-b border-gray-7 last:border-b-0"
         >
           <div className="flex items-center gap-4">
-            {t.image ? (
+            {t.personal_finance_category_icon_url ? (
               <Image
-                src={t.image}
-                alt={t.name}
+                src={t.personal_finance_category_icon_url}
+                alt={t.merchant_name || ""}
                 width={36}
                 height={36}
                 className="rounded-md"
@@ -34,10 +34,13 @@ const TransactionsList = ({
             )}
             <div className="flex flex-col gap-1">
               <h3 className="text-sm xs:text-base default-black capitalize truncate max-w-32 xs:max-w-full xs:w-fit">
-                {t.name.toLowerCase()}
+                {t.merchant_name?.toLowerCase()}
               </h3>
               <p className="text-[10px] xs:text-xs text-gray-3 dark:text-gray-7 capitalize">
-                {t.category && formatCategory(t.category.primary).toLowerCase()}
+                {t.personal_finance_category &&
+                  formatCategory(
+                    t.personal_finance_category.primary
+                  ).toLowerCase()}
               </p>
             </div>
           </div>
