@@ -18,6 +18,7 @@ import { removeBank } from "@/actions/bank";
 const BalanceCard = ({
   id,
   bankId,
+  userId,
   subtype,
   name,
   accountNumber,
@@ -34,7 +35,7 @@ const BalanceCard = ({
 
   const removeAccount = () => {
     startTransation(async () => {
-      const res = await removeBank(bankId);
+      const res = await removeBank(bankId, userId);
       if (res?.error) {
         setErrorMessage(res.error);
         return;
