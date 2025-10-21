@@ -1,30 +1,36 @@
 "use server";
 import { prisma } from "@/prisma";
-import { revalidatePath, revalidateTag } from "next/cache";
 
 import { plaidClient } from "@/plaid";
 
-import { CountryCode } from "plaid";
+import { handleError } from "@/lib/errors/handleError";
 
 import { getBaseUrl } from "@/lib/utils";
 import { createBankProps, FetchAllAccountsResponse } from "@/types";
+import { revalidateAll, revalidateBankTransactions } from "./cache/revalidate";
 
 export const createBank = async ({
+  name,
   userId,
   bankId,
   accessToken,
   areLiabilityAccounts,
 }: createBankProps) => {
-  await prisma.bank.create({
-    data: {
-      userId,
-      bankId,
-      accessToken,
-      areLiabilityAccounts,
-    },
-  });
+  try {
+    await prisma.bank.create({
+      data: {
+        name,
+        userId,
+        bankId,
+        accessToken,
+        areLiabilityAccounts,
+      },
+    });
 
-  revalidateTag("accounts");
+    await revalidateAll(userId, areLiabilityAccounts);
+  } catch (err) {
+    handleError(err, "An error occurred while connecting to the bank");
+  }
 };
 
 export const getBank = async (bankId: string) => {
@@ -33,12 +39,12 @@ export const getBank = async (bankId: string) => {
       where: { bankId },
     });
     return bank;
-  } catch {
-    return null;
+  } catch (err) {
+    handleError(err, "An error occurred while getting the bank");
   }
 };
 
-export const removeBank = async (bankId: string) => {
+export const removeBank = async (bankId: string, userId: string) => {
   try {
     const bankAccount = await getBank(bankId);
     if (!bankAccount) return { error: "Bank not found!" };
@@ -58,14 +64,15 @@ export const removeBank = async (bankId: string) => {
         error: "An error occured while removing the account from plaid!",
       };
 
-    revalidateTag("accounts");
-    revalidatePath("/");
+    await revalidateAll(userId);
+    await revalidateBankTransactions(userId, bankAccount.accessToken);
+
     return {
       message: "Account removed successfully",
       requestId: plaidRemoveRes.data.request_id,
     };
-  } catch (error) {
-    console.error("An error occurred while removing the account:", error);
+  } catch (err) {
+    handleError(err, "An error occurred while removing the account");
   }
 };
 
@@ -77,25 +84,26 @@ export const getAccounts = async (userId: string) => {
       headers: { "Content-Type": "application/json" },
     });
 
-    if (!res.ok) throw Error("Failed to fetch accounts");
+    if (!res.ok) {
+      const data = await res.json();
+
+      if (data.error === "User has no accounts.") return [];
+
+      throw Error(data.error);
+    }
 
     const data: FetchAllAccountsResponse = await res.json();
+
+    if (!data.success) {
+      const newError = new Error(data.failed[0].message);
+      newError.stack = data.failed[0].stack;
+
+      throw newError;
+    }
+
+    // TODO as a future feature: mark unfectched accounts with not connected tag
     return data.accounts;
-  } catch {
-    // Catches only network-level or manual throw above
-    throw Error("Failed to fetch accounts");
-  }
-};
-
-export const getInstitution = async (institutionId: string) => {
-  try {
-    const institutionResponse = await plaidClient.institutionsGetById({
-      institution_id: institutionId,
-      country_codes: ["US"] as CountryCode[],
-    });
-
-    return institutionResponse.data.institution;
-  } catch (error) {
-    console.error("An error occurred while getting the institution:", error);
+  } catch (err) {
+    handleError(err);
   }
 };
