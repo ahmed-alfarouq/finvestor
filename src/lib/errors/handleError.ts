@@ -4,8 +4,8 @@ import isPlaidError from "./isPlaidError";
 export function handleError(err: unknown, errorMessage?: string) {
   const isDiv = process.env.NODE_ENV === "development";
 
-  if (isPlaidError(err)) {
-    throw Error(err.error_message);
+  if (isAxiosError(err) && isPlaidError(err.response?.data)) {
+    throw Error(err.response.data.error_message);
   }
 
   if (err instanceof Error || isAxiosError(err)) {
