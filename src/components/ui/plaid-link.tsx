@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import {
   PlaidLinkError,
+  PlaidLinkOnSuccessMetadata,
   PlaidLinkOptions,
   usePlaidLink,
 } from "react-plaid-link";
@@ -39,12 +40,13 @@ const PlaidLink = ({
   }, []);
 
   const onSuccess = useCallback(
-    async (public_token: string) => {
+    async (public_token: string, metadata: PlaidLinkOnSuccessMetadata) => {
       try {
         const res = await exchangePublicToken({
-          publicToken: public_token,
           user,
           accountType,
+          publicToken: public_token,
+          institutionName: metadata.institution && metadata.institution.name,
         });
 
         await update();
