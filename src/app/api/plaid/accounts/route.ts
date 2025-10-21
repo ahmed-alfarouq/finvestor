@@ -20,12 +20,20 @@ export async function POST(req: NextRequest) {
       include: { banks: true },
     });
 
-    if (!user || user.banks.length === 0) {
+    if (!user) {
       return NextResponse.json(
-        { error: "Couldn't find user or any banks." },
+        { error: "Couldn't find user." },
         { status: 404 }
       );
     }
+
+    if (!user.banks.length) {
+      return NextResponse.json(
+        { error: "User has no accounts." },
+        { status: 404 }
+      );
+    }
+
     const { successful, failed } = await getBanksAccounts(user.banks);
 
     return NextResponse.json({
