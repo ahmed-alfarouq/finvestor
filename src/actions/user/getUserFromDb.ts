@@ -1,6 +1,9 @@
 "use server";
-import { getBaseUrl } from "@/lib/utils";
 import { prisma } from "@/prisma";
+
+import { getBaseUrl } from "@/lib/utils";
+
+import { User } from "@/types";
 
 export const getUserByEmail = async (email: string) => {
   try {
@@ -14,7 +17,7 @@ export const getUserByEmail = async (email: string) => {
   }
 };
 
-export const getUserById = async (userId: string) => {
+export const getUserById = async (userId: string): Promise<User> => {
   try {
     const res = await fetch(`${getBaseUrl()}/api/user`, {
       method: "POST",
@@ -25,7 +28,6 @@ export const getUserById = async (userId: string) => {
     const data = await res.json();
 
     if (!res.ok) throw Error(data.error);
-
     return data.user;
   } catch {
     // Catches only network-level or manual throw above
