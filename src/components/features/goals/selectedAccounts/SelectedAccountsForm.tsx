@@ -13,20 +13,19 @@ import selectAccountsSchema, {
 } from "@/schemas/selected-accounts";
 import { Form } from "@/components/ui/form";
 
-import { BankAccount } from "@/types";
-import { updateSavingsGoalAccounts } from "@/actions/user/updateUser";
 import FormSuccess from "@/components/form-success";
+
+import { updateSavingsGoalAccounts } from "@/actions/user/updateUser";
+
 import { arraysEqual } from "@/lib/utils";
+
+import { SelectAccountFormProps } from "@/types";
 
 const SelectedAccountsForm = ({
   userId,
   checkedAccounts,
   accounts,
-}: {
-  userId: string;
-  checkedAccounts: string[];
-  accounts: BankAccount[];
-}) => {
+}: SelectAccountFormProps) => {
   const { update } = useSession();
 
   const [pending, startTransation] = useTransition();

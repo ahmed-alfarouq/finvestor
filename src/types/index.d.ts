@@ -1,5 +1,6 @@
-import { Control, FieldError } from "react-hook-form";
+import { Transaction } from "plaid";
 import { ChartOptions } from "chart.js";
+import { Control, FieldError } from "react-hook-form";
 
 // ------------------------------
 // Core Enums & Simple Types
@@ -63,19 +64,6 @@ declare type BankAccount = {
   name: string;
   type: string;
   subtype: string;
-};
-
-declare type Transaction = {
-  id: string;
-  name: string;
-  paymentChannel: string;
-  accountId: string;
-  amount: number;
-  pending: boolean;
-  date: string;
-  image?: string | null;
-  category: PersonalFinanceCategory;
-  category_icon?: string;
 };
 
 declare type BankProps = {
@@ -289,11 +277,9 @@ declare interface RecentTransactionsProps {
 }
 
 declare interface TransactionsTabProps {
-  transactions: Transaction[];
   value: string;
-  itemsToLoad?: number;
-  loadMore?: boolean;
   className?: string;
+  transactions: Transaction[];
 }
 
 declare interface TransactionHistoryTableProps {
@@ -302,7 +288,16 @@ declare interface TransactionHistoryTableProps {
 }
 
 declare interface TransactionTableProps {
+  hasMore: boolean;
+  loadMore: () => void;
+  isLoadingMore: boolean;
   transactions: Transaction[];
+}
+
+declare interface SelectAccountFormProps {
+  userId: string;
+  checkedAccounts: string[];
+  accounts: BankAccount[];
 }
 
 declare interface TransferFormInputProps {

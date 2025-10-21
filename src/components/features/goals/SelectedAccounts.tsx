@@ -14,9 +14,12 @@ const SelectedAccounts = async ({ className }: { className?: string }) => {
   const user = await getCachedUser(session.user.id);
   const accounts = await getCachedAccounts(session.user.id);
 
-  const hasAccounts = accounts.find(
-    (account) => account.subtype === "savings" || account.subtype === "checking"
-  );
+  const hasAccounts =
+    accounts &&
+    accounts?.filter(
+      (account) =>
+        account.subtype === "savings" || account.subtype === "checking"
+    );
 
   return (
     <section className={cn("flex flex-col", className)}>
