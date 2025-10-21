@@ -19,6 +19,7 @@ const BalancesPage = async () => {
           <BalanceCard
             key={account.id}
             id={account.id}
+            userId={session.user.id}
             bankId={account.bankId}
             name={account.name}
             type={account.type}
