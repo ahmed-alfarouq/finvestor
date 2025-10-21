@@ -1,9 +1,10 @@
 "use server";
 import { AccountBase } from "plaid";
-import { isAxiosError } from "axios";
 
 import { getPlaidAccountsSafely } from "@/actions/plaid";
-import { getInstitution, removeBank } from "@/actions/bank";
+
+import { handleError } from "@/lib/errors/handleError";
+import serializeError from "@/lib/errors/serializeError";
 
 import { BankProps } from "@/types";
 
@@ -16,15 +17,9 @@ const getBanksAccounts = async (banks: BankProps[]) => {
           bank.areLiabilityAccounts ? "liability" : "normal"
         );
 
-        const { accounts, item } = data;
+        const { accounts } = data;
         if (!accounts || !accounts.length) {
           return []; // skip if no accounts returned
-        }
-
-        const institution = await getInstitution(item.institution_id ?? "");
-
-        if (!institution) {
-          throw new Error("Failed to fetch institution info.");
         }
 
         return accounts.map((accountData: AccountBase) => ({
@@ -32,8 +27,7 @@ const getBanksAccounts = async (banks: BankProps[]) => {
           id: accountData.account_id!,
           availableBalance: accountData.balances.available!,
           currentBalance: accountData.balances.current!,
-          institutionId: institution.institution_id,
-          institutionName: institution.name,
+          institutionName: bank.name,
           name: accountData.name!,
           officialName: accountData.official_name!,
           mask: accountData.mask!,
@@ -42,37 +36,26 @@ const getBanksAccounts = async (banks: BankProps[]) => {
           isLiabilityAccount: bank.areLiabilityAccounts,
         }));
       } catch (err) {
-        if (isAxiosError(err)) {
-          const code = err.response?.data?.error_code;
-
-          if (code === "ITEM_LOGIN_REQUIRED") {
-            await removeBank(bank.bankId);
-          }
-
-          throw {
-            bankId: bank.bankId,
-            message: `Plaid error: ${code ?? "Unknown"}`,
-            type: "PLAID_ERROR",
-            code,
-          };
-        }
-
-        throw {
-          bankId: bank.bankId,
-          message: (err as Error).message ?? "Unknown error",
-          type: "GENERAL_ERROR",
-        };
+        handleError(
+          err,
+          `An unexpected error happened while getting accounts. Bank Id: ${bank.bankId}`
+        );
       }
     })
   );
-  console.log(res);
+
   const successful = res
     .filter((r) => r.status === "fulfilled")
     .flatMap((r) => r.value);
 
   const failed = res
     .filter((r) => r.status === "rejected")
-    .map((r) => r.reason);
+    .map(
+      (r) =>
+        serializeError(r.reason) || {
+          message: "An unexpected error from getBanksAccounts.",
+        }
+    );
 
   return { successful, failed };
 };

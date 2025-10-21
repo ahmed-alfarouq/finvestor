@@ -16,11 +16,17 @@ export type NotificationStatus = "success" | "warning" | "error" | "info";
 // ------------------------------
 // API Responses
 // ------------------------------
+declare type AccountsFailedResponse = {
+  message: string;
+  stack?: string;
+  name?: string;
+};
+
 declare interface FetchAllAccountsResponse {
   success: boolean;
   successfulCount: number;
   failedCount: number;
-  failed: string[];
+  failed: AccountsFailedResponse[];
   accounts: BankAccount[];
 }
 
@@ -74,8 +80,9 @@ declare type Transaction = {
 
 declare type BankProps = {
   id: string;
-  userId: string;
+  name: string;
   bankId: string;
+  userId: string;
   accessToken: string;
   areLiabilityAccounts: boolean;
 };
@@ -259,6 +266,7 @@ declare interface EmptyGoalsBoxProps {
 declare interface BalanceCardProps {
   id: string;
   bankId: string;
+  userId: string;
   type: string;
   subtype: string;
   name: string;
@@ -383,14 +391,16 @@ declare interface CreateTransactionProps {
   email: string;
 }
 declare interface exchangePublicTokenProps {
-  publicToken: string;
   user: User;
+  publicToken: string;
   accountType: ConnectAccountType;
+  institutionName: string | null;
 }
 
 declare interface createBankProps {
-  userId: string;
+  name: string;
   bankId: string;
+  userId: string;
   accessToken: string;
   areLiabilityAccounts: boolean;
 }

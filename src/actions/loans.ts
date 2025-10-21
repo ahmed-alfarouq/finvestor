@@ -1,7 +1,7 @@
 "use server";
 import { plaidClient } from "@/plaid";
 
-import isPlaidError from "@/lib/errors/isPlaidError";
+import { handleError } from "@/lib/errors/handleError";
 
 import { Loan } from "@/types";
 import {
@@ -58,9 +58,6 @@ export const getLoans = async (accessToken: string) => {
     }
     return loans;
   } catch (err) {
-    if (isPlaidError(err)) {
-      throw Error(err.error_message);
-    }
-    throw Error("An unexpected error occured while getting loans");
+    handleError(err, "An unexpected error occured while getting loans");
   }
 };
