@@ -8,8 +8,9 @@ const useCurrentUser = () => {
   const { data: session } = useSession();
   const user = useQuery({
     queryKey: ["user"],
-    queryFn: async () => await getUserById(session!.user!.id!),
+    queryFn: async () => await getUserById(session!.user!.id!, "use current"),
     enabled: !!session && !!session.user,
+    refetchOnMount: "always",
   });
 
   return user.data;
