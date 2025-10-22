@@ -29,7 +29,7 @@ const SelectBank = ({
       <SelectContent>
         {user.banks.map((b) => (
           <SelectItem key={b.id} value={b.accessToken}>
-            {b.name}
+            {b.name} {b.areLiabilityAccounts && "(Loans)"}
           </SelectItem>
         ))}
       </SelectContent>
