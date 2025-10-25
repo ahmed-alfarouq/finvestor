@@ -1,8 +1,7 @@
-"use client";
-import { cn } from "@/lib/utils";
-
-import { MdArrowUpward, MdArrowDownward } from "react-icons/md";
 import { GoDash } from "react-icons/go";
+import { MdArrowUpward, MdArrowDownward } from "react-icons/md";
+
+import { cn } from "@/lib/utils";
 
 const IncreaseDecreaseIndicator = ({
   percentage,

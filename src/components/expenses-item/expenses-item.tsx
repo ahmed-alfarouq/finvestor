@@ -1,37 +1,38 @@
-"use client";
 import Link from "next/link";
 
-import ItemBody from "./item-body";
+import ExpensesItemBody from "./expenses-item-body";
 import CategoryIcon from "./category-icon";
 import IncreaseDecreaseIndicator from "@/components/increase-decrease-indicator";
 
-import { getTotalExpenses, compareExpenses } from "@/lib/transactions";
-import { cn, formatAmount, formatCategory } from "@/lib/utils";
-
 import { FiArrowRight } from "react-icons/fi";
 
-import { Transaction } from "@/types";
+import { cn, formatAmount, formatCategory } from "@/lib/utils";
+import { getTotalExpenses, compareExpenses } from "@/lib/transactions";
+
+import { ExpensesItemProps } from "@/types";
 
 const ExpenseItem = ({
   currentMonthTransactions,
   lastMonthTransactions,
   expanded,
   className,
-}: {
-  currentMonthTransactions: Transaction[];
-  lastMonthTransactions: Transaction[];
-  expanded: boolean;
-  className?: string;
-}) => {
-  const categoryName = currentMonthTransactions[0].category.primary;
-  const categoryIcon = currentMonthTransactions[0].category_icon;
+}: ExpensesItemProps) => {
+  const categoryName =
+    currentMonthTransactions[0].personal_finance_category?.primary;
+  const categoryIcon =
+    currentMonthTransactions[0].personal_finance_category_icon_url;
   const currentExpenses = getTotalExpenses(currentMonthTransactions);
   const percentage = compareExpenses(
     currentMonthTransactions,
     lastMonthTransactions
   );
   return (
-    <section className={cn(expanded && "bg-default dark:bg-default-dark rounded-xl", className)}>
+    <section
+      className={cn(
+        expanded && "bg-default dark:bg-default-dark rounded-xl",
+        className
+      )}
+    >
       <header
         className={cn(
           "flex gap-3 sm:pl-2 xl:pl-4 pr-5 pb-5 pt-2",
@@ -41,7 +42,7 @@ const ExpenseItem = ({
       >
         <CategoryIcon
           icon={categoryIcon}
-          categoryName={categoryName}
+          categoryName={categoryName || "Unknown Category Name"}
           itemExpanded={expanded}
         />
         <div className="w-full">
@@ -53,7 +54,9 @@ const ExpenseItem = ({
                 : "text-sm text-gray-2 dark:text-gray-5"
             )}
           >
-            {formatCategory(categoryName).toLowerCase()}
+            {formatCategory(
+              categoryName || "Unknown Category Name"
+            ).toLowerCase()}
           </h3>
           <div className="flex items-center justify-between">
             <p
@@ -82,9 +85,15 @@ const ExpenseItem = ({
           {!expanded && <IncreaseDecreaseIndicator percentage={percentage} />}
         </div>
       </header>
-      {expanded && currentMonthTransactions.map((t) => (
-        <ItemBody key={t.id} name={t.name} amount={t.amount} date={t.date} />
-      ))}
+      {expanded &&
+        currentMonthTransactions.map((t) => (
+          <ExpensesItemBody
+            key={t.transaction_id}
+            name={t.name}
+            amount={t.amount}
+            date={t.date}
+          />
+        ))}
     </section>
   );
 };

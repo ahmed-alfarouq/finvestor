@@ -344,6 +344,25 @@ declare interface DoughnutChartProps {
   accounts: BankAccount[];
 }
 
+declare interface ExpensesItemProps {
+  currentMonthTransactions: Transaction[];
+  lastMonthTransactions: Transaction[];
+  expanded: boolean;
+  className?: string;
+}
+
+declare interface ExpensesItemBodyProps {
+  name: string;
+  amount: number;
+  date: string;
+}
+
+declare interface CategoryIconProps {
+  icon?: string;
+  categoryName: string;
+  itemExpanded: boolean;
+}
+
 declare interface BankTabItemProps {
   account: BankAccount;
   id: string;
