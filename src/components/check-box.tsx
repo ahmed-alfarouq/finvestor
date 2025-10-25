@@ -39,7 +39,7 @@ const Checkbox = <T extends FieldValues>({
         <ImCheckboxChecked className="w-full h-full" />
       </div>
 
-      <span className="text-default-black dark:text-gray-7 font-medium">
+      <span className="text-default-black dark:text-gray-7 font-medium whitespace-nowrap">
         {label}
       </span>
     </label>

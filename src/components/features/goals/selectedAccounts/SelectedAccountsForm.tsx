@@ -83,7 +83,7 @@ const SelectedAccountsForm = ({
         onSubmit={handleSubmit(onSubmit)}
         className="h-[inherit] flex flex-col items-start"
       >
-        <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(125px,1fr))] w-full items-center my-3 max-h-[55%] sm:max-h-[8rem] overflow-y-auto">
+        <div className="grid gap-4 xl:grid-cols-2 w-full items-center my-3 max-h-[55%] sm:max-h-[8rem] overflow-y-auto">
           {accounts.map(
             (account) =>
               validAccounts.includes(account.subtype) && (
@@ -91,7 +91,7 @@ const SelectedAccountsForm = ({
                   key={account.id}
                   register={register}
                   registerName="selectedBankIds"
-                  label={account.name}
+                  label={`${account.name} (${account.institutionName})`}
                   value={account.id}
                   checked={checkedAccounts.includes(account.id)}
                 />
