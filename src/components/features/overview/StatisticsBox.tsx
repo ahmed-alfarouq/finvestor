@@ -15,7 +15,6 @@ import { cn } from "@/lib/utils";
 import { compareTransactionsByDate, PeriodType } from "@/lib/transactions";
 
 import { daysNames, monthsNames } from "@/constants";
-import { lastYearTransactions } from "@/constants/transactions";
 
 import { StatisticsBoxProps } from "@/types";
 
@@ -35,9 +34,8 @@ const StatisticsBox = ({ transactions, className }: StatisticsBoxProps) => {
     currentPeriod: number[];
     lastPeriod: number[];
   } = useMemo(() => {
-    const allTransactions = [...lastYearTransactions, ...transactions];
     return compareTransactionsByDate(
-      allTransactions,
+      transactions,
       statisticsType as PeriodType
     );
   }, []);

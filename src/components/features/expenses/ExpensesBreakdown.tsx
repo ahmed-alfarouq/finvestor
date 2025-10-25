@@ -1,9 +1,9 @@
-"use client";
 import ExpenseItem from "@/components/expenses-item/expenses-item";
 import { splitTransactionsByCategory } from "@/lib/transactions";
+
 import { cn } from "@/lib/utils";
 
-import { Transaction } from "@/types";
+import { Transaction } from "plaid";
 
 const ExpensesBreakdown = ({
   transactions,
@@ -14,7 +14,7 @@ const ExpensesBreakdown = ({
   const currentYear = new Date().getFullYear();
   const lastMonth = new Date(new Date().setMonth(currentMonth - 1)).getMonth();
 
-  const currentMonthTransactions: Transaction[] = [...transactions].filter(
+  const currentMonthTransactions: Transaction[] = transactions.filter(
     (transaction) => {
       const transactionYear = new Date(transaction.date).getFullYear();
       const transactionMonth = new Date(transaction.date).getMonth();
@@ -25,7 +25,7 @@ const ExpensesBreakdown = ({
     }
   );
 
-  const lastMonthTransactions: Transaction[] = [...transactions].filter(
+  const lastMonthTransactions: Transaction[] = transactions.filter(
     (transaction) => {
       const transactionYear = new Date(transaction.date).getFullYear();
       const transactionMonth = new Date(transaction.date).getMonth();

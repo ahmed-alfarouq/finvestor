@@ -1,22 +1,37 @@
-"use client";
-import { useBanksDataContext } from "@/context/BanksDataContext";
-
 import PageContainer from "@/components/page-container";
 import StatisticsBox from "@/components/features/overview/StatisticsBox";
 import ExpensesBreakdown from "@/components/features/expenses/ExpensesBreakdown";
 
-import { dummyTransactions } from "@/constants";
+import {
+  dummyTransactions,
+  lastYearTransactions,
+} from "@/constants/transactions";
+import { auth } from "@/auth";
 
-const ExpensesPage = () => {
-  const { transactions } = useBanksDataContext();
-  const allTransactions = [...transactions, ...dummyTransactions];
+import { getCachedUser } from "@/lib/cache/user";
+
+import { getCachedTransactions } from "@/lib/cache/transactions";
+
+const ExpensesPage = async () => {
+  const session = await auth();
+
+  if (!session) return;
+
+  const user = await getCachedUser(session.user.id);
+  const { transactions } = await getCachedTransactions(
+    session.user.id,
+    user.banks[0].accessToken
+  );
+
+  const allTransactions = [
+    ...transactions,
+    ...dummyTransactions,
+    ...lastYearTransactions,
+  ];
 
   return (
     <PageContainer>
-      <StatisticsBox
-        transactions={allTransactions}
-        className="!h-[350px]"
-      />
+      <StatisticsBox transactions={allTransactions} className="!h-[350px]" />
       <ExpensesBreakdown transactions={allTransactions} />
     </PageContainer>
   );
