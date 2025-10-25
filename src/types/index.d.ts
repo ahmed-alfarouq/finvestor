@@ -84,11 +84,6 @@ declare type BankProps = {
   areLiabilityAccounts: boolean;
 };
 
-declare type Receiver = {
-  firstName: string;
-  lastName: string;
-};
-
 declare type UpdateUserPasswordParams = {
   userId: string;
   oldPassword: string;
