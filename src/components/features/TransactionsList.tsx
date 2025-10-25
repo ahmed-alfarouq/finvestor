@@ -19,16 +19,22 @@ const TransactionsList = ({
           className="flex items-center justify-between py-4 border-b border-gray-7 last:border-b-0"
         >
           <div className="flex items-center gap-4">
-            {t.personal_finance_category_icon_url ? (
+            {t.logo_url ? (
+              <Image
+                src={t.logo_url}
+                alt={t.merchant_name || ""}
+                width={40}
+                height={40}
+              />
+            ) : t.personal_finance_category_icon_url ? (
               <Image
                 src={t.personal_finance_category_icon_url}
                 alt={t.merchant_name || ""}
-                width={36}
-                height={36}
-                className="rounded-md"
+                width={40}
+                height={40}
               />
             ) : (
-              <div className="w-[36px] h-[36px] bg-gray-7 rounded-md shrink-0 flex items-center justify-center text-gray-1">
+              <div className="w-10 h-10 bg-gray-7 rounded-md shrink-0 flex items-center justify-center text-gray-1">
                 <BiQuestionMark className="w-4 h-4" />
               </div>
             )}

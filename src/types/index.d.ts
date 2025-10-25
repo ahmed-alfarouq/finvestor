@@ -270,6 +270,12 @@ declare interface ExpensesGoal {
   amount: string;
   category: string;
 }
+
+declare interface StatisticsBoxProps {
+  transactions: Transaction[];
+  className?: string;
+}
+
 declare interface RecentTransactionsProps {
   accounts: BankAccount[];
   transactions: Transaction[];

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTheme } from "next-themes";
 
 import BarChart from "@/components/ui/bar-chart";
@@ -15,24 +15,11 @@ import { cn } from "@/lib/utils";
 import { compareTransactionsByDate, PeriodType } from "@/lib/transactions";
 
 import { daysNames, monthsNames } from "@/constants";
-
-import { Transaction } from "plaid";
 import { lastYearTransactions } from "@/constants/transactions";
 
-const StatisticsBox = ({
-  transactions,
-  className,
-}: {
-  transactions: Transaction[];
-  className?: string;
-}) => {
-  const [comparedExpenses, setComparedExpenses] = useState<{
-    currentPeriod: number[];
-    lastPeriod: number[];
-  }>({
-    currentPeriod: [],
-    lastPeriod: [],
-  });
+import { StatisticsBoxProps } from "@/types";
+
+const StatisticsBox = ({ transactions, className }: StatisticsBoxProps) => {
   const [statisticsType, setStatisticsType] = useState<"weekly" | "yearly">(
     "weekly"
   );
@@ -44,14 +31,16 @@ const StatisticsBox = ({
     setStatisticsType(value);
   };
 
-  useEffect(() => {
+  const comparedExpenses: {
+    currentPeriod: number[];
+    lastPeriod: number[];
+  } = useMemo(() => {
     const allTransactions = [...lastYearTransactions, ...transactions];
-    const comparedExpensesData = compareTransactionsByDate(
+    return compareTransactionsByDate(
       allTransactions,
       statisticsType as PeriodType
     );
-    setComparedExpenses(comparedExpensesData);
-  }, [transactions, statisticsType]);
+  }, []);
 
   return (
     <section className={cn("h-full flex flex-col gap-2", className)}>
