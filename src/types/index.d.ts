@@ -52,6 +52,15 @@ declare type User = {
   isTwoFactorEnabled: boolean;
 };
 
+declare type ExpensesGoal = {
+  id: string;
+  userId: string;
+  user: User;
+  date: string;
+  amount: string;
+  category: string;
+};
+
 declare type BankAccount = {
   id: string;
   bankId: string;
@@ -262,13 +271,11 @@ declare interface BalanceCardProps {
   totalAmount: number;
 }
 
-declare interface ExpensesGoal {
-  id: string;
-  userId: string;
-  user: User;
-  date: string;
-  amount: string;
+declare interface ExpenseGoalProps {
+  icon?: string;
   category: string;
+  goal: string;
+  categoryTransactions: Transaction[];
 }
 
 declare interface StatisticsBoxProps {

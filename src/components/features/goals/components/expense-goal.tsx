@@ -1,33 +1,17 @@
-"use client";
-import { useState } from "react";
-
-import { Button } from "@/components/ui/button";
-import TargetForm from "@/components/target-form";
-import ModalWrapper from "@/components/modal-wrapper";
+import TargetModal from "@/components/target-modal";
 import CategoryIcon from "@/components/expenses-item/category-icon";
-
-import { PenIcon } from "lucide-react";
 
 import { getTotalExpenses } from "@/lib/transactions";
 import { formatAmount, formatCategory } from "@/lib/utils";
 
-import { Transaction } from "@/types";
+import { ExpenseGoalProps } from "@/types";
 
 const ExpenseGoal = ({
   icon,
   goal,
   category,
   categoryTransactions,
-}: {
-  icon?: string;
-  category: string;
-  goal: string;
-  categoryTransactions: Transaction[];
-}) => {
-  const [modalOpened, setModalOpened] = useState(false);
-
-  const toggleModal = () => setModalOpened((prev) => !prev);
-
+}: ExpenseGoalProps) => {
   const totalExpenses = getTotalExpenses(categoryTransactions);
 
   return (
@@ -46,17 +30,7 @@ const ExpenseGoal = ({
           </p>
         </div>
       </div>
-      <Button
-        variant="outline"
-        className="absolute bottom-1 right-2 xs:static font-medium my-auto text-primary dark:text-primary-dark hover:text-primary dark:hover:text-primary-dark"
-        onClick={toggleModal}
-      >
-        <span className="hidden xs:block">Adjust</span>{" "}
-        <PenIcon size={16} className="ml-2" />
-      </Button>
-      <ModalWrapper isOpen={modalOpened} close={toggleModal}>
-        <TargetForm category={category} />
-      </ModalWrapper>
+      <TargetModal category={category} />
     </div>
   );
 };
