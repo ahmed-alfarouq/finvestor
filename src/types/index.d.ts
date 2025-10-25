@@ -382,7 +382,6 @@ declare interface NotificationAlertProps {
   status?: NotificationStatus;
   duration?: number;
 }
-
 declare interface Loan {
   name: string;
   accountId: string;
@@ -398,6 +397,10 @@ declare interface Loan {
   ytdTotalPaid: number;
 }
 
+declare interface AccountTransactionsProps {
+  accessToken: string;
+  account: BankAccount;
+}
 // ------------------------------
 // Actions
 // ------------------------------

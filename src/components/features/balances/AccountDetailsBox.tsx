@@ -1,22 +1,9 @@
-"use client";
 import DetailItem from "./components/DetailItem";
-import NotAvailable from "@/components/not-available";
 import AnimatedCounter from "@/components/animated-counter";
 
-import { useBanksDataContext } from "@/context/BanksDataContext";
+import { BankAccount } from "@/types";
 
-const AccountDetailsBox = ({ accountId }: { accountId: string }) => {
-  const { accounts } = useBanksDataContext();
-  const account = accounts.data.find((acc) => acc.id === accountId);
-
-  if (!account) {
-    return (
-      <NotAvailable
-        title="Account Details"
-        message="Account's data not found."
-      />
-    );
-  }
+const AccountDetailsBox = ({ account }: { account: BankAccount }) => {
   return (
     <section>
       <h2 className="card-title">Account Details</h2>

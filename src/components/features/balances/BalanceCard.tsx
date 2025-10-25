@@ -88,7 +88,10 @@ const BalanceCard = ({
         </Button>
         {validTypesForDetails.includes(subtype) && (
           <Button size="lg" className="px-5 py-1" disabled={pending}>
-            <Link href={`/balances/${id}`} className="flex items-center gap-3">
+            <Link
+              href={`/balances/${bankId}/${id}`}
+              className="flex items-center gap-3"
+            >
               Details <MdOutlineKeyboardArrowRight size={25} />
             </Link>
           </Button>

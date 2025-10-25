@@ -8,28 +8,68 @@ import { AxiosResponse } from "axios";
 import { TransactionsSyncResponse } from "plaid";
 
 export const getAccountTransactions = async (
+  accountId: string,
   accessToken: string,
-  accountId: string
-) => {
-  const response: AxiosResponse<TransactionsSyncResponse> =
-    await plaidClient.transactionsSync({
-      access_token: accessToken,
-      options: {
-        account_id: accountId,
-      },
-    });
-
-  return response.data.added;
-};
-
-export const getTransactions = async (accessToken: string, cursor?: string) => {
+  nextCursor?: string
+): Promise<{
+  transactions: Transaction[];
+  nextCursor?: string;
+  hasMore: boolean;
+}> => {
   try {
-    if (accessToken === "")
+    if (!accessToken) {
       return {
         transactions: [],
         nextCursor: undefined,
         hasMore: false,
       };
+    }
+
+    const response: AxiosResponse<TransactionsSyncResponse> =
+      await plaidClient.transactionsSync({
+        access_token: accessToken,
+        cursor: nextCursor,
+        count: 5,
+        options: {
+          account_id: accountId,
+        },
+      });
+
+    return {
+      transactions: response.data.added,
+      nextCursor: response.data.next_cursor,
+      hasMore: response.data.has_more,
+    };
+  } catch (err) {
+    handleError(
+      err,
+      "An unexpected error happened while getting account transactions"
+    );
+
+    return {
+      transactions: [],
+      nextCursor: undefined,
+      hasMore: false,
+    };
+  }
+};
+
+export const getTransactions = async (
+  accessToken: string,
+  cursor?: string
+): Promise<{
+  transactions: Transaction[];
+  nextCursor?: string;
+  hasMore: boolean;
+}> => {
+  try {
+    if (!accessToken) {
+      return {
+        transactions: [],
+        nextCursor: undefined,
+        hasMore: false,
+      };
+    }
 
     const response: AxiosResponse<TransactionsSyncResponse> =
       await plaidClient.transactionsSync({
@@ -48,6 +88,11 @@ export const getTransactions = async (accessToken: string, cursor?: string) => {
       err,
       "An unexpected error occurred while getting the transactions."
     );
+    return {
+      transactions: [],
+      nextCursor: undefined,
+      hasMore: false,
+    };
   }
 };
 
