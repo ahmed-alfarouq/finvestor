@@ -19,7 +19,7 @@ const TransactionsPage = () => {
       queryKey: [`transactions-${accessToken}`],
       queryFn: async ({ pageParam }: { pageParam?: string }) =>
         await getTransactions(accessToken, pageParam),
-      getNextPageParam: (lastPage) => lastPage?.nextCursor ?? undefined,
+      getNextPageParam: (lastPage) => lastPage?.nextCursor,
       initialPageParam: undefined,
     });
 
