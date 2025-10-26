@@ -20,7 +20,7 @@ const GoalsBox = async ({ className }: { className?: string }) => {
 
   const targetAmount = Number(user.savingsGoal);
   const achievedAmount = accounts.reduce((total, acc) => {
-    return user.savingsGoalAccounts.includes(acc.id)
+    return user.savingsGoalAccounts?.find((sa) => sa.id === acc.id)
       ? total + (acc.availableBalance ?? 0)
       : total;
   }, 0);
