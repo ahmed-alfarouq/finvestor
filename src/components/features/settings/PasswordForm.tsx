@@ -2,26 +2,21 @@
 import { useForm } from "react-hook-form";
 import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useCurrentUser from "@/hooks/use-current-user";
 
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import FormError from "@/components/form-error";
 import FormInput from "@/components/auth/FormInput";
 import FormSuccess from "@/components/form-success";
-import RefreshSession from "@/components/features/RefreshSession";
 
 import passwordFormSchema, {
   PasswordFormSchema,
 } from "@/schemas/password-form";
 
 import { updateUserPassword } from "@/actions/user/updateUser";
-import { useSession } from "next-auth/react";
+import { User } from "@/types";
 
-const PasswordForm = () => {
-  const {user} = useCurrentUser();
-  const { update } = useSession();
-
+const PasswordForm = ({ user }: { user: User }) => {
   const [isPending, startTransition] = useTransition();
   const [errorMessage, setErrorMeesage] = useState<string | undefined>();
   const [successMessage, setSuccessMessage] = useState<string | undefined>();
@@ -34,8 +29,6 @@ const PasswordForm = () => {
       confirmPassword: "",
     },
   });
-
-  if (!user) return <RefreshSession />;
 
   const onSubmit = (data: PasswordFormSchema) => {
     setErrorMeesage("");
@@ -50,7 +43,6 @@ const PasswordForm = () => {
         setErrorMeesage(res.error);
         return;
       }
-      await update();
       setSuccessMessage(res.success);
       return;
     });

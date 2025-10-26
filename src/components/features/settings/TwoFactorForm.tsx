@@ -2,7 +2,6 @@
 
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { useSession } from "next-auth/react";
 import { useEffect, useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -12,10 +11,9 @@ import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 import FormInput from "@/components/auth/FormInput";
 import ModalWrapper from "@/components/modal-wrapper";
-import RefreshSession from "@/components/features/RefreshSession";
 
-import useCurrentUser from "@/hooks/use-current-user";
 import { updateUser2FA } from "@/actions/user/updateUser";
+import { User } from "@/types";
 
 const formSchema = z.object({
   password: z.string().min(1, "Password is required!"),
@@ -23,10 +21,7 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-const TwoFactorForm = () => {
-  const {user} = useCurrentUser();
-  const { update } = useSession();
-
+const TwoFactorForm = ({ user }: { user: User }) => {
   const [statusLabel, setStatusLabel] = useState("Enable");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -43,8 +38,6 @@ const TwoFactorForm = () => {
   useEffect(() => {
     setStatusLabel(user?.isTwoFactorEnabled ? "Disable" : "Enable");
   }, [user?.isTwoFactorEnabled]);
-
-  if (!user) return <RefreshSession />;
 
   const toggleModal = () => {
     setErrorMessage("");
@@ -68,11 +61,10 @@ const TwoFactorForm = () => {
         return;
       }
 
-      await update();
       setSuccessMessage(res.success);
       setStatusLabel((prev) => (prev === "Enable" ? "Disable" : "Enable"));
       form.reset();
-      
+
       // Close modal after 1.5 seconds
       setTimeout(() => {
         toggleModal();

@@ -2,24 +2,19 @@
 import { useForm } from "react-hook-form";
 import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useCurrentUser from "@/hooks/use-current-user";
 
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import FormError from "@/components/form-error";
 import FormInput from "@/components/auth/FormInput";
 import FormSuccess from "@/components/form-success";
-import RefreshSession from "@/components/features/RefreshSession";
 
 import userFormSchema, { UserFormSchema } from "@/schemas/user-form";
 
 import { updateUserInfo } from "@/actions/user/updateUser";
-import { useSession } from "next-auth/react";
+import { User } from "@/types";
 
-const UserForm = () => {
-  const {user} = useCurrentUser();
-  const { update } = useSession();
-
+const UserForm = ({ user }: { user: User }) => {
   const [errorMessage, setErrorMeesage] = useState<string | undefined>();
   const [successMessage, setSuccessMessage] = useState<string | undefined>();
   const [isPending, startTransition] = useTransition();
@@ -40,7 +35,6 @@ const UserForm = () => {
     handleSubmit,
     formState: { isDirty },
   } = form;
-  if (!user) return <RefreshSession />;
 
   const onSubmit = (data: UserFormSchema) => {
     setErrorMeesage("");
@@ -54,7 +48,6 @@ const UserForm = () => {
         setErrorMeesage(res.error);
         return;
       }
-      await update();
       setSuccessMessage(res.success);
       return;
     });
