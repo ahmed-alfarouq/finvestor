@@ -7,21 +7,29 @@ import ExpensesGoals from "@/components/features/goals/ExpensesGoals";
 import SelectedAccounts from "@/components/features/goals/SelectedAccounts";
 
 import { getCachedUser } from "@/lib/cache/user";
+import { getCachedAccounts } from "@/lib/cache/accounts";
 
 const Goals = async () => {
   const session = await auth();
 
   if (!session) return;
-  const user = await getCachedUser(session.user.id);
+  const { id, savingsGoalAccounts, savingsGoal, expensesGoals } =
+    await getCachedUser(session.user.id);
 
-  const hasGoalAccounts = !!user.savingsGoalAccounts.length;
+  const hasGoalAccounts = savingsGoalAccounts.length;
+
+  const accounts = await getCachedAccounts(id);
+
+  const expensesAccounts = accounts.filter((a) =>
+    savingsGoalAccounts.includes(a.id)
+  );
 
   return (
     <PageContainer>
       <section className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-3">
-        {user && user.savingsGoal && hasGoalAccounts ? (
+        {hasGoalAccounts && savingsGoal ? (
           <GoalsBox className="md:col-span-2 lg:col-span-1" />
-        ) : user && user.savingsGoal && !hasGoalAccounts ? (
+        ) : !hasGoalAccounts && savingsGoal ? (
           <EmptyGoalsBox
             title="Goals"
             message="Select an account to continue setting up your goal."
@@ -39,7 +47,10 @@ const Goals = async () => {
         )}
         <SelectedAccounts className="lg:col-span-2" />
       </section>
-      <ExpensesGoals expensesGoals={user.expensesGoals} />
+      <ExpensesGoals
+        expensesAccounts={expensesAccounts}
+        expensesGoals={expensesGoals}
+      />
     </PageContainer>
   );
 };
