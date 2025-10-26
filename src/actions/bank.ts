@@ -105,5 +105,6 @@ export const getAccounts = async (userId: string) => {
     return data.accounts;
   } catch (err) {
     handleError(err);
+    return [];
   }
 };
