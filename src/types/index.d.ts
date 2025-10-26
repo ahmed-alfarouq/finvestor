@@ -113,6 +113,7 @@ declare interface CheckboxProps<T extends FieldValues> {
   label: string;
   value: string;
   register: UseFormRegister<T>;
+  checked?: boolean;
   className?: string;
 }
 
