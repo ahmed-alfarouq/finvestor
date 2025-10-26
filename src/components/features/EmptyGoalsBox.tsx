@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { formatDateTime } from "@/lib/utils";
+import { cn, formatDateTime } from "@/lib/utils";
 
 import TargetModal from "../target-modal";
 
@@ -14,9 +14,10 @@ const EmptyGoalsBox = ({
   date,
   selectedAccounts = true,
   showButton = true,
+  className,
 }: EmptyGoalsBoxProps) => {
   return (
-    <section className="box">
+    <section className={cn("box", className)}>
       <header>
         <h2 className="card-title">{title}</h2>
       </header>
