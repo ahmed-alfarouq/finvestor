@@ -1,5 +1,5 @@
-import CardWrapper from "@/components/auth/CardWrapper";
-import ForgotPasswordForm from "@/components/features/auth/ForgotPasswordForm";
+import CardWrapper from "@/components/auth/card-wrapper";
+import ForgotPasswordForm from "@/components/features/auth/forgot-password-form";
 
 const ForgotPassword = () => {
   return (

@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import FormError from "@/components/form-error";
-import FormInput from "@/components/auth/FormInput";
+import FormInput from "@/components/auth/form-input";
 import FormSuccess from "@/components/form-success";
 
 import userFormSchema, { UserFormSchema } from "@/schemas/user-form";

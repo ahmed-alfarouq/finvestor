@@ -1,4 +1,4 @@
-import DetailItem from "./components/DetailItem";
+import DetailItem from "./components/detail-item";
 import AnimatedCounter from "@/components/animated-counter";
 
 import { BankAccount } from "@/types";

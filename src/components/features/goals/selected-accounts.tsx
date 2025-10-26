@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 
-import SelectedAccountsForm from "@/components/features/goals/selectedAccounts/SelectedAccountsForm";
+import SelectedAccountsForm from "@/components/features/goals/selected-accounts/selected-accounts-form";
 
 import { cn } from "@/lib/utils";
 import { getCachedUser } from "@/lib/cache/user";

@@ -1,7 +1,7 @@
 "use client";
 import { ThemeProvider } from "next-themes";
 import { SessionProvider } from "next-auth/react";
-import ReactQueryProvider from "./ReactQueryProvider";
+import ReactQueryProvider from "./react-query-provider";
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (

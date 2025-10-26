@@ -1,6 +1,6 @@
 import PageContainer from "@/components/page-container";
-import StatisticsBox from "@/components/features/overview/StatisticsBox";
-import ExpensesBreakdown from "@/components/features/expenses/ExpensesBreakdown";
+import StatisticsBox from "@/components/features/overview/statistics-box";
+import ExpensesBreakdown from "@/components/features/expenses/expenses-breakdown";
 
 import {
   dummyTransactions,

@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 
 import PageContainer from "@/components/page-container";
-import BalanceCard from "@/components/features/balances/BalanceCard";
+import BalanceCard from "@/components/features/balances/balance-card";
 
 import { getAccounts } from "@/actions/bank";
 import ConnectBankCard from "@/components/connect-bank-card";

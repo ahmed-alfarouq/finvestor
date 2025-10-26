@@ -9,7 +9,7 @@ import Timer from "@/components/timer";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import FormError from "@/components/form-error";
-import FormInput from "@/components/auth/FormInput";
+import FormInput from "@/components/auth/form-input";
 import FormSuccess from "@/components/form-success";
 
 import { updatePassword } from "@/actions/user/updateUser";

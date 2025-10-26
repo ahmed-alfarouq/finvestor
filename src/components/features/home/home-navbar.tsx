@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import DarkModeToggle from "@/components/dark-mode-toggle";
-import NavbarLinks from "./components/NavbarLinks";
+import NavbarLinks from "./components/navbar-links";
 
 const HomeNavbar = () => {
   return (

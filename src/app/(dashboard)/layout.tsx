@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 
 import AppSidebar from "@/components/app-sidebar";
-import DashboardHeader from "@/components/features/DashboardHeader";
+import DashboardHeader from "@/components/features/dashboard-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {

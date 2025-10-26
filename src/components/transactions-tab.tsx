@@ -1,5 +1,5 @@
 import { TabsContent } from "@/components/ui/tabs";
-import TransactionsList from "@/components/features/TransactionsList";
+import TransactionsList from "@/components/features/transactions-list";
 
 import { cn } from "@/lib/utils";
 

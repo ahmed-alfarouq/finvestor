@@ -1,9 +1,9 @@
 import { auth } from "@/auth";
 
 import PageContainer from "@/components/page-container";
-import UserForm from "@/components/features/settings/UserForm";
-import PasswordForm from "@/components/features/settings/PasswordForm";
-import TwoFactorForm from "@/components/features/settings/TwoFactorForm";
+import UserForm from "@/components/features/settings/user-form";
+import PasswordForm from "@/components/features/settings/password-form";
+import TwoFactorForm from "@/components/features/settings/two-factor-form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { getCachedUser } from "@/lib/cache/user";

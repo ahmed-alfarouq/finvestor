@@ -3,12 +3,12 @@ import { getCachedUser } from "@/lib/cache/user";
 import { getCachedTransactions } from "@/lib/cache/transactions";
 
 import PageContainer from "@/components/page-container";
-import GoalsBox from "@/components/features/overview/GoalsBox";
-import LoansBox from "@/components/features/overview/LoansBox";
-import ExpensesBox from "@/components/features/overview/ExpensesBox";
-import StatisticsBox from "@/components/features/overview/StatisticsBox";
-import TotalBalanceBox from "@/components/features/overview/TotalBalanceBox";
-import RecentTransactions from "@/components/features/overview/RecentTransactions";
+import GoalsBox from "@/components/features/overview/goals-box";
+import LoansBox from "@/components/features/overview/loans-box";
+import ExpensesBox from "@/components/features/overview/expenses-box";
+import StatisticsBox from "@/components/features/overview/statistics-box";
+import TotalBalanceBox from "@/components/features/overview/total-balance-box";
+import RecentTransactions from "@/components/features/overview/recent-transactions";
 import {
   dummyTransactions,
   lastYearTransactions,

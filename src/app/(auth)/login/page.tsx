@@ -8,14 +8,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import FormError from "@/components/form-error";
 import { Button } from "@/components/ui/button";
-import CardWrapper from "@/components/auth/CardWrapper";
+import CardWrapper from "@/components/auth/card-wrapper";
 
 import { login } from "@/actions/auth/login";
 
 import { cn } from "@/lib/utils";
 
 import { LoginSchema } from "@/schemas/auth";
-import FormInput from "@/components/auth/FormInput";
+import FormInput from "@/components/auth/form-input";
 type LoginFields = z.infer<typeof LoginSchema>;
 
 const LoginPage = () => {

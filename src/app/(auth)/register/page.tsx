@@ -11,9 +11,9 @@ import { Form } from "@/components/ui/form";
 import FormError from "@/components/form-error";
 import { Button } from "@/components/ui/button";
 import FormSuccess from "@/components/form-success";
-import DateInput from "@/components/auth/DateInput";
-import FormInput from "@/components/auth/FormInput";
-import CardWrapper from "@/components/auth/CardWrapper";
+import DateInput from "@/components/auth/date-input";
+import FormInput from "@/components/auth/form-input";
+import CardWrapper from "@/components/auth/card-wrapper";
 
 import { register } from "@/actions/auth/register";
 import { cn } from "@/lib/utils";

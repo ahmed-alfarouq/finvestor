@@ -1,10 +1,10 @@
 import { auth } from "@/auth";
 
 import PageContainer from "@/components/page-container";
-import GoalsBox from "@/components/features/overview/GoalsBox";
-import EmptyGoalsBox from "@/components/features/EmptyGoalsBox";
-import ExpensesGoals from "@/components/features/goals/ExpensesGoals";
-import SelectedAccounts from "@/components/features/goals/SelectedAccounts";
+import GoalsBox from "@/components/features/overview/goals-box";
+import EmptyGoalsBox from "@/components/features/empty-goals-box";
+import ExpensesGoals from "@/components/features/goals/expenses-goals";
+import SelectedAccounts from "@/components/features/goals/selected-accounts";
 
 import { getCachedUser } from "@/lib/cache/user";
 import { getCachedAccounts } from "@/lib/cache/accounts";

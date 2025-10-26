@@ -5,7 +5,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import PageLoader from "@/components/page-loader";
 import SelectBank from "@/components/select-bank";
 import PageContainer from "@/components/page-container";
-import TransactionsTable from "@/components/features/TransactionsTable";
+import TransactionsTable from "@/components/features/transactions-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { getTransactions } from "@/actions/transactions";

@@ -2,8 +2,8 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import PageLoader from "@/components/page-loader";
-import TransactionsTable from "../TransactionsTable";
 import NotAvailable from "@/components/not-available";
+import TransactionsTable from "@/components/features/transactions-table";
 
 import { getAccountTransactions } from "@/actions/transactions";
 

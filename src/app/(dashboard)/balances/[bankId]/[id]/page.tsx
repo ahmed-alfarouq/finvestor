@@ -2,8 +2,8 @@ import { auth } from "@/auth";
 
 import NotAvailable from "@/components/not-available";
 import PageContainer from "@/components/page-container";
-import AccountDetailsBox from "@/components/features/balances/AccountDetailsBox";
-import AccountTransactions from "@/components/features/balances/AccountTransactions";
+import AccountDetailsBox from "@/components/features/balances/account-details-box";
+import AccountTransactions from "@/components/features/balances/account-transactions";
 
 import { getCachedAccounts } from "@/lib/cache/accounts";
 

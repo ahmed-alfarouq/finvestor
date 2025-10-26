@@ -9,7 +9,7 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
-import FormInput from "@/components/auth/FormInput";
+import FormInput from "@/components/auth/form-input";
 import ModalWrapper from "@/components/modal-wrapper";
 
 import { updateUser2FA } from "@/actions/user/updateUser";
