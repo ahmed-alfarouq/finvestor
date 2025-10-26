@@ -4,7 +4,7 @@ import { inter } from "@/app/ui/fonts";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
 
-import Providers from "@/components/providers/providers";
+import Providers from "@/components/providers";
 import ScreenSizeBadge from "@/components/screen-size-badge";
 
 export const metadata: Metadata = {
