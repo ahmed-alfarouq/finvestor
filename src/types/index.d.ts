@@ -205,23 +205,6 @@ declare interface FormCardWrapperProps {
   showSocial?: boolean;
 }
 
-declare interface CreditCardProps {
-  account: BankAccount;
-  userName: string;
-  showBalance?: boolean;
-}
-
-declare interface BankInfoProps {
-  account: BankAccount;
-  id?: string;
-  type: "full" | "card";
-}
-
-declare interface PaginationProps {
-  page: number;
-  totalPages: number;
-}
-
 declare interface PlaidLinkProps {
   user: User;
   variant?:
@@ -299,11 +282,6 @@ declare interface TransactionsTabProps {
   transactions: Transaction[];
 }
 
-declare interface TransactionHistoryTableProps {
-  transactions: Transaction[];
-  page: number;
-}
-
 declare interface TransactionTableProps {
   hasMore: boolean;
   loadMore: () => void;
@@ -315,30 +293,6 @@ declare interface SelectAccountFormProps {
   userId: string;
   checkedAccounts: string[];
   accounts: BankAccount[];
-}
-
-declare interface TransferFormInputProps {
-  name: string;
-  title: string;
-  label: string;
-  type?: string;
-  placeholder: string;
-  control: Control<FormValues>;
-  disabled: boolean;
-}
-
-declare interface TransferFormSelectProps {
-  accounts: BankAccount[];
-  name: string;
-  title: string;
-  description: string;
-  placeholder: string;
-  control: Control<FormValues>;
-  disabled: boolean;
-}
-
-declare interface CategoryProps {
-  category: CategoryCount;
 }
 
 interface BarChartDataset {
@@ -415,15 +369,6 @@ declare interface AccountTransactionsProps {
 // ------------------------------
 // Actions
 // ------------------------------
-declare interface CreateTransactionProps {
-  name: string;
-  amount: string;
-  senderId: string;
-  senderBankId: string;
-  receiverId: string;
-  receiverBankId: string;
-  email: string;
-}
 declare interface exchangePublicTokenProps {
   user: User;
   publicToken: string;
