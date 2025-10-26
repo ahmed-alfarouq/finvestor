@@ -1,7 +1,7 @@
 "use server";
 
 import { plaidClient } from "@/plaid";
-import { createBank } from "@/actions/bank";
+import { createBank, getBank } from "@/actions/bank";
 
 import { handleError } from "@/lib/errors/handleError";
 
@@ -41,10 +41,7 @@ export const createLinkToken = async (
     const res = await plaidClient.linkTokenCreate(tokenParams);
     return { linkToken: res.data.link_token };
   } catch (err) {
-    handleError(
-      err,
-      "An unexpected error happened while creating link token"
-    );
+    handleError(err, "An unexpected error happened while creating link token");
   }
 };
 
@@ -58,12 +55,20 @@ export const exchangePublicToken = async ({
     const { accessToken, itemId } = await exchangePlaidToken(publicToken);
 
     const userId = user.id;
+
+    const bank = await getBank(itemId);
+    const areLiabilityAccounts = accountType === "liability";
+
+    if (bank && bank.areLiabilityAccounts === areLiabilityAccounts) {
+      throw Error("Bank accounts are already connected.");
+    }
+
     await createBank({
       name: institutionName || "Unknown Bank Name",
       userId,
       bankId: itemId,
       accessToken,
-      areLiabilityAccounts: accountType === "liability",
+      areLiabilityAccounts,
     });
 
     return {
