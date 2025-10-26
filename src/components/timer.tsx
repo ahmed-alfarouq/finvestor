@@ -1,10 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 
-interface TimerProps {
-  duration?: number;
-  onComplete?: () => void;
-}
+import { TimerProps } from "@/types";
 
 const Timer = ({ duration = 0, onComplete }: TimerProps) => {
   const [timeLeft, setTimeLeft] = useState<number>(duration);

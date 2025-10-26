@@ -1,10 +1,10 @@
 import { Transaction } from "plaid";
 import { ChartOptions } from "chart.js";
-import { Control, FieldError } from "react-hook-form";
+import { Control, FieldError, Path, UseFormRegister } from "react-hook-form";
 
-// ------------------------------
-// Core Enums & Simple Types
-// ------------------------------
+// ========================================
+// Exported Types (Used across modules)
+// ========================================
 export type ConnectAccountType = "normal" | "liability";
 export type AccountType =
   | "depository"
@@ -14,26 +14,10 @@ export type AccountType =
   | "other";
 export type NotificationStatus = "success" | "warning" | "error" | "info";
 
-// ------------------------------
-// API Responses
-// ------------------------------
-declare type AccountsFailedResponse = {
-  message: string;
-  stack?: string;
-  name?: string;
-};
 
-declare interface FetchAllAccountsResponse {
-  success: boolean;
-  successfulCount: number;
-  failedCount: number;
-  failed: AccountsFailedResponse[];
-  accounts: BankAccount[];
-}
-
-// ------------------------------
-// User & Accounts
-// ------------------------------
+// ========================================
+// User & Account Types
+// ========================================
 declare type User = {
   id: string;
   email: string;
@@ -85,6 +69,26 @@ declare type BankProps = {
   areLiabilityAccounts: boolean;
 };
 
+// ========================================
+// API Response Types
+// ========================================
+declare type AccountsFailedResponse = {
+  message: string;
+  stack?: string;
+  name?: string;
+};
+
+declare interface FetchAllAccountsResponse {
+  success: boolean;
+  successfulCount: number;
+  failedCount: number;
+  failed: AccountsFailedResponse[];
+  accounts: BankAccount[];
+}
+
+// ========================================
+// Action Parameter Types
+// ========================================
 declare type UpdateUserPasswordParams = {
   userId: string;
   oldPassword: string;
@@ -105,9 +109,24 @@ declare type UpdateUserInfoProps = {
   postalCode: string;
 };
 
-// ------------------------------
-// UI Components Props
-// ------------------------------
+declare interface exchangePublicTokenProps {
+  user: User;
+  publicToken: string;
+  accountType: ConnectAccountType;
+  institutionName: string | null;
+}
+
+declare interface createBankProps {
+  name: string;
+  bankId: string;
+  userId: string;
+  accessToken: string;
+  areLiabilityAccounts: boolean;
+}
+
+// ========================================
+// UI Component Props Types
+// ========================================
 declare interface CheckboxProps<T extends FieldValues> {
   registerName: Path<T>;
   label: string;
@@ -295,22 +314,6 @@ declare interface SelectAccountFormProps {
   accounts: BankAccount[];
 }
 
-interface BarChartDataset {
-  label: string;
-  data: number[];
-  backgroundColor?: string;
-  borderColor?: string;
-  stack?: string;
-  order?: number;
-}
-
-interface BarChartProps {
-  labels: string[];
-  datasets: BarChartDataset[];
-  options?: Partial<ChartOptions<"bar">>;
-  className?: string;
-}
-
 declare interface DoughnutChartProps {
   accounts: BankAccount[];
 }
@@ -334,12 +337,6 @@ declare interface CategoryIconProps {
   itemExpanded: boolean;
 }
 
-declare interface BankTabItemProps {
-  account: BankAccount;
-  id: string;
-  className?: string;
-}
-
 declare interface NotificationAlertProps {
   onClose?: () => void;
   title: string;
@@ -347,6 +344,7 @@ declare interface NotificationAlertProps {
   status?: NotificationStatus;
   duration?: number;
 }
+
 declare interface Loan {
   name: string;
   accountId: string;
@@ -366,20 +364,54 @@ declare interface AccountTransactionsProps {
   accessToken: string;
   account: BankAccount;
 }
-// ------------------------------
-// Actions
-// ------------------------------
-declare interface exchangePublicTokenProps {
-  user: User;
-  publicToken: string;
-  accountType: ConnectAccountType;
-  institutionName: string | null;
+
+interface BarChartDataset {
+  label: string;
+  data: number[];
+  backgroundColor?: string;
+  borderColor?: string;
+  stack?: string;
+  order?: number;
 }
 
-declare interface createBankProps {
-  name: string;
-  bankId: string;
-  userId: string;
-  accessToken: string;
-  areLiabilityAccounts: boolean;
+interface BarChartProps {
+  labels: string[];
+  datasets: BarChartDataset[];
+  options?: Partial<ChartOptions<"bar">>;
+  className?: string;
+}
+
+declare interface CustomInputProps<T extends FieldValues> {
+  label?: string;
+  name: Path<T>;
+  type?: "text" | "email" | "number" | "date";
+  placeholder?: string;
+  error?: FieldError;
+  required?: boolean;
+  register: UseFormRegister<T>;
+  className?: string;
+}
+
+declare interface PasswordInputProps<T extends FieldValues> {
+  label?: string;
+  name: Path<T>;
+  placeholder?: string;
+  error: FieldError | undefined;
+  register: UseFormRegister<T>;
+  className?: string;
+}
+
+declare interface NavLinkProps {
+  to: string;
+  text: string;
+  style?: string;
+  active?: boolean;
+  className?: string;
+  beforeIcon?: React.ReactElement;
+  handleClick?: () => void;
+}
+
+declare interface TimerProps {
+  duration?: number;
+  onComplete?: () => void;
 }
