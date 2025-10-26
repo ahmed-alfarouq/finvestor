@@ -64,6 +64,7 @@ declare type ExpensesGoal = {
 declare type BankAccount = {
   id: string;
   bankId: string;
+  accessToken: string;
   availableBalance: number;
   currentBalance: number;
   officialName: string;
@@ -107,6 +108,13 @@ declare type UpdateUserInfoProps = {
 // ------------------------------
 // UI Components Props
 // ------------------------------
+declare interface CheckboxProps<T extends FieldValues> {
+  registerName: Path<T>;
+  label: string;
+  value: string;
+  register: UseFormRegister<T>;
+  className?: string;
+}
 
 declare interface ModalWrapperProps {
   children: React.ReactNode;
