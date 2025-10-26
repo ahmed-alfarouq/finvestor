@@ -11,7 +11,6 @@ const Checkbox = <T extends FieldValues>({
   registerName,
   value,
   label,
-  checked,
   className,
 }: CheckboxProps<T>) => {
   return (
@@ -25,7 +24,6 @@ const Checkbox = <T extends FieldValues>({
         value={value}
         {...register(registerName)}
         className="peer sr-only"
-        defaultChecked={checked}
       />
 
       <div className="p-0 w-[18px] h-[18px] bg-white text-white border border-default-black peer-checked:text-primary peer-checked:border-primary rounded-sm transition-all">
