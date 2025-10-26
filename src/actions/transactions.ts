@@ -7,6 +7,30 @@ import { Transaction } from "plaid";
 import { AxiosResponse } from "axios";
 import { TransactionsSyncResponse } from "plaid";
 
+export const getAllAccountTransactions = async (
+  accountId: string,
+  accessToken: string
+) => {
+  try {
+    const response: AxiosResponse<TransactionsSyncResponse> =
+      await plaidClient.transactionsSync({
+        access_token: accessToken,
+        options: {
+          account_id: accountId,
+        },
+      });
+
+    return [...response.data.added, ...response.data.modified];
+  } catch (err) {
+    handleError(
+      err,
+      "An unexpected error happened while getting account transactions"
+    );
+
+    return [];
+  }
+};
+
 export const getAccountTransactions = async (
   accountId: string,
   accessToken: string,

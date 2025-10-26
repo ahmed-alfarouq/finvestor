@@ -1,21 +1,32 @@
+import { getAllAccountTransactions } from "@/actions/transactions";
 import ExpenseGoal from "./components/expense-goal";
 
 import NotAvailable from "@/components/not-available";
 
 import { splitTransactionsByCategory } from "@/lib/transactions";
 
-import { User } from "@/types";
+import { BankAccount, User } from "@/types";
 import { Transaction } from "plaid";
 
-const ExpensesGoals = ({
+const ExpensesGoals = async ({
+  expensesAccounts,
   expensesGoals,
 }: {
+  expensesAccounts: BankAccount[];
   expensesGoals: User["expensesGoals"];
 }) => {
   const getCategoryGoal = (category: string) =>
     expensesGoals?.find((g) => g.category === category)?.amount;
 
-  const transactions: Transaction[] = [];
+  let transactions: Transaction[] = [];
+
+  for (const expensesAccount of expensesAccounts) {
+    const t = await getAllAccountTransactions(
+      expensesAccount.id,
+      expensesAccount.accessToken
+    );
+    transactions = [...transactions, ...t];
+  }
 
   const transactionsByCategories = splitTransactionsByCategory(transactions);
   const categories = Object.keys(transactionsByCategories);
@@ -23,9 +34,8 @@ const ExpensesGoals = ({
   return (
     <section>
       <h2 className="card-title">Expenses Goals By Category</h2>
-
       <div className="w-full flex flex-col xs:grid xs:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4">
-        {!!categories.length ? (
+        {categories.length ? (
           categories.map((category) => (
             <ExpenseGoal
               key={category}
