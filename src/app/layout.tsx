@@ -5,7 +5,6 @@ import { Metadata } from "next";
 import { cookies } from "next/headers";
 
 import Providers from "@/components/providers";
-import ScreenSizeBadge from "@/components/screen-size-badge";
 
 export const metadata: Metadata = {
   title: {
@@ -40,7 +39,6 @@ export default async function RootLayout({
       <body
         className={`bg-body text-black dark:bg-body-dark dark:text-white ${inter.className} overflow-x-hidden`}
       >
-        <ScreenSizeBadge />
         <Providers>{children}</Providers>
       </body>
     </html>
