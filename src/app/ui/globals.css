@@ -103,11 +103,15 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-}
 
-@layer base {
   * {
-    @apply border-border box-border m-0 p-0;
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
   }
 }
 
@@ -144,9 +148,9 @@
   .box {
     @apply flex flex-col;
   }
-  
+
   .card {
-    @apply md:h-[300px] flex flex-col items-center gap-4 sm:gap-6 rounded-xl border bg-default dark:bg-default-dark card-shadow p-4 sm:px-7 sm:py-5;
+    @apply md:h-[300px] flex flex-col items-center flex-1 gap-4 sm:gap-6 rounded-xl bg-default dark:bg-default-dark card-shadow p-4 sm:px-7 sm:py-5;
   }
 
   .card-title {

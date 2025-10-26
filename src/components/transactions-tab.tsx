@@ -1,56 +1,21 @@
-"use client";
-import { useEffect, useState } from "react";
-
-import { Button } from "@/components/ui/button";
 import { TabsContent } from "@/components/ui/tabs";
-import TransactionsList from "@/components/features/TransactionsList";
+import TransactionsList from "@/components/features/transactions-list";
 
 import { cn } from "@/lib/utils";
 
 import { TransactionsTabProps } from "@/types";
 
 const TransactionsTab = ({
-  transactions,
   value,
-  itemsToLoad = 6,
-  loadMore = false,
   className,
+  transactions,
 }: TransactionsTabProps) => {
-  const [hasMore, setHasMore] = useState(false);
-  const [visibleTransactions, setVisibleTransactions] = useState(
-    transactions.slice(0, itemsToLoad)
-  );
-
-  const handleLoadMore = () => {
-    const newTransactions = transactions.slice(
-      0,
-      visibleTransactions.length + itemsToLoad
-    );
-    setVisibleTransactions(newTransactions);
-    console.log(newTransactions.length, transactions.length);
-    if (newTransactions.length >= transactions.length) {
-      setHasMore(false);
-    }
-  };
-
-  useEffect(() => {
-    if (visibleTransactions.length < transactions.length) {
-      setHasMore(true);
-    }
-  }, []);
-
   return (
     <TabsContent
       value={value}
       className={cn("flex flex-col gap-4 items-center", className)}
     >
-      <TransactionsList transactions={visibleTransactions} />
-
-      {loadMore && hasMore && (
-        <Button size="lg" onClick={handleLoadMore}>
-          Load More
-        </Button>
-      )}
+      <TransactionsList transactions={transactions} />
     </TabsContent>
   );
 };

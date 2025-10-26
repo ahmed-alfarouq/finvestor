@@ -1,5 +1,5 @@
-import CardWrapper from "@/components/auth/CardWrapper";
-import UpdatePasswordForm from "@/components/features/auth/UpdatePasswordForm";
+import CardWrapper from "@/components/auth/card-wrapper";
+import UpdatePasswordForm from "@/components/features/auth/update-password-form";
 
 const NewPassword = () => {
   return (

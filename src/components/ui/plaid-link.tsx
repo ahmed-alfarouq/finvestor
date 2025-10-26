@@ -1,9 +1,9 @@
 "use client";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import {
   PlaidLinkError,
+  PlaidLinkOnSuccessMetadata,
   PlaidLinkOptions,
   usePlaidLink,
 } from "react-plaid-link";
@@ -27,7 +27,6 @@ const PlaidLink = ({
   disabled = false,
   className,
 }: PlaidLinkProps) => {
-  const { update } = useSession();
   const [token, setToken] = useState("");
 
   useEffect(() => {
@@ -39,16 +38,16 @@ const PlaidLink = ({
   }, []);
 
   const onSuccess = useCallback(
-    async (public_token: string) => {
+    async (public_token: string, metadata: PlaidLinkOnSuccessMetadata) => {
       try {
         const res = await exchangePublicToken({
-          publicToken: public_token,
           user,
           accountType,
+          publicToken: public_token,
+          institutionName: metadata.institution && metadata.institution.name,
         });
 
-        await update();
-        if (res && res.publicTokenExchange === "complete") {
+        if (res.publicTokenExchange === "complete") {
           handleSuccess();
         }
       } catch (error) {

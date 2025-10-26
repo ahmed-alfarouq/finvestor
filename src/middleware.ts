@@ -3,10 +3,10 @@ import authConfig from "@/auth.config";
 import { NextResponse } from "next/server";
 
 import {
-  DEFAULT_LOGIN_REDIRECT,
-  PUBLIC_ROUTES,
   AUTH_ROUTES,
+  PUBLIC_ROUTES,
   API_AUTH_PREFIX,
+  DEFAULT_LOGIN_REDIRECT,
 } from "@/routes";
 
 const { auth } = NextAuth(authConfig);
@@ -23,7 +23,7 @@ export default auth((req) => {
   const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
   const isAuthRoute = AUTH_ROUTES.includes(pathname);
 
-  const hasBankAccounts = !!session?.user.bankAccounts.length;
+  const hasBankAccounts = !!session?.user.banks.length;
 
   // Allow API and public routes
   if (isApiRoute || isPublicRoute) return response;
@@ -37,16 +37,9 @@ export default auth((req) => {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
-  if (isLoggedIn) {
-    // User has bank accounts → prevent going to link page again
-    if (hasBankAccounts && isLinkAccountPage) {
-      return NextResponse.redirect(new URL("/overview", req.url));
-    }
-
-    // User has no bank accounts → force them to link account first
-    if (!hasBankAccounts && !isLinkAccountPage) {
-      return NextResponse.redirect(new URL("/link-account", req.url));
-    }
+  // User has no bank accounts → force them to link account first
+  if (isLoggedIn && !hasBankAccounts && !isLinkAccountPage) {
+    return NextResponse.redirect(new URL("/link-account", req.url));
   }
 
   return response;

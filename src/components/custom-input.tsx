@@ -1,23 +1,9 @@
 "use client";
 import { cn } from "@/lib/utils";
 import React from "react";
-import {
-  FieldError,
-  FieldValues,
-  Path,
-  UseFormRegister,
-} from "react-hook-form";
+import { FieldValues } from "react-hook-form";
 
-type props<T extends FieldValues> = {
-  label?: string;
-  name: Path<T>;
-  type?: "text" | "email" | "number" | "date";
-  placeholder?: string;
-  error?: FieldError;
-  required?: boolean;
-  register: UseFormRegister<T>;
-  className?: string;
-};
+import { CustomInputProps } from "@/types";
 
 const CustomInput = <T extends FieldValues>({
   label,
@@ -28,7 +14,7 @@ const CustomInput = <T extends FieldValues>({
   required = false,
   register,
   className,
-}: props<T>) => {
+}: CustomInputProps<T>) => {
   return (
     <div className={cn("w-full flex flex-col space-y-2", className)}>
       {label && (

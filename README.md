@@ -23,7 +23,7 @@
 ### **Frontend**
 
 * **Next.js 15** (App Router)
-* **React 18+** (Hooks, Server Components)
+* **React 19+** (Hooks, Server Components)
 * **TypeScript** (Static Typing)
 * **Tailwind CSS** (Utility-First Styling)
 * **React Hook Form + Zod** (Form Handling & Validation)
@@ -32,9 +32,9 @@
 
 ### **Backend**
 
-* **MongoDB + Mongoose**
-* **Prisma** (Data Modeling)
-* **NextAuth (Credentials Provider)**
+* **MongoDB**
+* **Prisma** (ORM)
+* **Auth.js**
 * **Plaid API** (Bank Integration)
 
 ---

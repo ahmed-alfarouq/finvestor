@@ -4,7 +4,7 @@ import {
   formatDateTime,
   sortByDate,
 } from "@/lib/utils";
-import { Transaction } from "@/types";
+import { Transaction } from "plaid";
 
 export enum PeriodType {
   WEEKLY = "weekly",
@@ -170,7 +170,9 @@ export const splitTransactionsByCategory = (transactions: Transaction[]) => {
   const categorisedTransactions: Record<string, Transaction[]> = {};
 
   transactions.forEach((transaction) => {
-    const category = transaction.category;
+    const category = transaction.personal_finance_category;
+    if (!category) return;
+
     // If the category doesn't exist, create it and add the transaction to it
     if (!categorisedTransactions[category.primary]) {
       categorisedTransactions[category.primary] = [transaction];

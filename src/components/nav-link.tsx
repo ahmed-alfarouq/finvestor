@@ -2,15 +2,7 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-type props = {
-  to: string;
-  text: string;
-  style?: string;
-  active?: boolean;
-  className?: string;
-  beforeIcon?: React.ReactElement;
-  handleClick?: () => void;
-};
+import { NavLinkProps } from "@/types";
 
 const NavLink = ({
   to,
@@ -20,7 +12,7 @@ const NavLink = ({
   className,
   beforeIcon,
   handleClick = () => {},
-}: props) => {
+}: NavLinkProps) => {
   return (
     <Link
       href={to}

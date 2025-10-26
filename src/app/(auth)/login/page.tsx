@@ -5,24 +5,17 @@ import { useForm } from "react-hook-form";
 import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import FormError from "@/components/form-error";
 import { Button } from "@/components/ui/button";
-import CardWrapper from "@/components/auth/CardWrapper";
+import CardWrapper from "@/components/auth/card-wrapper";
 
 import { login } from "@/actions/auth/login";
 
 import { cn } from "@/lib/utils";
 
 import { LoginSchema } from "@/schemas/auth";
+import FormInput from "@/components/auth/form-input";
 type LoginFields = z.infer<typeof LoginSchema>;
 
 const LoginPage = () => {
@@ -39,14 +32,14 @@ const LoginPage = () => {
     },
   });
 
-  const onSubmit = (data: LoginFields) => {
+  const onSubmit = ({ email, password, code }: LoginFields) => {
     setFormError("");
 
     startTransition(async () => {
       try {
-        await login(data).then((data) => {
+        await login({ email, password, code }).then((data) => {
           if (data?.error) {
-            form.reset();
+            form.reset({ email, password: "" });
             setFormError(data.error);
           }
           if (data?.twoFactor) {
@@ -74,75 +67,41 @@ const LoginPage = () => {
         >
           {!showTwoFactor ? (
             <>
-              <FormField
+              <FormInput
                 control={form.control}
+                type="email"
                 name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email Address</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="email"
-                        placeholder="ahmed.omar.alfarouq@gmail.com"
-                        disabled={isPending}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                label="Email Address"
+                placeholder="ahmed.omar.alfarouq@gmail.com"
+                disabled={isPending}
               />
-
-              <FormField
+              <FormInput
                 control={form.control}
+                type="password"
                 name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <div className="flex justify-between items-center">
-                      <FormLabel>Password</FormLabel>
-                      <Link
-                        href="/forgot-password"
-                        className={cn(
-                          "text-xs m-0 float-right text-primary dark:text-primary-dark",
-                          isPending && "pointer-events-none"
-                        )}
-                        aria-disabled={isPending}
-                      >
-                        Forgot Password?
-                      </Link>
-                    </div>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="********"
-                        disabled={isPending}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                label="Password"
+                placeholder="*******"
+                disabled={isPending}
               />
+              <Link
+                href="/forgot-password"
+                className={cn(
+                  "w-fit self-end text-xs m-0 float-right text-primary dark:text-primary-dark",
+                  isPending && "pointer-events-none"
+                )}
+                aria-disabled={isPending}
+              >
+                Forgot Password?
+              </Link>
             </>
           ) : (
-            <FormField
+            <FormInput
               control={form.control}
+              type="text"
               name="code"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Two Factor Code</FormLabel>
-
-                  <FormControl>
-                    <Input
-                      type="text"
-                      disabled={isPending}
-                      placeholder="123456"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              label="Two Factor Code"
+              placeholder="132456"
+              disabled={isPending}
             />
           )}
           <FormError message={formError} />

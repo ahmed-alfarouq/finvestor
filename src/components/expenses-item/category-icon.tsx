@@ -1,19 +1,16 @@
-"use client";
 import Image from "next/image";
+
+import { MdCategory } from "react-icons/md";
 
 import { cn } from "@/lib/utils";
 
-import { MdCategory } from "react-icons/md";
+import { CategoryIconProps } from "@/types";
 
 const CategoryIcon = ({
   icon,
   categoryName,
   itemExpanded,
-}: {
-  icon?: string;
-  categoryName: string;
-  itemExpanded: boolean;
-}) => {
+}: CategoryIconProps) => {
   return (
     <div className="flex items-stretch gap-2">
       <div

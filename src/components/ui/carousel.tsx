@@ -1,6 +1,4 @@
 "use client";
-
-import * as React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -46,7 +44,7 @@ const Carousel = ({
       </Swiper>
 
       {navigation && (
-        <div className="w-full mt-5 flex justify-between items-center text-gray-4">
+        <div className="w-full mt-2 flex justify-between items-center text-gray-4">
           <button
             className="swiper-button-prev flex items-center gap-2 text-default-black dark:text-white disabled:text-gray-4 dark:disabled:text-gray-2"
             aria-label="Previous slide"
@@ -65,10 +63,10 @@ const Carousel = ({
       )}
 
       {pagination && (
-        <div className="swiper-pagination text-gray-4 mt-4 flex justify-center gap-2" />
+        <div className="swiper-pagination text-gray-4 z-20 absolute bottom-2 left-1/2 -translate-x-1/2 flex justify-center gap-2" />
       )}
     </div>
   );
 };
 
-export { Carousel };
+export default Carousel;

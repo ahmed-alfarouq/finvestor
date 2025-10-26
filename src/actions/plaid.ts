@@ -1,21 +1,23 @@
 "use server";
-import { revalidatePath } from "next/cache";
 
-import { encryptId } from "@/lib/utils";
 import { plaidClient } from "@/plaid";
-import { createBankAccount } from "@/actions/user/updateUser";
+import { createBank, getBank } from "@/actions/bank";
+
+import { handleError } from "@/lib/errors/handleError";
 
 import {
-  AccountBase,
-  CountryCode,
-  CreditAccountSubtype,
-  DepositoryAccountSubtype,
-  LinkTokenAccountFilters,
-  LinkTokenCreateRequest,
-  LoanAccountSubtype,
   Products,
+  CountryCode,
+  ItemGetResponse,
+  LoanAccountSubtype,
+  AccountsGetResponse,
+  CreditAccountSubtype,
+  ItemWithConsentFields,
+  LinkTokenCreateRequest,
+  LiabilitiesGetResponse,
+  LinkTokenAccountFilters,
+  DepositoryAccountSubtype,
 } from "plaid";
-
 import { ConnectAccountType, exchangePublicTokenProps, User } from "@/types";
 
 export const createLinkToken = async (
@@ -39,35 +41,44 @@ export const createLinkToken = async (
     const res = await plaidClient.linkTokenCreate(tokenParams);
     return { linkToken: res.data.link_token };
   } catch (err) {
-    console.error("Error creating link token:", err);
-    throw new Error("Error creating link token");
+    handleError(err, "An unexpected error happened while creating link token");
   }
 };
 
 export const exchangePublicToken = async ({
-  publicToken,
   user,
+  publicToken,
   accountType,
+  institutionName,
 }: exchangePublicTokenProps) => {
   try {
     const { accessToken, itemId } = await exchangePlaidToken(publicToken);
 
-    const { accounts: allAccounts } = await getPlaidAccountsSafely(
+    const userId = user.id;
+
+    const bank = await getBank(itemId);
+    const areLiabilityAccounts = accountType === "liability";
+
+    if (bank && bank.areLiabilityAccounts === areLiabilityAccounts) {
+      throw Error("Bank accounts are already connected.");
+    }
+
+    await createBank({
+      name: institutionName || "Unknown Bank Name",
+      userId,
+      bankId: itemId,
       accessToken,
-      accountType
-    );
-
-    await processAccounts(allAccounts, accountType, accessToken, itemId, user);
-
-    // Remove cache to show the new bank accounts
-    revalidatePath("/");
+      areLiabilityAccounts,
+    });
 
     return {
       publicTokenExchange: "complete",
     };
   } catch (err) {
-    console.error("Error in exchangePublicToken:", err);
-    throw err;
+    throw handleError(
+      err,
+      "An unexpected error happened while connecting to your bank"
+    );
   }
 };
 
@@ -81,44 +92,33 @@ const exchangePlaidToken = async (publicToken: string) => {
   };
 };
 
-const getPlaidAccountsSafely = async (
+export const getPlaidAccount = async (
+  accessToken: string,
+  accountId: string
+) => {
+  const response = await plaidClient.accountsGet({
+    access_token: accessToken,
+    options: {
+      account_ids: [accountId],
+    },
+  });
+  return response.data;
+};
+
+export const getPlaidAccountsSafely = async (
   accessToken: string,
   type: ConnectAccountType
-) => {
-  try {
-    if (type === "liability") {
-      const response = await plaidClient.liabilitiesGet({
-        access_token: accessToken,
-      });
-      return response.data;
-    }
-    const response = await plaidClient.accountsGet({
+): Promise<LiabilitiesGetResponse | AccountsGetResponse> => {
+  if (type === "liability") {
+    const response = await plaidClient.liabilitiesGet({
       access_token: accessToken,
     });
     return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
   }
-};
-
-const processAccounts = async (
-  accounts: AccountBase[],
-  accountType: ConnectAccountType,
-  accessToken: string,
-  bankId: string,
-  user: User
-) => {
-  for (const account of accounts) {
-    await createBankAccount({
-      userId: user.id,
-      bankId,
-      accountId: account.account_id,
-      accessToken,
-      sharableId: encryptId(account.account_id),
-      isLiabilityAccount: accountType === "liability",
-    });
-  }
+  const response = await plaidClient.accountsGet({
+    access_token: accessToken,
+  });
+  return response.data;
 };
 
 const getAccountFilters = (accountType: ConnectAccountType) => {
@@ -154,4 +154,21 @@ const getAccountProducts = (accounType: ConnectAccountType) => {
     return ["auth", "transactions", "liabilities"] as Products[];
   }
   return ["auth", "transactions"] as Products[];
+};
+
+export const getInstitution = async (
+  accessToken: string
+): Promise<ItemWithConsentFields | undefined> => {
+  try {
+    const res: ItemGetResponse = await plaidClient.itemGet({
+      access_token: accessToken,
+    });
+
+    return res.item;
+  } catch (err) {
+    handleError(
+      err,
+      "An unexpeceted error happened while getting institution info."
+    );
+  }
 };

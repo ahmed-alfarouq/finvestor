@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const selectAccountsSchema = z.object({
-  selectedBankIds: z
+  selectedAccountsIds: z
     .array(z.string())
     .min(1, "Please select at least one account."),
 });

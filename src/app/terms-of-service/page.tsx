@@ -1,4 +1,4 @@
-import HomeHeader from "@/components/features/home/HomeNavbar";
+import HomeHeader from "@/components/features/home/home-navbar";
 
 const TermsOfServicePage = () => {
   return (

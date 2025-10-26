@@ -1,10 +1,19 @@
+import { auth } from "@/auth";
+
 import PageContainer from "@/components/page-container";
-import UserForm from "@/components/features/settings/UserForm";
-import PasswordForm from "@/components/features/settings/PasswordForm";
-import TwoFactorForm from "@/components/features/settings/TwoFactorForm";
+import UserForm from "@/components/features/settings/user-form";
+import PasswordForm from "@/components/features/settings/password-form";
+import TwoFactorForm from "@/components/features/settings/two-factor-form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const SettingsPage = () => {
+import { getCachedUser } from "@/lib/cache/user";
+
+const SettingsPage = async () => {
+  const session = await auth();
+
+  if (!session) return;
+  const user = await getCachedUser(session.user.id);
+
   return (
     <PageContainer>
       <section className="w-full dark:bg-default-dark card-shadow px-8 pt-6 pb-12 rounded-lg">
@@ -24,11 +33,11 @@ const SettingsPage = () => {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="account" className="mt-5">
-            <UserForm />
+            <UserForm user={user} />
           </TabsContent>
           <TabsContent value="security" className="mt-5">
-            <PasswordForm />
-            <TwoFactorForm />
+            <PasswordForm user={user} />
+            <TwoFactorForm user={user} />
           </TabsContent>
         </Tabs>
       </section>

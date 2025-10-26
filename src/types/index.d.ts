@@ -1,9 +1,10 @@
-import { Control, FieldError } from "react-hook-form";
+import { Transaction } from "plaid";
 import { ChartOptions } from "chart.js";
+import { Control, FieldError, Path, UseFormRegister } from "react-hook-form";
 
-// ------------------------------
-// Core Enums & Simple Types
-// ------------------------------
+// ========================================
+// Exported Types (Used across modules)
+// ========================================
 export type ConnectAccountType = "normal" | "liability";
 export type AccountType =
   | "depository"
@@ -13,9 +14,10 @@ export type AccountType =
   | "other";
 export type NotificationStatus = "success" | "warning" | "error" | "info";
 
-// ------------------------------
-// User & Accounts
-// ------------------------------
+
+// ========================================
+// User & Account Types
+// ========================================
 declare type User = {
   id: string;
   email: string;
@@ -27,17 +29,26 @@ declare type User = {
   postalCode: string;
   dateOfBirth: string;
   ssn: string;
-  role: string;
-  bankAccounts: BankAccountProps[];
+  banks: BankProps[];
   savingsGoal: string;
   expensesGoals: ExpensesGoal[];
   savingsGoalAccounts: string[];
   isTwoFactorEnabled: boolean;
 };
 
+declare type ExpensesGoal = {
+  id: string;
+  userId: string;
+  user: User;
+  date: string;
+  amount: string;
+  category: string;
+};
+
 declare type BankAccount = {
   id: string;
   bankId: string;
+  accessToken: string;
   availableBalance: number;
   currentBalance: number;
   officialName: string;
@@ -47,37 +58,37 @@ declare type BankAccount = {
   name: string;
   type: string;
   subtype: string;
-  sharableId: string;
 };
 
-declare type Transaction = {
+declare type BankProps = {
   id: string;
   name: string;
-  paymentChannel: string;
-  accountId: string;
-  amount: number;
-  pending: boolean;
-  date: string;
-  image?: string | null;
-  category: PersonalFinanceCategory;
-  category_icon?: string;
-};
-
-declare type BankAccountProps = {
-  id: string;
-  userId: string;
   bankId: string;
-  accountId: string;
+  userId: string;
   accessToken: string;
-  sharableId: string;
-  isLiabilityAccount: boolean;
+  areLiabilityAccounts: boolean;
 };
 
-declare type Receiver = {
-  firstName: string;
-  lastName: string;
+// ========================================
+// API Response Types
+// ========================================
+declare type AccountsFailedResponse = {
+  message: string;
+  stack?: string;
+  name?: string;
 };
 
+declare interface FetchAllAccountsResponse {
+  success: boolean;
+  successfulCount: number;
+  failedCount: number;
+  failed: AccountsFailedResponse[];
+  accounts: BankAccount[];
+}
+
+// ========================================
+// Action Parameter Types
+// ========================================
 declare type UpdateUserPasswordParams = {
   userId: string;
   oldPassword: string;
@@ -98,9 +109,47 @@ declare type UpdateUserInfoProps = {
   postalCode: string;
 };
 
-// ------------------------------
-// UI Components Props
-// ------------------------------
+declare interface exchangePublicTokenProps {
+  user: User;
+  publicToken: string;
+  accountType: ConnectAccountType;
+  institutionName: string | null;
+}
+
+declare interface createBankProps {
+  name: string;
+  bankId: string;
+  userId: string;
+  accessToken: string;
+  areLiabilityAccounts: boolean;
+}
+
+// ========================================
+// UI Component Props Types
+// ========================================
+declare interface CheckboxProps<T extends FieldValues> {
+  registerName: Path<T>;
+  label: string;
+  value: string;
+  register: UseFormRegister<T>;
+  checked?: boolean;
+  className?: string;
+}
+
+declare interface ModalWrapperProps {
+  children: React.ReactNode;
+  close: () => void;
+  isOpen: boolean;
+  className?: string;
+}
+
+declare interface AnimatedCounterProps {
+  amount: number;
+  prefix?: string;
+  decimal?: string;
+  decimals?: number;
+  className?: string;
+}
 
 declare interface CarouselProps {
   children: React.ReactNode[];
@@ -117,11 +166,23 @@ declare interface CarouselProps {
   };
 }
 
+declare interface ConnectBankCardProps {
+  user: Session["user"];
+  redirectTo?: string;
+  className?: string;
+}
+
 declare interface BankCardProps {
   accountNumber: string;
   type: string;
   balance: number;
   bankName: string;
+  className?: string;
+}
+
+declare interface NotAvailableProps {
+  title?: string;
+  message: string;
   className?: string;
 }
 
@@ -163,23 +224,6 @@ declare interface FormCardWrapperProps {
   showSocial?: boolean;
 }
 
-declare interface CreditCardProps {
-  account: BankAccount;
-  userName: string;
-  showBalance?: boolean;
-}
-
-declare interface BankInfoProps {
-  account: BankAccount;
-  id?: string;
-  type: "full" | "card";
-}
-
-declare interface PaginationProps {
-  page: number;
-  totalPages: number;
-}
-
 declare interface PlaidLinkProps {
   user: User;
   variant?:
@@ -200,11 +244,6 @@ declare interface PlaidLinkProps {
   onClick?: () => void;
 }
 
-declare interface TotlaBalanceBoxProps {
-  accounts: BankAccount[];
-  totalAvailableBalance: number;
-}
-
 declare interface CircledProgressBarProps {
   targetAmount: number;
   achievedAmount: number;
@@ -214,7 +253,6 @@ declare interface GoalsBoxProps {
   title: string;
   targetAmount: number;
   achievedAmount: number;
-  thisMonthTarget: number;
   date: Date;
   className?: string;
 }
@@ -231,6 +269,7 @@ declare interface EmptyGoalsBoxProps {
 declare interface BalanceCardProps {
   id: string;
   bankId: string;
+  userId: string;
   type: string;
   subtype: string;
   name: string;
@@ -238,14 +277,18 @@ declare interface BalanceCardProps {
   totalAmount: number;
 }
 
-declare interface ExpensesGoal {
-  id: string;
-  userId: string;
-  user: User;
-  date: string;
-  amount: string;
+declare interface ExpenseGoalProps {
+  icon?: string;
   category: string;
+  goal: string;
+  categoryTransactions: Transaction[];
 }
+
+declare interface StatisticsBoxProps {
+  transactions: Transaction[];
+  className?: string;
+}
+
 declare interface RecentTransactionsProps {
   accounts: BankAccount[];
   transactions: Transaction[];
@@ -253,70 +296,45 @@ declare interface RecentTransactionsProps {
 }
 
 declare interface TransactionsTabProps {
-  transactions: Transaction[];
   value: string;
-  itemsToLoad?: number;
-  loadMore?: boolean;
   className?: string;
-}
-
-declare interface TransactionHistoryTableProps {
   transactions: Transaction[];
-  page: number;
 }
 
 declare interface TransactionTableProps {
+  hasMore: boolean;
+  loadMore: () => void;
+  isLoadingMore: boolean;
   transactions: Transaction[];
 }
 
-declare interface TransferFormInputProps {
-  name: string;
-  title: string;
-  label: string;
-  type?: string;
-  placeholder: string;
-  control: Control<FormValues>;
-  disabled: boolean;
-}
-
-declare interface TransferFormSelectProps {
+declare interface SelectAccountFormProps {
+  userId: string;
+  checkedAccounts: string[];
   accounts: BankAccount[];
-  name: string;
-  title: string;
-  description: string;
-  placeholder: string;
-  control: Control<FormValues>;
-  disabled: boolean;
-}
-
-declare interface CategoryProps {
-  category: CategoryCount;
-}
-
-interface BarChartDataset {
-  label: string;
-  data: number[];
-  backgroundColor?: string;
-  borderColor?: string;
-  stack?: string;
-  order?: number;
-}
-
-interface BarChartProps {
-  labels: string[];
-  datasets: BarChartDataset[];
-  options?: Partial<ChartOptions<"bar">>;
-  className?: string;
 }
 
 declare interface DoughnutChartProps {
   accounts: BankAccount[];
 }
 
-declare interface BankTabItemProps {
-  account: BankAccount;
-  id: string;
+declare interface ExpensesItemProps {
+  currentMonthTransactions: Transaction[];
+  lastMonthTransactions: Transaction[];
+  expanded: boolean;
   className?: string;
+}
+
+declare interface ExpensesItemBodyProps {
+  name: string;
+  amount: number;
+  date: string;
+}
+
+declare interface CategoryIconProps {
+  icon?: string;
+  categoryName: string;
+  itemExpanded: boolean;
 }
 
 declare interface NotificationAlertProps {
@@ -342,29 +360,58 @@ declare interface Loan {
   ytdTotalPaid: number;
 }
 
-// ------------------------------
-// Actions
-// ------------------------------
-declare interface CreateTransactionProps {
-  name: string;
-  amount: string;
-  senderId: string;
-  senderBankId: string;
-  receiverId: string;
-  receiverBankId: string;
-  email: string;
-}
-declare interface exchangePublicTokenProps {
-  publicToken: string;
-  user: User;
-  accountType: ConnectAccountType;
+declare interface AccountTransactionsProps {
+  accessToken: string;
+  account: BankAccount;
 }
 
-declare interface createBankAccountProps {
-  accessToken: string;
-  userId: string;
-  accountId: string;
-  bankId: string;
-  sharableId: string;
-  isLiabilityAccount: boolean;
+interface BarChartDataset {
+  label: string;
+  data: number[];
+  backgroundColor?: string;
+  borderColor?: string;
+  stack?: string;
+  order?: number;
+}
+
+interface BarChartProps {
+  labels: string[];
+  datasets: BarChartDataset[];
+  options?: Partial<ChartOptions<"bar">>;
+  className?: string;
+}
+
+declare interface CustomInputProps<T extends FieldValues> {
+  label?: string;
+  name: Path<T>;
+  type?: "text" | "email" | "number" | "date";
+  placeholder?: string;
+  error?: FieldError;
+  required?: boolean;
+  register: UseFormRegister<T>;
+  className?: string;
+}
+
+declare interface PasswordInputProps<T extends FieldValues> {
+  label?: string;
+  name: Path<T>;
+  placeholder?: string;
+  error: FieldError | undefined;
+  register: UseFormRegister<T>;
+  className?: string;
+}
+
+declare interface NavLinkProps {
+  to: string;
+  text: string;
+  style?: string;
+  active?: boolean;
+  className?: string;
+  beforeIcon?: React.ReactElement;
+  handleClick?: () => void;
+}
+
+declare interface TimerProps {
+  duration?: number;
+  onComplete?: () => void;
 }

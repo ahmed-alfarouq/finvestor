@@ -1,11 +1,15 @@
 "use server";
 import { prisma } from "@/prisma";
 
+import { getBaseUrl } from "@/lib/utils";
+
+import { User } from "@/types";
+
 export const getUserByEmail = async (email: string) => {
   try {
     const user = await prisma.user.findUnique({
       where: { email },
-      include: { bankAccounts: true },
+      include: { banks: true },
     });
     return user;
   } catch {
@@ -13,14 +17,20 @@ export const getUserByEmail = async (email: string) => {
   }
 };
 
-export const getUserById = async (id: string) => {
+export const getUserById = async (userId: string): Promise<User> => {
   try {
-    const user = await prisma.user.findUnique({
-      where: { id },
-      include: { bankAccounts: true, expensesGoals: true },
+    const res = await fetch(`${getBaseUrl()}/api/user`, {
+      method: "POST",
+      body: JSON.stringify({ userId }),
+      headers: { "Content-Type": "application/json" },
     });
-    return user;
+
+    const data = await res.json();
+
+    if (!res.ok) throw Error(data.error);
+    return data.user;
   } catch {
-    return null;
+    // Catches only network-level or manual throw above
+    throw Error("Something went wrong while getting user data!");
   }
 };

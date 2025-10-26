@@ -9,7 +9,7 @@ import Timer from "@/components/timer";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import FormError from "@/components/form-error";
-import FormInput from "@/components/auth/FormInput";
+import FormInput from "@/components/auth/form-input";
 import FormSuccess from "@/components/form-success";
 
 import { logout } from "@/actions/auth/logout";
@@ -29,7 +29,7 @@ const TargetForm = ({
   category?: string;
   onSuccess?: () => void;
 }) => {
-  const { user } = useCurrentUser();
+  const user = useCurrentUser();
   const { update } = useSession();
   const [pending, startTransition] = useTransition();
 

@@ -64,50 +64,18 @@ export default {
         session.user.id = token.sub;
       }
 
-      if (token.role && session.user) {
-        session.user.role = token.role;
-      }
-      const {
-        firstName,
-        lastName,
-        ssn,
-        postalCode,
-        address1,
-        city,
-        state,
-        dwollaCustomerId,
-        dwollaCustomerUrl,
-        bankAccounts,
-        savingsGoal,
-        expensesGoals,
-        savingsGoalAccounts,
-        isTwoFactorEnabled,
-      } = token;
+      session.user.banks = token.banks;
+      session.user.name = token.name;
 
-      Object.assign(session.user, {
-        firstName,
-        lastName,
-        postalCode,
-        address1,
-        city,
-        state,
-        ssn,
-        dwollaCustomerId,
-        dwollaCustomerUrl,
-        bankAccounts,
-        savingsGoal,
-        expensesGoals,
-        savingsGoalAccounts,
-        isTwoFactorEnabled,
-      });
       return session;
     },
     async jwt({ token }) {
       if (!token.sub) return token;
-      const existingUser = await getUserById(token.sub);
 
+      const existingUser = await getUserById(token.sub);
       if (!existingUser) return token;
-      Object.assign(token, existingUser);
+      token.name = `${existingUser.firstName}`;
+      token.banks = existingUser.banks;
 
       return token;
     },

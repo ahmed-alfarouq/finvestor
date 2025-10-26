@@ -1,23 +1,11 @@
 "use client";
 import { cn } from "@/lib/utils";
 import React, { useState } from "react";
-import {
-  FieldError,
-  FieldValues,
-  Path,
-  UseFormRegister,
-} from "react-hook-form";
+import { FieldValues } from "react-hook-form";
 
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
-type passwordInputProps<T extends FieldValues> = {
-  label?: string;
-  name: Path<T>;
-  placeholder?: string;
-  error: FieldError | undefined;
-  register: UseFormRegister<T>;
-  className?: string;
-};
+import { PasswordInputProps } from "@/types";
 
 const PasswordInput = <T extends FieldValues>({
   label,
@@ -26,7 +14,7 @@ const PasswordInput = <T extends FieldValues>({
   error,
   register,
   className,
-}: passwordInputProps<T>) => {
+}: PasswordInputProps<T>) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
   return (

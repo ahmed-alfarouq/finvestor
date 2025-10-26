@@ -7,6 +7,16 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+/**
+ * Gets the base url from env file SITE_URL, VERCEL_URL (EX: http://localhost:4001)
+ * @returns base url
+ */
+
+export const getBaseUrl = () => {
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return process.env.SITE_URL ?? "http://localhost:3000";
+};
+
 // FORMAT DATE TIME
 export const formatDateTime = (dateString: Date) => {
   const dateTimeOptions: Intl.DateTimeFormatOptions = {
@@ -112,6 +122,16 @@ export const formatDateTime = (dateString: Date) => {
   };
 };
 
+/**
+ * Formats number into currency
+ * @params {
+ *  amount number,
+ * useKFormat boolean,
+ * minimumFractionDigits number default = 2
+ * }
+ * @returns formated number with $ symbol
+ */
+
 export function formatAmount(
   amount: number,
   useKFormat: boolean = false,
@@ -174,14 +194,6 @@ export function getAccountTypeColors(type: AccountType) {
         subText: "text-green-700",
       };
   }
-}
-
-export function encryptId(id: string) {
-  return btoa(id);
-}
-
-export function decryptId(id: string) {
-  return atob(id);
 }
 
 /**

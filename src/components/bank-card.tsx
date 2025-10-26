@@ -1,6 +1,3 @@
-"use client";
-import React from "react";
-
 import AnimatedCounter from "./animated-counter";
 import { CreditCardIcon, VisaIcon } from "./icons";
 
@@ -18,8 +15,6 @@ const BankCard = ({
     switch (type) {
       case "visa":
         return <VisaIcon />;
-      case "mastercard":
-        return <CreditCardIcon className="size-10" />;
       default:
         return <CreditCardIcon className="size-10" />;
     }
