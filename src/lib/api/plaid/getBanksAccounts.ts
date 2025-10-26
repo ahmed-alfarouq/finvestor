@@ -24,6 +24,7 @@ const getBanksAccounts = async (banks: BankProps[]) => {
 
         return accounts.map((accountData: AccountBase) => ({
           bankId: bank.bankId,
+          accessToken: bank.accessToken,
           id: accountData.account_id!,
           availableBalance: accountData.balances.available!,
           currentBalance: accountData.balances.current!,
