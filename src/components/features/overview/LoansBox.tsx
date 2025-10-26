@@ -18,7 +18,7 @@ const LoansBox = async () => {
     ? await getCachedLoans(user.id, liabilityBank.accessToken)
     : [];
 
-  const hasLoans = loans.length > 0;
+  const hasLoans = loans?.length;
 
   return (
     <section className="box">
