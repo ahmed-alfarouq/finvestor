@@ -1,17 +1,10 @@
-"use client";
-import React from "react";
-import { FieldValues, Path, UseFormRegister } from "react-hook-form";
+import { FieldValues } from "react-hook-form";
+
 import { ImCheckboxChecked } from "react-icons/im";
+
 import { cn } from "@/lib/utils";
 
-type CheckboxProps<T extends FieldValues> = {
-  registerName: Path<T>;
-  label: string;
-  value: string;
-  register: UseFormRegister<T>;
-  checked: boolean;
-  className?: string;
-};
+import { CheckboxProps } from "@/types";
 
 const Checkbox = <T extends FieldValues>({
   register,
