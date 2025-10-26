@@ -4,7 +4,8 @@ import NotAvailable from "@/components/not-available";
 
 import { splitTransactionsByCategory } from "@/lib/transactions";
 
-import { Transaction, User } from "@/types";
+import { User } from "@/types";
+import { Transaction } from "plaid";
 
 const ExpensesGoals = ({
   expensesGoals,
@@ -16,9 +17,7 @@ const ExpensesGoals = ({
 
   const transactions: Transaction[] = [];
 
-  const transactionsByCategories = splitTransactionsByCategory([
-    ...transactions,
-  ]);
+  const transactionsByCategories = splitTransactionsByCategory(transactions);
   const categories = Object.keys(transactionsByCategories);
 
   return (
@@ -30,14 +29,17 @@ const ExpensesGoals = ({
           categories.map((category) => (
             <ExpenseGoal
               key={category}
-              icon={transactionsByCategories[category][0].category_icon}
+              icon={
+                transactionsByCategories[category][0]
+                  .personal_finance_category_icon_url
+              }
               category={category}
               categoryTransactions={transactionsByCategories[category]}
               goal={getCategoryGoal(category) || "0"}
             />
           ))
         ) : (
-          <NotAvailable message="Oops! No transactions to show. Try connecting a checking or savings account." />
+          <NotAvailable message="Oops! No categories to show. Try connecting/choosing a checking or savings account." />
         )}
       </div>
     </section>
