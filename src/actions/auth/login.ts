@@ -1,107 +1,115 @@
 "use server";
-import * as z from "zod";
-import { prisma } from "@/prisma";
-import { AuthError } from "next-auth";
-
-import { LoginSchema } from "@/schemas/auth";
+import bcrypt from "bcryptjs";
 import { signIn } from "@/auth";
+import { randomBytes } from "crypto";
+import { cookies } from "next/headers";
+
+import {
+  deleteTwoFactorCode,
+  findTwoFactorCodeByCode,
+  sendTwoFactorEmailProcess,
+  sendVerificationEmailProcess,
+} from "@/actions/auth/tokens";
+import { getUserByEmail } from "@/actions/user/getUserFromDb";
+
+import { handleError } from "@/lib/errors/handleError";
+
+import { loginSchema, LoginSchema } from "@/schemas/auth";
 
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 
-import { getUserByEmail } from "@/actions/user/getUserFromDb";
-import {
-  generateTwoFactorToken,
-  generateVerificationToken,
-  getTwoFactorTokenByEmail,
-} from "@/actions/auth/tokens";
-
-import { getTwoFactorConfirmationByUserId } from "@/actions/auth/twoFactorConfirmation";
-
-import { sendTwoFactorTokenEmail, sendVerificationEmail } from "@/actions/mail";
-
-export const login = async (values: z.infer<typeof LoginSchema>) => {
-  const validatedFields = LoginSchema.safeParse(values);
-
-  if (!validatedFields.success) return { error: "Invalid fields!" };
-
-  const { email, password, code } = validatedFields.data;
-
-  const existingUser = await getUserByEmail(email);
-
-  if (!existingUser) return { error: "Email doesn't exist!" };
-
-  if (!existingUser.emailVerified) {
-    const verificationToken = await generateVerificationToken({
-      email: existingUser.email,
-    });
-
-    await sendVerificationEmail({
-      username: `${existingUser.firstName} ${existingUser.lastName}` || "",
-      email,
-      token: verificationToken,
-    });
-    return {
-      error:
-        "Please verify your email to proceed. A verification email has been sent to your inbox!",
-    };
-  }
-
-  if (existingUser.isTwoFactorEnabled) {
-    if (code) {
-      const twoFactorToken = await getTwoFactorTokenByEmail(existingUser.email);
-      if (!twoFactorToken || twoFactorToken.token !== code) {
-        return { error: "Invalid code!" };
-      }
-
-      const hasExpired = new Date(twoFactorToken.expires) < new Date();
-      if (hasExpired) return { error: "Code expired!" };
-
-      await prisma.twoFactorToken.delete({
-        where: {
-          id: twoFactorToken.id,
-        },
-      });
-
-      const existingConfirmation = await getTwoFactorConfirmationByUserId(
-        existingUser.id
-      );
-      if (existingConfirmation) {
-        await prisma.twoFactorConfirmation.delete({
-          where: { id: existingConfirmation.id },
-        });
-      }
-
-      await prisma.twoFactorConfirmation.create({
-        data: { userId: existingUser.id },
-      });
-    } else {
-      const twoFactorToken = await generateTwoFactorToken(existingUser.email);
-      await sendTwoFactorTokenEmail({
-        username: `${existingUser.firstName} ${existingUser.lastName}` || "",
-        email: existingUser.email,
-        token: twoFactorToken,
-      });
-      return { twoFactor: true };
-    }
-  }
-
+export const login = async (values: LoginSchema) => {
   try {
+    const validatedFields = loginSchema.safeParse(values);
+
+    if (!validatedFields.success) return { error: "Invalid fields!" };
+    const { email, password } = validatedFields.data;
+
+    const user = await getUserByEmail(email);
+    if (!user) return { error: "Invalid email or password!" };
+
+    const passwordsMatch = await bcrypt.compare(password, user.password);
+    if (!passwordsMatch) return { error: "Invalid email or password!" };
+
+    if (!user.emailVerified) {
+      sendVerificationEmailProcess({ email, username: user.firstName });
+      return {
+        error: "Please verify your email to activate your account and log in.",
+      };
+    }
+
+    if (user.isTwoFactorEnabled) {
+      const tempToken = randomBytes(32).toString("hex");
+      sendTwoFactorEmailProcess({
+        email,
+        tempToken,
+        username: user.firstName,
+      });
+
+      (await cookies()).set("email", email, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 5 * 60,
+        sameSite: "strict",
+        ...(process.env.NODE_ENV === "production" && { domain: ".vercel.app" }),
+      });
+
+      return {
+        tempToken,
+      };
+    }
+
     await signIn("credentials", {
       email,
-      password,
       redirectTo: DEFAULT_LOGIN_REDIRECT,
     });
-  } catch (error) {
-    if (error instanceof AuthError) {
-      switch (error.type) {
-        case "CredentialsSignin":
-          return { error: "Invalid credentials!" };
-        default:
-          return {
-            error: "Something went wrong!",
-          };
-      }
+  } catch (err) {
+    if (isRedirectError(err)) {
+      throw err;
     }
-    throw error;
+    throw handleError(err);
+  }
+};
+
+export const loginWith2FA = async ({
+  code,
+  token,
+}: {
+  code: string;
+  token: string;
+}) => {
+  try {
+    const cookieStore = await cookies();
+    const cookieEmail = cookieStore.get("email");
+    const email = cookieEmail?.value;
+
+    if (!email) return { error: "Session expired. Please log in again." };
+
+    const user = await getUserByEmail(email);
+    if (!user) return { error: "Session expired. Please log in again." };
+
+    const codeRecord = await findTwoFactorCodeByCode(code);
+    if (!codeRecord) return { error: "Invalid or expired verification code." };
+
+    if (token !== codeRecord.tempToken)
+      return { error: "Invalid or expired verification code." };
+
+    if (codeRecord.expires < new Date()) {
+      cookieStore.delete("email");
+      await deleteTwoFactorCode(codeRecord.id);
+      return {
+        error: "Verification code has expired. Please request a new one.",
+      };
+    }
+    cookieStore.delete("email");
+    await deleteTwoFactorCode(codeRecord.id);
+
+    await signIn("credentials", { email, redirectTo: DEFAULT_LOGIN_REDIRECT });
+  } catch (err) {
+    if (isRedirectError(err)) {
+      throw err;
+    }
+    handleError(err, "Failed to validate the code");
   }
 };

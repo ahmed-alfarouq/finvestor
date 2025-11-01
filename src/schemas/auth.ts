@@ -17,11 +17,12 @@ export const NewPasswordSchema = z
     path: ["confirmPassword"],
   });
 
-export const LoginSchema = z.object({
+export const loginSchema = z.object({
   email: z.string().email("Email is required!"),
   password: z.string().min(1, "Password is required!"),
-  code: z.optional(z.string()),
 });
+
+export type LoginSchema = z.infer<typeof loginSchema>;
 
 export const RegisterSchema = z
   .object({
@@ -44,7 +45,10 @@ export const RegisterSchema = z
     dateOfBirth: z.date().refine((date) => !isNaN(date.getTime()), {
       message: "Date is required!",
     }),
-    ssn: z.string().min(1, "SSN is required!").length(9, "SSN must be exactly 9 digits."),
+    ssn: z
+      .string()
+      .min(1, "SSN is required!")
+      .length(9, "SSN must be exactly 9 digits."),
     password: z
       .string()
       .min(1, "Password is required!")
@@ -55,3 +59,9 @@ export const RegisterSchema = z
     message: "Passwords don't match!",
     path: ["confirmPassword"],
   });
+
+export const otpSchema = z.object({
+  code: z.string().min(1, "OTP code is required"),
+});
+
+export type OTPSchema = z.infer<typeof otpSchema>;
