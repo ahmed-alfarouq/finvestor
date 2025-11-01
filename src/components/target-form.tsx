@@ -44,7 +44,7 @@ const TargetForm = ({
     },
   });
 
-  const handleLogout = async () => await logout();
+  const handleLogout = async () => await logout(user?.id || "");
 
   const onSubmit = (data: TargetSchema) => {
     setFormError("");
