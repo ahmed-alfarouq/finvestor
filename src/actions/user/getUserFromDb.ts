@@ -5,11 +5,22 @@ import { getBaseUrl } from "@/lib/utils";
 
 import { User } from "@/types";
 
+export const getOnlyUserByEmail = async (email: string) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+    return user;
+  } catch {
+    return null;
+  }
+};
+
 export const getUserByEmail = async (email: string) => {
   try {
     const user = await prisma.user.findUnique({
       where: { email },
-      include: { banks: true },
+      include: { banks: true, twoFactorConfirmation: true },
     });
     return user;
   } catch {

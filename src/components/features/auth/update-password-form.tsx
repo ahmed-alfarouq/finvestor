@@ -14,7 +14,7 @@ import FormSuccess from "@/components/form-success";
 
 import { updatePassword } from "@/actions/user/updateUser";
 import { getUserByEmail } from "@/actions/user/getUserFromDb";
-import { getResetTokenByToken, removeResetToken } from "@/actions/auth/tokens";
+import { findResetTokenByToken, deleteResetToken } from "@/actions/auth/tokens";
 
 import { NewPasswordSchema } from "@/schemas/auth";
 
@@ -47,7 +47,7 @@ const UpdatePasswordForm = () => {
           return;
         }
 
-        const existingToken = await getResetTokenByToken(token);
+        const existingToken = await findResetTokenByToken(token);
         if (!existingToken) {
           setFormError("Invalid or expired token.");
           return;
@@ -65,7 +65,7 @@ const UpdatePasswordForm = () => {
         }
 
         await updatePassword({ id: user.id, password: data.password });
-        await removeResetToken(existingToken.id);
+        await deleteResetToken(existingToken.id);
         setPasswordUpdated(true);
       } catch {
         setFormError("Something went wrong!");

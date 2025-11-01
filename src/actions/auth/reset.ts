@@ -1,15 +1,15 @@
 "use server";
 import { sendResetEmail } from "@/actions/mail";
-import { generateResetToken } from "@/actions/auth/tokens";
-import { getUserByEmail } from "@/actions/user/getUserFromDb";
+import { createResetToken } from "@/actions/auth/tokens";
+import { getOnlyUserByEmail } from "@/actions/user/getUserFromDb";
 
 export const reset = async (email: string) => {
-  const token = await generateResetToken(email);
-  const user = await getUserByEmail(email);
+  const token = await createResetToken(email);
+  const user = await getOnlyUserByEmail(email);
 
   if (!token || !user) return { error: "Something went wrong!" };
   try {
-    await sendResetEmail({
+    sendResetEmail({
       username: `${user.firstName} ${user.lastName}` || "",
       email,
       token,

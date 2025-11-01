@@ -2,11 +2,12 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { getUserByEmail } from "@/actions/user/getUserFromDb";
+
 import {
-  getVerificationTokenByToken,
-  removeEmailVerificationToken,
+  deleteVerificationToken,
+  findVerificationTokenByToken,
 } from "@/actions/auth/tokens";
+import { getUserByEmail } from "@/actions/user/getUserFromDb";
 import { updateEmailVerification } from "@/actions/user/updateUser";
 
 const VerifyEmail = () => {
@@ -32,7 +33,7 @@ const VerifyEmail = () => {
       }
 
       try {
-        const tokenExists = await getVerificationTokenByToken({ token });
+        const tokenExists = await findVerificationTokenByToken({ token });
 
         if (!tokenExists) {
           return throwError("Invalid or expired verification link.");
@@ -48,7 +49,7 @@ const VerifyEmail = () => {
         }
 
         await updateEmailVerification(user.id);
-        await removeEmailVerificationToken(tokenExists.id);
+        await deleteVerificationToken(tokenExists.id);
 
         setStatus("success");
       } catch {
