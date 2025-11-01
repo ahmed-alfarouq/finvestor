@@ -24,14 +24,18 @@ import { BiMoneyWithdraw, BiTargetLock } from "react-icons/bi";
 
 import { logout } from "@/actions/auth/logout";
 
+import useCurrentUser from "@/hooks/use-current-user";
+
 const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
+  const user = useCurrentUser();
+
   const { toggleSidebar } = useSidebar();
   const [logoutDisabled, setLogoutDisabled] = useState(false);
   const pathname = usePathname();
 
   const handleLogout = () => {
     setLogoutDisabled(true);
-    logout();
+    logout(user?.id || "");
   };
 
   return (
