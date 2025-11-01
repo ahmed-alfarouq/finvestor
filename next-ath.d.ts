@@ -1,5 +1,5 @@
 import type { DefaultSession } from "next-auth";
-import type { BankProps, User } from "@/types/index";
+import type { User } from "@/types/index";
 import { JWT } from "next-auth/jwt";
 
 declare module "next-auth" {
@@ -10,6 +10,6 @@ declare module "next-auth" {
 
 declare module "next-auth/jwt" {
   interface JWT {
-    banks: BankProps[];
+    banks: User["banks"];
   }
 }
