@@ -1,3 +1,5 @@
+import { auth } from "@/auth";
+
 import TargetModal from "@/components/target-modal";
 import CategoryIcon from "@/components/expenses-item/category-icon";
 
@@ -6,12 +8,16 @@ import { formatAmount, formatCategory } from "@/lib/utils";
 
 import { ExpenseGoalProps } from "@/types";
 
-const ExpenseGoal = ({
+const ExpenseGoal = async ({
   icon,
   goal,
   category,
   categoryTransactions,
 }: ExpenseGoalProps) => {
+  const session = await auth();
+
+  if (!session?.user) return;
+
   const totalExpenses = getTotalExpenses(categoryTransactions);
 
   return (
@@ -30,7 +36,7 @@ const ExpenseGoal = ({
           </p>
         </div>
       </div>
-      <TargetModal category={category} />
+      <TargetModal category={category} userId={session.user.id} />
     </div>
   );
 };

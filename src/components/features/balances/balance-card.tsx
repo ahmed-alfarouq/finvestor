@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import { useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -29,8 +28,6 @@ const BalanceCard = ({
   const [successMessage, setSuccessMessage] = useState<string | undefined>("");
   const [pending, startTransation] = useTransition();
 
-  const { update } = useSession();
-
   const validTypesForDetails = ["savings", "checking"];
 
   const removeAccount = () => {
@@ -40,7 +37,6 @@ const BalanceCard = ({
         setErrorMessage(res.error);
         return;
       }
-      await update();
       setSuccessMessage(res?.message);
     });
   };

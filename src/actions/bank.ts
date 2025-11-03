@@ -46,17 +46,17 @@ export const getBank = async (bankId: string) => {
 
 export const removeBank = async (bankId: string, userId: string) => {
   try {
-    const bankAccount = await getBank(bankId);
-    if (!bankAccount) return { error: "Bank not found!" };
+    const bank = await getBank(bankId);
+    if (!bank) return { error: "Bank not found!" };
 
-    // remove bank accounts from db first in case of error
+    // remove bank account from db first in case of error
     await prisma.bank.delete({
-      where: { id: bankAccount.id },
+      where: { id: bank.id },
     });
 
     // all accounts from the same bank are removed
     const plaidRemoveRes = await plaidClient.itemRemove({
-      access_token: bankAccount.accessToken,
+      access_token: bank.accessToken,
     });
 
     if (plaidRemoveRes.status !== 200)
@@ -65,7 +65,7 @@ export const removeBank = async (bankId: string, userId: string) => {
       };
 
     await revalidateAll(userId);
-    await revalidateBankTransactions(userId, bankAccount.accessToken);
+    await revalidateBankTransactions(userId, bank.accessToken);
 
     return {
       message: "Account removed successfully",

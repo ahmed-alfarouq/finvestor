@@ -1,12 +1,13 @@
-import { getAllAccountTransactions } from "@/actions/transactions";
-import ExpenseGoal from "./components/expense-goal";
+import { Transaction } from "plaid";
 
+import ExpenseGoal from "./components/expense-goal";
 import NotAvailable from "@/components/not-available";
+
+import { getAllAccountTransactions } from "@/actions/transactions";
 
 import { splitTransactionsByCategory } from "@/lib/transactions";
 
 import { BankAccount, User } from "@/types";
-import { Transaction } from "plaid";
 
 const ExpensesGoals = async ({
   expensesAccounts,

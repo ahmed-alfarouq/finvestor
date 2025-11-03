@@ -2,7 +2,7 @@
 
 import bcrypt from "bcryptjs";
 import { prisma } from "@/prisma";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 import {
   UpdateUser2FAParams,
@@ -46,7 +46,7 @@ export const updateSavingsGoal = async (userId: string, amount: string) => {
         savingsGoal: amount,
       },
     });
-    revalidatePath("/");
+    revalidateTag(`user-${userId}`);
     return { success: "Your goal was updated successfully!" };
   } catch (error) {
     console.error("An error occurred while updating savings goal:", error);
@@ -70,7 +70,6 @@ export const updateSavingsGoalAccounts = async (
       },
     });
     revalidateTag(`user-${userId}`);
-    revalidatePath("/");
     return { success: "Your savings goal accounts were updated successfully!" };
   } catch (error) {
     console.error(
@@ -107,7 +106,7 @@ export const updateExpensesGoal = async (
         lastModified: new Date(),
       },
     });
-    revalidatePath("/");
+    revalidateTag(`user-${userId}`);
     return { success: "Amount updated successfully!" };
   } catch (error) {
     console.error("An error occurred while updating expenses goal:", error);
