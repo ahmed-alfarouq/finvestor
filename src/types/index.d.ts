@@ -14,7 +14,6 @@ export type AccountType =
   | "other";
 export type NotificationStatus = "success" | "warning" | "error" | "info";
 
-
 // ========================================
 // User & Account Types
 // ========================================
@@ -278,9 +277,9 @@ declare interface BalanceCardProps {
 }
 
 declare interface ExpenseGoalProps {
+  goal: string;
   icon?: string;
   category: string;
-  goal: string;
   categoryTransactions: Transaction[];
 }
 
@@ -306,6 +305,12 @@ declare interface TransactionTableProps {
   loadMore: () => void;
   isLoadingMore: boolean;
   transactions: Transaction[];
+}
+
+declare interface TargetFormProps {
+  userId: string;
+  category?: string;
+  onSuccess?: () => void;
 }
 
 declare interface SelectAccountFormProps {

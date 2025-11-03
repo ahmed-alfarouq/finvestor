@@ -14,6 +14,7 @@ const SelectedAccounts = async ({ className }: { className?: string }) => {
   const user = await getCachedUser(session.user.id);
   const accounts = await getCachedAccounts(session.user.id);
 
+  console.log(user.banks);
   const validAccounts = accounts.filter(
     (account) => account.subtype === "savings" || account.subtype === "checking"
   );

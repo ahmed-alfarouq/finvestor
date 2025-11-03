@@ -36,7 +36,7 @@ const GoalsBox = async ({ className }: { className?: string }) => {
             <h3 className="default-black text-[22px] font-extrabold">
               {formatAmount(targetAmount, true)}
             </h3>
-            <TargetModal />
+            <TargetModal userId={user.id} />
           </div>
           <span className="text-sm text-secondary-color dark:text-secondary-color-dark">
             {formatDateTime(new Date()).dateOnly}

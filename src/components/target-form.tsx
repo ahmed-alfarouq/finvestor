@@ -18,19 +18,13 @@ import {
   updateSavingsGoal,
 } from "@/actions/user/updateUser";
 
-import { useSession } from "next-auth/react";
-
-import useCurrentUser from "@/hooks/use-current-user";
+import { TargetFormProps } from "@/types";
 
 const TargetForm = ({
+  userId,
   category,
   onSuccess = () => {},
-}: {
-  category?: string;
-  onSuccess?: () => void;
-}) => {
-  const user = useCurrentUser();
-  const { update } = useSession();
+}: TargetFormProps) => {
   const [pending, startTransition] = useTransition();
 
   const [formError, setFormError] = useState<string | undefined>("");
@@ -44,34 +38,21 @@ const TargetForm = ({
     },
   });
 
-  const handleLogout = async () => await logout(user?.id || "");
+  const handleLogout = async () => await logout(userId);
 
   const onSubmit = (data: TargetSchema) => {
     setFormError("");
     setFormSuccess("");
     startTransition(async () => {
-      if (!user) {
-        setFormError("Something went wrong with your session!");
-        setSessionError(true);
-        return;
-      }
-
       let res;
       if (category) {
-        res = await updateExpensesGoal(user.id, category, data.target);
+        res = await updateExpensesGoal(userId, category, data.target);
       } else {
-        res = await updateSavingsGoal(user.id, data.target);
+        res = await updateSavingsGoal(userId, data.target);
       }
       if (res.error) {
         setFormError(res.error);
         setSessionError(true);
-        return;
-      }
-      // Update session
-      const updatedSession = await update();
-
-      if (!updatedSession) {
-        setFormError("Something went wrong, please refresh the page!");
         return;
       }
 

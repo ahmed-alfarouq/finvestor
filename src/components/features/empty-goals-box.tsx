@@ -7,8 +7,9 @@ import TargetModal from "../target-modal";
 import { Button } from "@/components/ui/button";
 
 import { EmptyGoalsBoxProps } from "@/types";
+import { auth } from "@/auth";
 
-const EmptyGoalsBox = ({
+const EmptyGoalsBox = async ({
   title,
   message,
   date,
@@ -16,6 +17,10 @@ const EmptyGoalsBox = ({
   showButton = true,
   className,
 }: EmptyGoalsBoxProps) => {
+  const session = await auth();
+
+  if (!session?.user) return;
+
   return (
     <section className={cn("box", className)}>
       <header>
@@ -24,7 +29,7 @@ const EmptyGoalsBox = ({
       <section className="card">
         <div className="flex items-center justify-between w-full border-b border-gray-6 pb-4">
           <div className="flex items-center gap-2">
-            {selectedAccounts && <TargetModal />}
+            {selectedAccounts && <TargetModal userId={session.user.id} />}
           </div>
           <span className="text-sm text-secondary-color dark:text-secondary-color-dark">
             {formatDateTime(date).dateOnly}
@@ -36,7 +41,7 @@ const EmptyGoalsBox = ({
             {message ? message : "You didn't add a goal yet."}
           </p>
           {selectedAccounts ? (
-            <TargetModal />
+            <TargetModal userId={session.user.id} />
           ) : showButton ? (
             <Button size="lg" asChild>
               <Link href="/goals">Select Accounts</Link>

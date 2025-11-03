@@ -6,7 +6,13 @@ import ModalWrapper from "./modal-wrapper";
 
 import { EditIcon } from "lucide-react";
 
-const TargetModal = ({ category }: { category?: string }) => {
+const TargetModal = ({
+  category,
+  userId,
+}: {
+  category?: string;
+  userId: string;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleModal = () => setIsOpen((prev) => !prev);
@@ -19,7 +25,7 @@ const TargetModal = ({ category }: { category?: string }) => {
         <EditIcon />
       </button>
       <ModalWrapper isOpen={isOpen} close={toggleModal}>
-        <TargetForm category={category} />
+        <TargetForm category={category} userId={userId} />
       </ModalWrapper>
     </>
   );
