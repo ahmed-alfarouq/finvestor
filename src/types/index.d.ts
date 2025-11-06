@@ -1,5 +1,6 @@
 import { Transaction } from "plaid";
 import { ChartOptions } from "chart.js";
+import { LucideIcon } from "lucide-react";
 import { Control, FieldError, Path, UseFormRegister } from "react-hook-form";
 
 // ========================================
@@ -136,9 +137,16 @@ declare interface CheckboxProps<T extends FieldValues> {
 }
 
 declare interface ModalWrapperProps {
+  name: string;
+  className?: string;
   children: React.ReactNode;
-  close: () => void;
-  isOpen: boolean;
+}
+
+declare interface ModalTriggerProps {
+  name: string;
+  text?: string;
+  icon?: LucideIcon;
+  ariaLable: string;
   className?: string;
 }
 
