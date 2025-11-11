@@ -42,7 +42,6 @@ export default {
       token.name = `${existingUser.firstName}`;
       token.banks = existingUser.banks;
 
-      console.log(token.banks);
       return token;
     },
   },
