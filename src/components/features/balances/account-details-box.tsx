@@ -7,7 +7,7 @@ const AccountDetailsBox = ({ account }: { account: BankAccount }) => {
   return (
     <section>
       <h2 className="card-title">Account Details</h2>
-      <div className="sm:h-72 grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 rounded-xl border bg-default dark:bg-default-dark card-shadow p-4 sm:px-7 sm:py-5 overflow-y-auto">
+      <div className="sm:h-72 grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 rounded-xl bg-default dark:bg-default-dark card-shadow p-4 sm:px-7 sm:py-5 overflow-y-auto">
         <DetailItem title="Bank Name" value={account.institutionName} />
         <DetailItem title="Account Type" value={account.subtype} />
         <div>
