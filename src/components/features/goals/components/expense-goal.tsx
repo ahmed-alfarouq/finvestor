@@ -21,7 +21,7 @@ const ExpenseGoal = async ({
   const totalExpenses = getTotalExpenses(categoryTransactions);
 
   return (
-    <div className="relative flex gap-4 justify-between h-32 rounded-xl border bg-default dark:bg-default-dark card-shadow pl-4 pr-5 py-5">
+    <div className="relative flex gap-4 justify-between h-32 rounded-xl bg-default dark:bg-default-dark card-shadow pl-4 pr-5 py-5">
       <CategoryIcon icon={icon} categoryName={category} itemExpanded={false} />
       <div className="w-full">
         <h3 className="capitalize font-medium mb-1 truncate text-sm text-gray-2 dark:text-gray-5">
