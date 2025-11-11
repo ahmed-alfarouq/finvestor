@@ -34,16 +34,15 @@ export default {
 
       return session;
     },
-    async jwt({ token, trigger }) {
+    async jwt({ token }) {
       if (!token.sub) return token;
 
-      if (trigger === "signIn") {
-        const existingUser = await getUserById(token.sub);
-        if (!existingUser) return token;
-        token.name = `${existingUser.firstName}`;
-        token.banks = existingUser.banks;
-      }
+      const existingUser = await getUserById(token.sub);
+      if (!existingUser) return token;
+      token.name = `${existingUser.firstName}`;
+      token.banks = existingUser.banks;
 
+      console.log(token.banks);
       return token;
     },
   },
