@@ -42,6 +42,11 @@ export default auth((req) => {
     return NextResponse.redirect(new URL("/link-account", req.url));
   }
 
+  // User has bank accounts → redirect to accounts page
+  if (isLoggedIn && hasBankAccounts && isLinkAccountPage) {
+    return NextResponse.redirect(new URL("/balances", req.url));
+  }
+
   return response;
 });
 
