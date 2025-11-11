@@ -1,7 +1,5 @@
-"use client";
-import { useState } from "react";
-
 import TargetForm from "./target-form";
+import ModalTrigger from "./modal-trigger";
 import ModalWrapper from "./modal-wrapper";
 
 import { EditIcon } from "lucide-react";
@@ -13,18 +11,15 @@ const TargetModal = ({
   category?: string;
   userId: string;
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleModal = () => setIsOpen((prev) => !prev);
   return (
     <>
-      <button
-        className="p-1 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600"
-        onClick={toggleModal}
-      >
-        <EditIcon />
-      </button>
-      <ModalWrapper isOpen={isOpen} close={toggleModal}>
+      <ModalTrigger
+        icon={EditIcon}
+        name="target-modal"
+        ariaLable="Toggle Target Modal"
+        className="p-1.5 rounded-md bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600"
+      />
+      <ModalWrapper name="target-modal">
         <TargetForm category={category} userId={userId} />
       </ModalWrapper>
     </>

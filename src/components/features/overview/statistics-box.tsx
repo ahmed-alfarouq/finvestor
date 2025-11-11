@@ -1,8 +1,8 @@
 "use client";
-import { useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
+import { useMemo, useState } from "react";
 
-import BarChart from "@/components/ui/bar-chart";
 import {
   Select,
   SelectItem,
@@ -18,6 +18,11 @@ import { daysNames, monthsNames } from "@/constants";
 
 import { StatisticsBoxProps } from "@/types";
 
+const BarChart = dynamic(() => import("@/components/ui/bar-chart"), {
+  ssr: false,
+  loading: () => null,
+});
+
 const StatisticsBox = ({ transactions, className }: StatisticsBoxProps) => {
   const [statisticsType, setStatisticsType] = useState<"weekly" | "yearly">(
     "weekly"
@@ -30,15 +35,33 @@ const StatisticsBox = ({ transactions, className }: StatisticsBoxProps) => {
     setStatisticsType(value);
   };
 
-  const comparedExpenses: {
-    currentPeriod: number[];
-    lastPeriod: number[];
-  } = useMemo(() => {
-    return compareTransactionsByDate(
-      transactions,
-      statisticsType as PeriodType
-    );
-  }, []);
+  const comparedExpenses = useMemo(
+    () => compareTransactionsByDate(transactions, statisticsType as PeriodType),
+    [transactions, statisticsType]
+  );
+
+  const labels = useMemo(
+    () => (statisticsType === "weekly" ? daysNames : monthsNames),
+    [statisticsType]
+  );
+
+  const datasets = useMemo(
+    () => [
+      {
+        label: statisticsType === "weekly" ? "Last week" : "Last year",
+        data: comparedExpenses.lastPeriod,
+        backgroundColor: isDarkMode ? "#f1f1f1" : "#E8E8E8",
+        borderColor: isDarkMode ? "#f1f1f1" : "#299D91",
+      },
+      {
+        label: statisticsType === "weekly" ? "This week" : "This year",
+        data: comparedExpenses.currentPeriod,
+        backgroundColor: isDarkMode ? "#9F9F9F" : "#299D91",
+        borderColor: isDarkMode ? "#9F9F9F" : "#E8E8E8",
+      },
+    ],
+    [statisticsType, isDarkMode, comparedExpenses]
+  );
 
   return (
     <section className={cn("h-full flex flex-col gap-2", className)}>
@@ -56,23 +79,7 @@ const StatisticsBox = ({ transactions, className }: StatisticsBoxProps) => {
             <SelectItem value="yearly">Yearly</SelectItem>
           </SelectContent>
         </Select>
-        <BarChart
-          labels={statisticsType === "weekly" ? daysNames : monthsNames}
-          datasets={[
-            {
-              label: statisticsType === "weekly" ? "Last week" : "Last year",
-              data: comparedExpenses.lastPeriod,
-              backgroundColor: isDarkMode ? "#f1f1f1" : "#E8E8E8",
-              borderColor: isDarkMode ? "#f1f1f1" : "#299D91",
-            },
-            {
-              label: statisticsType === "weekly" ? "This week" : "This year",
-              data: comparedExpenses.currentPeriod,
-              backgroundColor: isDarkMode ? "#9F9F9F" : "#299D91",
-              borderColor: isDarkMode ? "#9F9F9F" : "#E8E8E8",
-            },
-          ]}
-        />
+        <BarChart labels={labels} datasets={datasets} />
       </div>
     </section>
   );

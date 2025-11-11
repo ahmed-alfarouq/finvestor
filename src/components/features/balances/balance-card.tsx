@@ -23,7 +23,6 @@ const BalanceCard = ({
   accountNumber,
   totalAmount,
 }: BalanceCardProps) => {
-  const [showModal, setShowModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | undefined>("");
   const [successMessage, setSuccessMessage] = useState<string | undefined>("");
   const [pending, startTransation] = useTransition();
@@ -40,8 +39,6 @@ const BalanceCard = ({
       setSuccessMessage(res?.message);
     });
   };
-
-  const toggleModal = () => setShowModal((prev) => !prev);
 
   return (
     <section className="rounded-xl bg-default dark:bg-default-dark card-shadow p-4 sm:px-7 sm:py-5">
@@ -77,11 +74,48 @@ const BalanceCard = ({
         <Button
           size="lg"
           variant="ghost"
-          className="text-left p-0 hover:bg-transparent hover:text-special-red"
-          onClick={toggleModal}
+          className="text-left p-0 hover:bg-transparent hover:text-special-red hover:cursor-pointer"
+          asChild
         >
-          Remove
+          <label htmlFor="remove-account-modal">Remove</label>
         </Button>
+        <input
+          type="checkbox"
+          aria-hidden="true"
+          name="remove-account-modal"
+          id="remove-account-modal"
+          className="modal-trigger"
+        />
+        <ModalWrapper name="remove-account-modal">
+          <div className="space-y-4 p-4 text-center">
+            <h2 className="text-xl font-semibold text-special-red">
+              Are you sure?
+            </h2>
+            <p className="text-sm text-gray-1 dark:text-gray-6">
+              Removing this will delete <strong>all associated accounts</strong>{" "}
+              linked to this bank, not just this one.
+            </p>
+            <FormError message={errorMessage} />
+            <FormSuccess message={successMessage} />
+            <div className="flex justify-center gap-4 pt-4">
+              <Button
+                variant="outline"
+                disabled={pending}
+                className="hover:cursor-pointer"
+                asChild
+              >
+                <label htmlFor="remove-account-modal">Cancel</label>
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={removeAccount}
+                disabled={pending}
+              >
+                Yes, Remove All
+              </Button>
+            </div>
+          </div>
+        </ModalWrapper>
         {validTypesForDetails.includes(subtype) && (
           <Button size="lg" className="px-5 py-1" disabled={pending}>
             <Link
@@ -93,31 +127,6 @@ const BalanceCard = ({
           </Button>
         )}
       </div>
-      <ModalWrapper isOpen={showModal} close={toggleModal}>
-        <div className="space-y-4 p-4 text-center">
-          <h2 className="text-xl font-semibold text-special-red">
-            Are you sure?
-          </h2>
-          <p className="text-sm text-gray-1 dark:text-gray-6">
-            Removing this will delete <strong>all associated accounts</strong>{" "}
-            linked to this bank, not just this one.
-          </p>
-          <FormError message={errorMessage} />
-          <FormSuccess message={successMessage} />
-          <div className="flex justify-center gap-4 pt-4">
-            <Button variant="outline" onClick={toggleModal} disabled={pending}>
-              Cancel
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={removeAccount}
-              disabled={pending}
-            >
-              Yes, Remove All
-            </Button>
-          </div>
-        </div>
-      </ModalWrapper>
     </section>
   );
 };

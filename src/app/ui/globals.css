@@ -160,6 +160,19 @@
   .card-shadow {
     @apply shadow-xl shadow-shadow-1/10;
   }
+
+  /* Modals */
+  .modal-trigger {
+    @apply hidden;
+  }
+
+  .modal-trigger + .modal {
+    @apply opacity-0 pointer-events-none;
+  }
+
+  .modal-trigger:checked + .modal {
+    @apply opacity-100 pointer-events-auto;
+  }
 }
 
 /* Animations */

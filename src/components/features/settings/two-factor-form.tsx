@@ -23,7 +23,6 @@ type FormSchema = z.infer<typeof formSchema>;
 
 const TwoFactorForm = ({ user }: { user: User }) => {
   const [statusLabel, setStatusLabel] = useState("Enable");
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const [successMessage, setSuccessMessage] = useState<string | undefined>();
@@ -42,7 +41,6 @@ const TwoFactorForm = ({ user }: { user: User }) => {
   const toggleModal = () => {
     setErrorMessage("");
     setSuccessMessage("");
-    setIsModalOpen((prev) => !prev);
   };
 
   const onSubmit = (data: FormSchema) => {
@@ -78,11 +76,21 @@ const TwoFactorForm = ({ user }: { user: User }) => {
         {statusLabel} Two-factor authentication (2FA)
       </h2>
 
-      <Button size="lg" onClick={toggleModal} className="mt-4 w-48">
-        {statusLabel} 2FA
+      <Button
+        size="lg"
+        onClick={toggleModal}
+        className="mt-4 w-48 cursor-pointer"
+        asChild
+      >
+        <label htmlFor="two-factor-modal">{statusLabel} 2FA</label>
       </Button>
-
-      <ModalWrapper isOpen={isModalOpen} close={toggleModal}>
+      <input
+        type="checkbox"
+        id="two-factor-modal"
+        name="two-factor-modal"
+        className="modal-trigger"
+      />
+      <ModalWrapper name="two-factor-modal">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
