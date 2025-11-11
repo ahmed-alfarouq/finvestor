@@ -13,16 +13,22 @@ import {
   dummyTransactions,
   lastYearTransactions,
 } from "@/constants/transactions";
+import EmptyGoalsBox from "@/components/features/empty-goals-box";
 
 const OverviewPage = async () => {
   const session = await auth();
 
   if (!session) return;
 
-  const user = await getCachedUser(session.user.id);
+  const { id, banks, savingsGoalAccounts, savingsGoal } = await getCachedUser(
+    session.user.id
+  );
+
+  const hasGoalAccounts = savingsGoalAccounts.length;
+
   const { transactions } = await getCachedTransactions(
-    session.user.id,
-    user.banks[0].accessToken
+    id,
+    banks[0].accessToken
   );
 
   const allTransactions = [
@@ -35,7 +41,24 @@ const OverviewPage = async () => {
     <PageContainer>
       <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-3">
         <TotalBalanceBox />
-        <GoalsBox />
+        {hasGoalAccounts && savingsGoal ? (
+          <GoalsBox className="md:col-span-2 lg:col-span-1" />
+        ) : !hasGoalAccounts && savingsGoal ? (
+          <EmptyGoalsBox
+            title="Goals"
+            message="Select an account in goals page to continue setting up your goal."
+            date={new Date()}
+            showButton={false}
+            selectedAccounts={false}
+            className="md:col-span-2 lg:col-span-1"
+          />
+        ) : (
+          <EmptyGoalsBox
+            title="Goals"
+            date={new Date()}
+            className="md:col-span-2 lg:col-span-1"
+          />
+        )}
         <LoansBox />
       </section>
       <section className="h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-3">
